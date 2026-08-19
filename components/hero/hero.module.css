@@ -323,3 +323,72 @@
     transform: none;
   }
 }
+
+/* ============================================================
+   DARK TONE  —  the ledger as a black panel on a white page.
+   This is where --accent-2 finally earns its keep: the cyan is
+   1.6:1 on white but roughly 11:1 on ink, so on this surface it
+   can carry text and marks rather than being decoration only.
+   ============================================================ */
+
+.toneDark .ledger {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+.toneDark .ledger:hover {
+  border-color: var(--accent-2);
+}
+
+.toneDark .ledgerHead,
+.toneDark .summary,
+.toneDark .rows::before {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: none;
+}
+.toneDark .rows::before {
+  background: rgba(255, 255, 255, 0.18);
+}
+.toneDark .summary {
+  border-top-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.03);
+}
+.toneDark .ledgerHead {
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+.toneDark .ledgerLabel,
+.toneDark .time,
+.toneDark .detail,
+.toneDark .summaryItem {
+  color: rgba(255, 255, 255, 0.58);
+}
+.toneDark .ledgerSubject,
+.toneDark .event {
+  color: #fff;
+}
+.toneDark .summaryItem:last-child {
+  color: var(--accent-2);
+}
+
+.toneDark .node {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: var(--ink);
+  box-shadow: 0 0 0 3px var(--ink);
+}
+.toneDark .channel {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.toneDark .rowHighlight .event {
+  color: var(--accent-2);
+}
+.toneDark .rowHighlight .node {
+  border-color: var(--accent-2);
+  background: var(--accent-2);
+}
+.toneDark .rowHighlight .channel {
+  color: var(--accent-2);
+  border-color: rgba(91, 224, 220, 0.4);
+}

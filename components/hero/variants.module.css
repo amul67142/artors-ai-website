@@ -1,0 +1,326 @@
+/* ============================================================
+   HERO VARIANTS  —  three answers to "it lacks impact"
+   Temporary. The winner folds back into hero.module.css.
+   ============================================================ */
+
+/* ---------- shared ------------------------------------------------ */
+
+.setup {
+  display: block;
+  color: var(--muted);
+  font-size: clamp(15px, 1.4vw, 19px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 18px;
+  text-transform: none;
+}
+
+.sub {
+  color: var(--ink);
+  max-width: 44ch;
+}
+.subEm {
+  font-weight: 700;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.trust {
+  color: var(--muted);
+  margin-top: 20px;
+}
+
+/* Payoff shared: uppercase, very tight, and big enough to be the
+   visual rather than merely the text. */
+.payoff {
+  display: block;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+  margin: 0;
+}
+
+.word {
+  margin-right: 0.22em;
+}
+
+/* ============================================================
+   A — STATEMENT
+   The type is the design. Headline runs the full container,
+   the run reduces to a thin process strip along the bottom.
+   ============================================================ */
+
+.aHero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: calc(100dvh - 76px);
+  padding-block: 36px 36px;
+  overflow: hidden;
+}
+.aHero::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -10%;
+  width: min(900px, 80vw);
+  aspect-ratio: 1;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--accent) 9%, transparent) 0%,
+    color-mix(in srgb, var(--accent-2) 7%, transparent) 45%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+.aInner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.aPayoff {
+  font-size: clamp(42px, 10.7vw, 152px);
+}
+
+.aFoot {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+/* The run as a horizontal strip: five nodes on one rule. */
+.strip {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  margin-top: 34px;
+}
+.stripHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stripLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.stripSteps {
+  position: relative;
+  display: grid;
+  gap: 0;
+  padding-top: 18px;
+}
+.stripSteps::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line);
+}
+.stripStep {
+  position: relative;
+  padding-right: 20px;
+}
+.stripStep::before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  box-shadow: 0 0 0 3px var(--paper);
+}
+.stripStepOn::before {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.stripEvent {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.stripStepOn .stripEvent {
+  color: var(--accent);
+}
+.stripChannel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ============================================================
+   B — DARK ANCHOR
+   The current split, but the panel becomes a black mass so the
+   page finally has weight.
+   ============================================================ */
+
+.bHero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: calc(92dvh - 76px);
+  padding-block: 56px 64px;
+  overflow: hidden;
+}
+.bHero::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  right: -14%;
+  width: min(760px, 78vw);
+  aspect-ratio: 1;
+  background: radial-gradient(
+    circle at 50% 50%,
+    color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+    color-mix(in srgb, var(--accent-2) 6%, transparent) 42%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+.bGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  width: 100%;
+  align-items: center;
+}
+.bPayoff {
+  font-size: clamp(40px, 7.6vw, 112px);
+  margin-bottom: 28px;
+}
+
+/* ============================================================
+   C — SPLIT SCREEN
+   The right half is a black block running to the viewport edge.
+   Highest contrast, still only ink, paper and the accent.
+   ============================================================ */
+
+.cHero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: calc(100dvh - 76px);
+  overflow: hidden;
+}
+
+.cLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px var(--gutter);
+}
+
+.cPayoff {
+  font-size: clamp(38px, 6.5vw, 98px);
+  margin-bottom: 28px;
+}
+
+.cRight {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  padding: 56px var(--gutter);
+}
+/* A single cool wash inside the black, so it reads as a surface
+   rather than a rectangle of paint. */
+.cRight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 80% at 80% 10%,
+    rgba(91, 224, 220, 0.14) 0%,
+    rgba(43, 92, 255, 0.1) 38%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+.cRightInner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* ---------- responsive -------------------------------------------- */
+
+@media (min-width: 900px) {
+  .aFoot {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: end;
+    gap: 56px;
+  }
+  .stripSteps {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .bGrid {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 64px;
+  }
+  .cHero {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* Left column keeps the container's left edge; the right block
+     bleeds to the viewport edge. */
+  .cLeft {
+    padding-left: max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter)));
+    padding-right: 56px;
+  }
+}
+
+@media (max-width: 899px) {
+  .stripSteps {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px 0;
+  }
+  .stripSteps::before {
+    display: none;
+  }
+  .stripStep::before {
+    top: 2px;
+    left: -14px;
+  }
+  .stripStep {
+    padding-left: 0;
+  }
+  .stripSteps {
+    padding-left: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strip,
+  .ledger {
+    transition: none;
+  }
+}
