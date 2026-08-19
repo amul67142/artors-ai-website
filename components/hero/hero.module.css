@@ -1,267 +1,168 @@
 /* ============================================================
-   HERO  —  the hero is a call.
-   A recorded conversation plays out in large type, one line at
-   a time, and ends on the booked outcome. The claim sits below
-   as a quiet band. No columns, no panel, no card: the product
-   performing is the layout.
+   HERO  —  the dawn composition.
+   Centered claim over a rising orbital arc and a soft blue-cyan
+   horizon glow, on a faint dot grid. The arc carries the logo's
+   node motif; the glow is the brand gradient used as light
+   rather than as paint. Six real service links close the screen
+   along the base.
 
-   All timing is CSS. One 32s loop; each line's phase offset is
-   set inline via --t. animation-delay shifts the whole timeline
-   permanently (delay + n x duration), so relative phase between
-   lines survives every iteration.
+   Everything decorative is CSS. The only loop is a 120s rotation
+   of the arc and a slow breathe on the glow, both transform/
+   opacity only, both paused off-screen and under reduced motion.
    ============================================================ */
 
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   min-height: calc(100dvh - 64px);
-  padding-block: 40px 44px;
+  padding-top: 56px;
   overflow: hidden;
 }
 
-/* One faint wash, reading as paper tone rather than gradient. */
-.hero::before {
-  content: "";
+/* ---------- backdrop ------------------------------------------------ */
+
+/* Faint dot grid, masked so it breathes around the headline and
+   dissolves before the edges. Reads as drafting paper, not decoration. */
+.grid {
   position: absolute;
-  top: -28%;
-  right: -16%;
-  width: min(880px, 90vw);
-  aspect-ratio: 1;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(circle, var(--line) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 62% at 50% 38%,
+    #000 0%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(ellipse 70% 62% at 50% 38%, #000 0%, transparent 78%);
+  pointer-events: none;
+}
+
+/* The horizon glow. Brand gradient as light. */
+.glow {
+  position: absolute;
+  left: 50%;
+  bottom: -22%;
+  z-index: 0;
+  width: min(1100px, 120vw);
+  height: 52vh;
+  transform: translateX(-50%);
   background: radial-gradient(
-    circle at 50% 50%,
-    color-mix(in srgb, var(--accent) 5%, transparent) 0%,
-    color-mix(in srgb, var(--accent-2) 4%, transparent) 45%,
-    transparent 70%
+    ellipse 60% 68% at 50% 100%,
+    color-mix(in srgb, var(--accent) 13%, transparent) 0%,
+    color-mix(in srgb, var(--accent-2) 9%, transparent) 45%,
+    transparent 74%
   );
   pointer-events: none;
-  z-index: 0;
+  animation: breathe 14s ease-in-out infinite alternate;
 }
 
-.inner {
-  position: relative;
-  z-index: 1;
-  width: 100%;
+@keyframes breathe {
+  from {
+    opacity: 0.72;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-/* ---------- the stage --------------------------------------------- */
-
-.stageHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 34px;
-}
-
-.micro {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-
-/* Fixed-height stage; lines are stacked absolutely and take turns. */
-.stage {
-  position: relative;
-  height: clamp(200px, 30vh, 280px);
-}
-
-.line {
+/* The arc: the crest of a very large circle rising past the bottom
+   edge, nodes riding on it. One thin line; the polish is precision. */
+.orbit {
   position: absolute;
-  inset: 0 auto auto 0;
-  width: 100%;
-  max-width: 30ch;
-  opacity: 0;
-  animation: speak 32s var(--ease-reveal) infinite both;
-  animation-delay: var(--t);
+  left: 50%;
+  bottom: calc(-120 * 1vw);
+  z-index: 0;
+  width: 150vw;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
-.lineFinal {
-  animation-name: speakHold;
+.orbitSpin {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  animation: spin 120s linear infinite;
 }
 
-/* Paused by InViewGate while the hero is off-screen. */
-[data-inview="false"] .line,
-[data-inview="false"] .confirms {
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+[data-inview="false"] .orbitSpin,
+[data-inview="false"] .glow {
   animation-play-state: paused;
 }
 
-@keyframes speak {
-  0% {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  1.4% {
-    opacity: 1;
-    transform: none;
-  }
-  11.9% {
-    opacity: 1;
-    transform: none;
-  }
-  13.8% {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(16px);
-  }
+/* Nodes on the arc — the logo's circuit dots, at architectural scale. */
+.node {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--paper);
+  border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent);
+  box-shadow: 0 0 0 4px var(--paper);
+}
+.nodeA {
+  left: 50%;
+  top: 0;
+}
+.nodeB {
+  left: 65.4%;
+  top: 2.5%;
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  box-shadow:
+    0 0 0 4px var(--paper),
+    0 0 0 5px color-mix(in srgb, var(--accent-2) 45%, transparent);
+}
+.nodeC {
+  left: 30%;
+  top: 8.4%;
 }
 
-/* The outcome line holds while the confirmations land. */
-@keyframes speakHold {
-  0% {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  1.4% {
-    opacity: 1;
-    transform: none;
-  }
-  34% {
-    opacity: 1;
-    transform: none;
-  }
-  37% {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-}
+/* ---------- the claim ----------------------------------------------- */
 
-.speaker {
-  display: block;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 12px;
-}
-
-.words {
-  display: block;
-  font-size: clamp(23px, 3.4vw, 44px);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.16;
-  margin: 0;
-}
-
-/* Caller in muted ink; the agent in full ink. The room hears the
-   difference before it reads the labels. */
-.lineCaller .words {
-  color: var(--muted);
-  font-weight: 600;
-}
-
-/* The booked outcome carries the gradient. Safe here: the gradient
-   sits on the same element being animated, not on an ancestor. */
-.lineFinal .words {
-  background: var(--grad-text);
-  background-size: 220% 100%;
-  background-position: 30% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-/* What the system did while the caller was still on the line. */
-.confirms {
+.stack {
+  position: relative;
+  z-index: 1;
+  flex: 1;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px 28px;
-  margin-top: 26px;
-  opacity: 0;
-  animation: confirmsIn 32s var(--ease-reveal) infinite both;
-  animation-delay: 21s;
-}
-
-@keyframes confirmsIn {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  2% {
-    opacity: 1;
-    transform: none;
-  }
-  27% {
-    opacity: 1;
-    transform: none;
-  }
-  30% {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-
-.confirm {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-.confirm::before {
-  content: "✓";
-  color: var(--accent);
-  margin-right: 8px;
-}
-
-/* ---------- the claim --------------------------------------------- */
-
-.band {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
-  align-items: end;
-  margin-top: 48px;
-  padding-top: 36px;
-  border-top: 1px solid var(--line);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 40px;
 }
 
 .headline {
-  font-size: clamp(22px, 2.3vw, 30px);
+  font-size: clamp(31px, 4.3vw, 60px);
   font-weight: 700;
-  letter-spacing: -0.032em;
-  line-height: 1.18;
-  margin: 0 0 14px;
-  max-width: 40ch;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  margin: 0 0 26px;
+  max-width: 21em;
 }
 .headline > span {
   display: block;
 }
 
-.payoff {
-  background: var(--grad-text);
-  background-size: 220% 100%;
-  background-position: 30% 0;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 .sub {
-  font-size: 16px;
+  font-size: clamp(15px, 1.25vw, 17px);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.6;
   color: var(--muted);
-  max-width: 52ch;
-  margin: 0;
+  max-width: 46ch;
+  margin: 0 0 36px;
 }
 .subEm {
   color: var(--ink);
@@ -271,40 +172,65 @@
 .ctas {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
 }
 
-/* ---------- responsive -------------------------------------------- */
+/* ---------- the base ------------------------------------------------ */
+
+/* Six real links. Functional, not decoration: this row is what makes
+   "full-service" legible before a single scroll. */
+.strip {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 34px;
+  padding: 20px var(--gutter) 24px;
+  border-top: 1px solid var(--line);
+}
+
+.stripLink {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--muted);
+  padding-block: 6px;
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.stripLink:hover,
+.stripLink:focus-visible {
+  color: var(--accent);
+}
+
+/* ---------- responsive ---------------------------------------------- */
 
 @media (min-width: 810px) {
   .hero {
     min-height: calc(100dvh - 76px);
-    padding-block: 48px 52px;
-  }
-  .band {
-    grid-template-columns: 1fr auto;
-    gap: 64px;
-    margin-top: 56px;
-    padding-top: 40px;
+    padding-top: 48px;
   }
 }
 
-/* ---------- reduced motion ----------------------------------------
-   The loop collapses to its destination: the outcome line and the
-   confirmations, held statically. The story is still told.        */
+@media (max-width: 500px) {
+  .orbit {
+    width: 320vw;
+    bottom: calc(-276 * 1vw);
+  }
+  .strip {
+    gap: 10px 22px;
+  }
+}
+
+/* ---------- reduced motion ------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
-  .line {
+  .orbitSpin,
+  .glow {
     animation: none;
-    opacity: 0;
-  }
-  .lineFinal {
-    opacity: 1;
-    transform: none;
-  }
-  .confirms {
-    animation: none;
-    opacity: 1;
-    transform: none;
   }
 }

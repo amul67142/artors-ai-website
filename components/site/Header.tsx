@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { navItems } from "@/lib/content/nav";
+import { navItems, navCta } from "@/lib/content/nav";
 import wordmark from "@/public/artors-wordmark.png";
 import s from "./header.module.css";
 
@@ -84,7 +84,7 @@ export default function Header() {
 
         <nav className={s.nav} aria-label="Primary">
           <ul className={s.list}>
-            {navItems.map((item) => (
+            {navItems.filter((item) => item.href !== "/contact").map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
@@ -103,6 +103,12 @@ export default function Header() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href={navCta.href} className={s.cta}>
+                {navCta.label}
+                <Arrow className={s.ctaArrow} />
+              </Link>
+            </li>
           </ul>
         </nav>
 

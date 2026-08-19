@@ -240,3 +240,42 @@
     transform: none;
   }
 }
+
+/* ---------- header CTA pill ---------------------------------------- */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 16px;
+  margin-left: 6px;
+  border-radius: 100px;
+  background: var(--ink);
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition:
+    background-color var(--dur-btn) var(--ease-btn),
+    transform var(--dur-btn) var(--ease-btn);
+}
+.cta:hover,
+.cta:focus-visible {
+  background: var(--accent);
+}
+.cta:active {
+  transform: scale(0.97);
+}
+
+.ctaArrow {
+  width: 11px;
+  height: 11px;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+.cta:hover .ctaArrow,
+.cta:focus-visible .ctaArrow {
+  transform: translate(2px, -2px);
+}

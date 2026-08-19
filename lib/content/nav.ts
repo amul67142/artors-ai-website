@@ -15,3 +15,6 @@ export const navItems = [
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact", arrow: true },
 ] satisfies NavItem[];
+
+/** The header's one action. Same intent as the hero's primary CTA. */
+export const navCta = { label: "Book a Call", href: "/contact" } as const;

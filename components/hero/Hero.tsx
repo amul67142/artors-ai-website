@@ -1,83 +1,89 @@
 import { Fragment } from "react";
+import Link from "next/link";
 import Button from "@/components/ui/Button";
 import InViewGate from "@/components/ui/InViewGate";
-import { hero, call } from "@/lib/content/hero";
+import { hero, heroLinks } from "@/lib/content/hero";
 import s from "./hero.module.css";
 
+type RisingWordsProps = {
+  text: string;
+  offset?: number;
+  /** Walks each word along the shared gradient ramp (see .grad-line). */
+  gradient?: boolean;
+};
+
+/** Word-level mask reveal. */
+function RisingWords({ text, offset = 0, gradient = false }: RisingWordsProps) {
+  const words = text.split(" ");
+  const last = Math.max(words.length - 1, 1);
+
+  return (
+    <>
+      {words.map((word, i) => (
+        <Fragment key={`${word}-${i}`}>
+          <span
+            className="rise-mask"
+            style={
+              {
+                "--i": i + offset,
+                ...(gradient ? { "--p": i / last } : {}),
+              } as React.CSSProperties
+            }
+          >
+            <span>{word}</span>
+          </span>
+          {i < words.length - 1 ? " " : null}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 /**
- * The hero is a call. A recorded demo conversation plays out in large
- * type, one line at a time, and lands on the booked outcome with the
- * three system confirmations. The claim sits below as a quiet band.
- *
- * Server Component. The whole loop is CSS keyframes; InViewGate only
- * pauses it off-screen. No animation library, no timers, no rAF.
+ * The dawn composition: centered claim over a rising orbital arc and a
+ * blue-cyan horizon glow, with the six services as real links along
+ * the base. Server Component; all motion is CSS, paused off-screen by
+ * InViewGate.
  */
 export default function Hero() {
+  const setupWords = hero.headlineSetup.split(" ").length;
+
   return (
-    <section className={s.hero}>
-      <div className={`shell ${s.inner}`}>
-        {/* -------- the stage -------- */}
-        <div className={s.stageHead}>
-          <p className={s.micro}>{call.label}</p>
-          <p className={s.micro}>{call.sublabel}</p>
+    <InViewGate>
+      <section className={s.hero}>
+        <div className={s.grid} aria-hidden="true" />
+        <div className={s.glow} aria-hidden="true" />
+        <div className={s.orbit} aria-hidden="true">
+          <div className={s.orbitSpin}>
+            <span className={`${s.node} ${s.nodeA}`} />
+            <span className={`${s.node} ${s.nodeB}`} />
+            <span className={`${s.node} ${s.nodeC}`} />
+          </div>
         </div>
 
-        {/* The animated lines are presentational; the full story is in
-            the sr-only paragraph below. */}
-        <InViewGate>
-          <div className={s.stage} aria-hidden="true">
-            {call.lines.map((line, i) => (
-              <div
-                key={i}
-                className={[
-                  s.line,
-                  line.speaker === "caller" ? s.lineCaller : "",
-                  line.final ? s.lineFinal : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                style={{ "--t": `${i * 3.8}s` } as React.CSSProperties}
-              >
-                <span className={s.speaker}>
-                  {line.speaker === "caller" ? "Caller" : "Artors agent"}
-                </span>
-                <span className={s.words}>{line.text}</span>
-              </div>
-            ))}
-          </div>
+        <div className={`shell ${s.stack}`}>
+          <h1 className={s.headline}>
+            <span>
+              <RisingWords text={hero.headlineSetup} />
+            </span>
+            <span className="grad-line">
+              <RisingWords text={hero.headlinePayoff} offset={setupWords} gradient />
+            </span>
+          </h1>
 
-          <div className={s.confirms} aria-hidden="true">
-            {call.confirmations.map((c) => (
-              <span key={c} className={s.confirm}>
-                {c}
-              </span>
-            ))}
-          </div>
-        </InViewGate>
+          <p className={`${s.sub} enter`} style={{ "--i": 7 } as React.CSSProperties}>
+            {hero.sub.map((seg, i) =>
+              seg.em ? (
+                <strong key={i} className={s.subEm}>
+                  {seg.text}
+                </strong>
+              ) : (
+                <Fragment key={i}>{seg.text}</Fragment>
+              ),
+            )}
+          </p>
 
-        <p className="sr-only">{call.srSummary}</p>
-
-        {/* -------- the claim -------- */}
-        <div className={`${s.band} enter`}>
-          <div>
-            <h1 className={s.headline}>
-              <span>{hero.headlineSetup}</span>
-              <span className={s.payoff}>{hero.headlinePayoff}</span>
-            </h1>
-            <p className={s.sub}>
-              {hero.sub.map((seg, i) =>
-                seg.em ? (
-                  <strong key={i} className={s.subEm}>
-                    {seg.text}
-                  </strong>
-                ) : (
-                  <Fragment key={i}>{seg.text}</Fragment>
-                ),
-              )}
-            </p>
-          </div>
-
-          <div className={s.ctas}>
+          <div className={`${s.ctas} enter`} style={{ "--i": 8 } as React.CSSProperties}>
             <Button href={hero.primaryCta.href} label={hero.primaryCta.label} arrow />
             <Button
               href={hero.secondaryCta.href}
@@ -86,7 +92,19 @@ export default function Hero() {
             />
           </div>
         </div>
-      </div>
-    </section>
+
+        <nav
+          className={`${s.strip} enter`}
+          style={{ "--i": 9 } as React.CSSProperties}
+          aria-label="What we build"
+        >
+          {heroLinks.map((link) => (
+            <Link key={link.href} href={link.href} className={s.stripLink}>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </section>
+    </InViewGate>
   );
 }
