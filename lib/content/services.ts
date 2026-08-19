@@ -1,64 +1,76 @@
-/** The six service pillars. Source: docs/COPY.md §4. */
+/**
+ * The service pillars. Source: docs/COPY.md §4, docs/SERVICES.md.
+ *
+ * Named in professional solution terms (application development,
+ * process automation, software delivery), not channel terms — Artors
+ * is a business-solutions firm, and "chatbot company" undersells it.
+ */
 
 export type Pillar = {
   index: string;
   title: string;
   href: string;
-  /** One-line result, used where the index needs a second column. */
+  /** One-line description in the professional register. */
+  blurb: string;
+  /** The result it is bought for. */
   result: string;
 };
 
 export const pillars = [
   {
     index: "01",
-    title: "AI Automation & Custom Agents",
-    href: "/services/ai-automation",
-    result: "Manual work eliminated",
+    title: "AI Application Development",
+    href: "/services/ai-application-development",
+    blurb:
+      "We build and deploy custom AI features directly into your existing software and products.",
+    result: "Your product gets smarter without a rebuild",
   },
   {
     index: "02",
-    title: "AI Voice Agents",
-    href: "/services/voice-agents",
-    result: "Every call answered",
+    title: "Business Process Automation",
+    href: "/services/business-process-automation",
+    blurb:
+      "We automate high-cost, repetitive workflows across operations, finance and support, so systems talk to each other and work runs itself.",
+    result: "Operating cost down, error rate with it",
   },
   {
     index: "03",
-    title: "Chatbots for WhatsApp & Web",
-    href: "/services/chatbots",
-    result: "Instant reply, any hour",
+    title: "Custom AI Agents",
+    href: "/services/ai-agents",
+    blurb:
+      "Autonomous multi-step agents that research, draft, decide and act, with approval gates wherever judgement matters.",
+    result: "A full-time role's output, on software",
   },
   {
     index: "04",
-    title: "AI Marketing & Growth",
-    href: "/services/marketing-growth",
-    result: "A predictable pipeline",
+    title: "Conversational AI — Voice & Chat",
+    href: "/services/conversational-ai",
+    blurb:
+      "AI receptionists, outbound calling, and WhatsApp and web assistants that answer, qualify and book in English, Hindi and Hinglish.",
+    result: "Every enquiry handled, any hour",
   },
   {
     index: "05",
-    title: "AI Content & Video",
-    href: "/services/content-video",
-    result: "A content team's output",
+    title: "AI Marketing & Growth Systems",
+    href: "/services/marketing-growth",
+    blurb:
+      "Lead generation, full-funnel campaigns, SEO content and social, run as one measured system.",
+    result: "A predictable pipeline",
   },
   {
     index: "06",
-    title: "AI Consulting & Training",
-    href: "/services/consulting-training",
-    result: "Capability that stays",
+    title: "AI Content & Video",
+    href: "/services/content-video",
+    blurb:
+      "Brand and product video, avatar-led content, and repurposing engines that turn one asset into thirty, multilingual by default.",
+    result: "A content team's output at a fraction of the cost",
+  },
+  {
+    index: "07",
+    title: "AI Consulting & Enablement",
+    href: "/services/consulting",
+    blurb:
+      "Audits, prioritised roadmaps, corporate training and a fractional AI officer on retainer.",
+    result: "Capability that stays in your business",
   },
 ] satisfies Pillar[];
-
-/** Small status facts for the console rail. */
-export const statusRail = [
-  { label: "Status", value: "Operating" },
-  { label: "Base", value: "Gurugram, India" },
-  { label: "Languages", value: "EN · HI · Hinglish" },
-  { label: "Time to live", value: "Days" },
-] as const;
-
-/** The four results, for the banded layout. */
-export const outcomes = [
-  { title: "Revenue up", note: "More of the demand you already pay to create." },
-  { title: "Cost down", note: "The same output with far less manual work." },
-  { title: "Hours back", note: "People on the work only people can do." },
-  { title: "Live in days", note: "Pilot first, measured from day one." },
-] as const;

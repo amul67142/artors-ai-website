@@ -36,32 +36,26 @@ AI chatbot development · business process automation · AI consulting India · 
 
 ---
 
-## Section 1 - Hero
+## Section 1 — Hero
 
-**The hero is a call.** A recorded demo conversation plays out in large type, one line at
-a time: a caller asks to move an appointment, the Artors voice agent finds the booking,
-offers a slot, books it, and confirms on WhatsApp. Three confirmations follow (Calendar
-updated, WhatsApp sent, CRM logged), then the loop breathes and repeats. Labelled
-"Recorded demo call" because Artors has no clients yet and a fake live feed would be the
-same lie as a fake testimonial.
+**Shipped design: the editorial split with the sample-run ledger** (restored by Vedansh's
+choice after nine alternatives). Left column: the claim. Right column: a recorded sample run
+of one system, shown as a timestamped ledger with a spine, channel tags (Voice, CRM,
+WhatsApp), and the summary "5 steps · 85 seconds · 0 human minutes". Labelled "Sample run ·
+Recorded" — no fake live feed. The whole panel links to /work.
 
-The claim sits below the stage as a quiet band:
+**Headline** — two movements in one h1
+We're not here to impress you with AI.  *(statement size, ink)*
+WE'RE HERE TO GROW YOUR NUMBERS.  *(display size, uppercase, gradient)*
 
-**Headline**
-We're not here to impress you with AI.
-We're here to grow your numbers. *(gradient)*
-
-**Sub-headline** (one sentence, under twenty words)
-A full-service AI agency. We build the systems that **answer, book, follow up, and
-report**. Your numbers move.
+**Sub-headline** — kept short; emphasis on the three outcomes only
+A full-service AI agency. We build systems that run the repetitive work end to end, so
+**revenue goes up**, **cost comes down**, and **your team gets its hours back**.
 
 **Primary button** - Book a Free Strategy Call
 **Secondary button** - See What We Build
 
-> Earlier drafts (columns + ledger panel, statement type, index, console, bands) were all
-> rejected as either generic or flat. The demonstration replaced them: the product
-> performing is the layout. No trust strip in the hero; location and logistics live in
-> the footer.
+**Trust line** — Gurugram · Working across India · Live in days
 
 ---
 
@@ -71,20 +65,23 @@ report**. Your numbers move.
 Every Business Is Leaking Money in Places Nobody Is Watching.
 
 **Body**
-A call comes in during a busy hour and nobody picks up. An enquiry lands at 10 PM and gets
-answered the next afternoon — if at all. A hot lead never gets followed up because the team was
-buried in routine work.
+Hours disappear into copy-pasting between tools that don't talk to each other. Reports nobody
+has time to build. The same content written five times for five channels. Decisions made on
+numbers that were true last month.
 
-And that's only the front of the business. Behind it, hours disappear into copy-pasting between
-tools that don't talk to each other. Reports nobody has time to build. The same content written
-five times for five channels. Decisions made on numbers that were true last month.
+And at the front of the business: a call comes in during a busy hour and nobody picks up, an
+enquiry lands at 10 PM and gets answered the next afternoon, a hot lead goes cold because the
+team was buried in routine work.
 
 None of it appears on a P&L as a line item. All of it is costing you money. The problem was
 never effort. It's that you're spending human hours on work that shouldn't need them.
 
 **Callout line** *(replace with real numbers once available)*
-Most businesses are running on manual work they've stopped noticing — because it's always been
+Most businesses are running on manual work they've stopped noticing, because it's always been
 that way.
+
+> Order matters here: the back-office leak leads, and the missed call is one example among
+> several. Artors is a business-solutions firm, not a front-desk fix.
 
 ---
 
@@ -130,40 +127,45 @@ starts by naming that number, and everything we build reports back against it.
 What We Build For You
 
 **Intro**
-Six things, and they're usually combined. Every one is judged by the same question: what number
-does it move?
+Seven practices, usually combined. Every one is judged by the same question: what number does
+it move?
 
-**AI Automation & Custom Agents** → `/services/ai-automation`
-We connect your tools — CRM, calendar, sheets, invoicing, email, payments — so routine work runs
-itself. Where a workflow needs judgement rather than rules, we build a custom AI agent that
-researches, drafts, decides and acts, with approval steps wherever it matters.
-*Result: hours of manual work eliminated every week, and nothing dropped.*
+> Named in professional solution terms (application development, process automation, software
+> delivery) rather than channel terms. Reference point supplied by Vedansh (Artkai-style
+> services row); Artors handles business solutions, not one funnel.
 
-**AI Voice Agents** → `/services/voice-agents`
-An AI receptionist that answers every call, books appointments and handles routine queries —
-plus outbound agents that call new enquiries within seconds and follow up until they convert.
-English, Hindi and Hinglish, tested on real Indian phone audio.
-*Result: every call answered, every opportunity worked.*
+**AI Application Development** → `/services/ai-application-development`
+We build and deploy custom AI features directly into your existing software and products.
+*Result: your product gets smarter without a rebuild.*
 
-**Chatbots — WhatsApp & Website** → `/services/chatbots`
-Intelligent chat that answers questions, captures details, takes orders and books appointments
-across WhatsApp and your website. Internally, the same technology answers your team's questions
-from your own documents.
-*Result: instant response at any hour, and answers your staff stop hunting for.*
+**Business Process Automation** → `/services/business-process-automation`
+We automate high-cost, repetitive workflows across operations, finance and support, connecting
+CRM, calendar, invoicing, email and payments so work runs itself.
+*Result: operating cost down, error rate with it.*
 
-**AI Marketing & Growth** → `/services/marketing-growth`
-Outreach, ad funnels, landing pages, SEO content and social — run as one system, with AI doing
-the volume and a human holding the strategy.
-*Result: a predictable pipeline instead of a good month followed by a bad one.*
+**Custom AI Agents** → `/services/ai-agents`
+Autonomous multi-step agents that research, draft, decide and act, with approval gates wherever
+judgement matters.
+*Result: a full-time role's output, on software.*
+
+**Conversational AI — Voice & Chat** → `/services/conversational-ai`
+AI receptionists, outbound calling, and WhatsApp and web assistants that answer, qualify and
+book in English, Hindi and Hinglish, tested on real Indian phone audio.
+*Result: every enquiry handled, any hour.*
+
+**AI Marketing & Growth Systems** → `/services/marketing-growth`
+Lead generation, full-funnel campaigns, SEO content and social, run as one measured system with
+AI doing the volume and a human holding the strategy.
+*Result: a predictable pipeline.*
 
 **AI Content & Video** → `/services/content-video`
-Brand and product video, avatar-led social content, property and catalogue walkthroughs, and
-repurposing engines that turn one long asset into thirty. Multi-language by default.
-*Result: the output of a content team, at a fraction of the cost and time.*
+Brand and product video, avatar-led content, and repurposing engines that turn one asset into
+thirty. Multilingual by default.
+*Result: a content team's output at a fraction of the cost.*
 
-**AI Consulting & Training** → `/services/consulting-training`
-An audit of where AI actually pays in your business, a prioritised roadmap, hands-on training
-for your team, or a fractional AI officer on retainer.
+**AI Consulting & Enablement** → `/services/consulting`
+Audits of where AI actually pays in your business, prioritised roadmaps, corporate training,
+and a fractional AI officer on retainer.
 *Result: capability that stays in your business after we leave.*
 
 ---

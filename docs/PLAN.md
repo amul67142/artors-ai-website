@@ -35,7 +35,7 @@ but too narrow a promise — it sells "never miss a lead" when Artors sells busi
 DOCX has the right *breadth* but the wrong focus.
 
 **Resolution:** keep the PDF's section architecture and tone, widen its promise from leads to
-business outcomes, and publish six service pillars drawn from the DOCX's full range — including
+business outcomes, and publish seven service pillars drawn from the DOCX's full range — including
 the content/video and consulting/training work that an earlier draft of this plan wrongly held
 back.
 
@@ -120,9 +120,10 @@ reconsidered only if a specific pinned-scroll section earns it, never for fade-i
 
 ```
 /                        Home
-/services                The six pillars
-/services/[slug]         x6   ai-automation · voice-agents · chatbots ·
-                              marketing-growth · content-video · consulting-training
+/services                The seven pillars
+/services/[slug]         x7   ai-application-development · business-process-automation ·
+                              ai-agents · conversational-ai · marketing-growth ·
+                              content-video · consulting
 /industries              Grid + the industry-agnostic statement
 /industries/[slug]       x6   real-estate · healthcare · retail-d2c ·
                               education · hospitality-local · professional-services
@@ -133,7 +134,7 @@ reconsidered only if a specific pinned-scroll section earns it, never for fade-i
 /privacy  /terms
 ```
 
-Twelve service and industry pages exist from launch. They are the long-tail SEO surface, and
+Thirteen service and industry pages exist from launch. They are the long-tail SEO surface, and
 they cost almost nothing once the page template exists — all twelve are generated from a single
 typed content file so every word stays editable in one place.
 
@@ -159,7 +160,7 @@ All sections from `docs/COPY.md`, with the trust layer of §2 in place of the pl
 
 ### Phase 2 — Depth
 
-Six service pages and six industry pages from the shared content file and page template.
+Seven service pages and six industry pages from the shared content file and page template.
 
 ### Phase 3 — Conversion
 
