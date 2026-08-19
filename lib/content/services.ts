@@ -23,7 +23,7 @@ export const pillars = [
   },
   {
     index: "03",
-    title: "Chatbots — WhatsApp & Website",
+    title: "Chatbots for WhatsApp & Web",
     href: "/services/chatbots",
     result: "Instant reply, any hour",
   },

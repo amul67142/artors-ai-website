@@ -1,97 +1,60 @@
 /**
- * Hero copy and the sample-run ledger.
+ * Hero copy and the demo call.
  * Copy source of truth: docs/COPY.md §1.
  */
 
-/**
- * A run of sub-headline copy. `em` lifts the phrase to 700 so the three
- * outcomes read as a set without the paragraph needing to be long.
- */
 export type SubSegment = { text: string; em?: boolean };
 
 export const hero = {
-  /** Setup line — quiet in tone, full ink. */
   headlineSetup: "We're not here to impress you with AI.",
-  /** Payoff — display size, uppercase, carries the gradient. */
   headlinePayoff: "We're here to grow your numbers.",
 
-  /**
-   * Deliberately short. The hero states what we are and what changes;
-   * the detail belongs further down the page, not in the first screen.
-   */
+  /** One sentence, under twenty words. The stage above does the talking. */
   sub: [
-    { text: "A full-service AI agency. We build systems that run the repetitive work end to end — so " },
-    { text: "revenue goes up", em: true },
-    { text: ", " },
-    { text: "cost comes down", em: true },
-    { text: ", and " },
-    { text: "your team gets its hours back", em: true },
-    { text: "." },
+    { text: "A full-service AI agency. We build the systems that " },
+    { text: "answer, book, follow up, and report", em: true },
+    { text: ". Your numbers move." },
   ] satisfies SubSegment[],
 
   primaryCta: { label: "Book a Free Strategy Call", href: "/contact" },
   secondaryCta: { label: "See What We Build", href: "/services" },
-
-  trustLine: "Gurugram · Working across India · Live in days",
 } as const;
 
-export type LedgerRow = {
-  /** Wall-clock stamp, rendered with tabular figures. */
-  time: string;
-  /** What happened. */
-  event: string;
-  /** The detail that makes it concrete. */
-  detail: string;
-  /** Which system did it — shows the stack working together, not one bot. */
-  channel: string;
-  /** Marks the row the whole run exists to produce. */
-  highlight?: boolean;
+export type CallLine = {
+  speaker: "caller" | "agent";
+  text: string;
+  /** The outcome line: holds longest and carries the gradient. */
+  final?: boolean;
 };
 
-export const ledger = {
-  label: "Sample run",
-  subject: "Clinic receptionist",
-  /** Honest framing — this is a recording, not a live feed. */
-  note: "Recorded",
-  href: "/work",
+/**
+ * The demo call. Labelled as a recorded demonstration on purpose:
+ * Artors has no clients yet, and a fake "live" feed would be the same
+ * lie as a fake testimonial (docs/PLAN.md §2). What it proves instead
+ * is the thing no competitor can fake on a static page: the visitor
+ * watches a booking happen, end to end, in the first ten seconds.
+ */
+export const call = {
+  label: "Recorded demo call",
+  sublabel: "Answered by our voice agent",
 
-  /**
-   * Five steps, not six. Enough to show four systems handing work to
-   * each other; any more and the panel starts reading as a log file.
-   */
-  rows: [
+  lines: [
+    { speaker: "caller", text: "Hi, I need to move my appointment to next week." },
+    { speaker: "agent", text: "Of course. You're with Dr. Mehra, Thursday at five. Which day suits you?" },
+    { speaker: "caller", text: "Tuesday evening, if that's possible." },
+    { speaker: "agent", text: "Tuesday 4:30 is open. Shall I book it?" },
+    { speaker: "caller", text: "Yes, perfect." },
     {
-      time: "09:42:07",
-      event: "Inbound call",
-      detail: "answered in 1.2s",
-      channel: "Voice",
+      speaker: "agent",
+      text: "Done. Tuesday 4:30. The confirmation is on your WhatsApp.",
+      final: true,
     },
-    {
-      time: "09:42:41",
-      event: "Caller identified",
-      detail: "returning patient",
-      channel: "CRM",
-    },
-    {
-      time: "09:43:02",
-      event: "Intent captured",
-      detail: "reschedule appointment",
-      channel: "Voice",
-    },
-    {
-      time: "09:43:31",
-      event: "Appointment booked",
-      detail: "Tue 16:30, confirmed",
-      channel: "WhatsApp",
-      highlight: true,
-    },
-    {
-      time: "09:43:32",
-      event: "CRM updated",
-      detail: "record closed",
-      channel: "CRM",
-    },
-  ] satisfies LedgerRow[],
+  ] satisfies CallLine[],
 
-  summary: ["5 steps", "85 seconds", "0 human minutes"],
+  /** What the system did while the caller was still on the line. */
+  confirmations: ["Calendar updated", "WhatsApp sent", "CRM logged"],
+
+  /** Accessible summary of the whole loop, for screen readers. */
+  srSummary:
+    "A recorded demo call: a caller asks to move an appointment. The Artors voice agent finds the booking, offers Tuesday 4:30, books it, and sends a WhatsApp confirmation. Calendar, WhatsApp and CRM are all updated during the call, with no human involved.",
 } as const;

@@ -78,7 +78,7 @@ export default function Header() {
       data-hidden={hidden && !open}
     >
       <div className={`shell ${s.bar}`}>
-        <Link href="/" className={s.logo} aria-label="Artors — home">
+        <Link href="/" className={s.logo} aria-label="Artors home">
           <Image src={wordmark} alt="Artors" priority sizes="130px" />
         </Link>
 

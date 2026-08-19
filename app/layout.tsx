@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AI Agency in Gurugram | Artors — AI Systems That Grow Your Numbers",
+  title: "Artors | AI Agency in Gurugram. AI Systems That Grow Your Numbers",
   description:
     "Artors is an AI agency in Gurugram building automation, voice agents, chatbots, content engines and analytics that add revenue, cut operating cost, and give your team its hours back. Any industry, across India. Live in days.",
 };

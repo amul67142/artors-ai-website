@@ -1,78 +1,83 @@
 import { Fragment } from "react";
 import Button from "@/components/ui/Button";
 import InViewGate from "@/components/ui/InViewGate";
-import Ledger from "./Ledger";
-import { hero } from "@/lib/content/hero";
+import { hero, call } from "@/lib/content/hero";
 import s from "./hero.module.css";
 
-type RisingWordsProps = {
-  text: string;
-  /** Continues the stagger index across both sentences. */
-  offset?: number;
-  /** Walks each word along the shared gradient ramp (see .grad-line). */
-  gradient?: boolean;
-};
-
-/** Splits a line into word-level masks so they rise in sequence. */
-function RisingWords({ text, offset = 0, gradient = false }: RisingWordsProps) {
-  const words = text.split(" ");
-  const last = Math.max(words.length - 1, 1);
-
-  return (
-    <>
-      {words.map((word, i) => (
-        <Fragment key={`${word}-${i}`}>
-          <span
-            className="rise-mask"
-            style={
-              {
-                "--i": i + offset,
-                ...(gradient ? { "--p": i / last } : {}),
-              } as React.CSSProperties
-            }
-          >
-            <span>{word}</span>
-          </span>
-          {/* A real space between masks, so the heading reads as a sentence
-              to screen readers and survives copy-paste. */}
-          {i < words.length - 1 ? " " : null}
-        </Fragment>
-      ))}
-    </>
-  );
-}
-
+/**
+ * The hero is a call. A recorded demo conversation plays out in large
+ * type, one line at a time, and lands on the booked outcome with the
+ * three system confirmations. The claim sits below as a quiet band.
+ *
+ * Server Component. The whole loop is CSS keyframes; InViewGate only
+ * pauses it off-screen. No animation library, no timers, no rAF.
+ */
 export default function Hero() {
-  const setupWords = hero.headlineSetup.split(" ").length;
-
   return (
     <section className={s.hero}>
-      <div className={`shell ${s.grid}`}>
-        <div>
-          {/* Both sentences at one size. The payoff is set apart by the
-              gradient alone — quieter, and sharper, than a size change. */}
-          <h1 className={`t-display ${s.headline}`}>
-            <span className={s.setup}>
-              <RisingWords text={hero.headlineSetup} />
-            </span>
-            <span className={`grad-line ${s.payoff}`}>
-              <RisingWords text={hero.headlinePayoff} offset={setupWords} gradient />
-            </span>
-          </h1>
+      <div className={`shell ${s.inner}`}>
+        {/* -------- the stage -------- */}
+        <div className={s.stageHead}>
+          <p className={s.micro}>{call.label}</p>
+          <p className={s.micro}>{call.sublabel}</p>
+        </div>
 
-          <p className={`t-lead ${s.sub} enter`} style={{ "--i": 7 } as React.CSSProperties}>
-            {hero.sub.map((seg, i) =>
-              seg.em ? (
-                <strong key={i} className={s.subEm}>
-                  {seg.text}
-                </strong>
-              ) : (
-                <Fragment key={i}>{seg.text}</Fragment>
-              ),
-            )}
-          </p>
+        {/* The animated lines are presentational; the full story is in
+            the sr-only paragraph below. */}
+        <InViewGate>
+          <div className={s.stage} aria-hidden="true">
+            {call.lines.map((line, i) => (
+              <div
+                key={i}
+                className={[
+                  s.line,
+                  line.speaker === "caller" ? s.lineCaller : "",
+                  line.final ? s.lineFinal : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                style={{ "--t": `${i * 3.8}s` } as React.CSSProperties}
+              >
+                <span className={s.speaker}>
+                  {line.speaker === "caller" ? "Caller" : "Artors agent"}
+                </span>
+                <span className={s.words}>{line.text}</span>
+              </div>
+            ))}
+          </div>
 
-          <div className={`${s.ctas} enter`} style={{ "--i": 8 } as React.CSSProperties}>
+          <div className={s.confirms} aria-hidden="true">
+            {call.confirmations.map((c) => (
+              <span key={c} className={s.confirm}>
+                {c}
+              </span>
+            ))}
+          </div>
+        </InViewGate>
+
+        <p className="sr-only">{call.srSummary}</p>
+
+        {/* -------- the claim -------- */}
+        <div className={`${s.band} enter`}>
+          <div>
+            <h1 className={s.headline}>
+              <span>{hero.headlineSetup}</span>
+              <span className={s.payoff}>{hero.headlinePayoff}</span>
+            </h1>
+            <p className={s.sub}>
+              {hero.sub.map((seg, i) =>
+                seg.em ? (
+                  <strong key={i} className={s.subEm}>
+                    {seg.text}
+                  </strong>
+                ) : (
+                  <Fragment key={i}>{seg.text}</Fragment>
+                ),
+              )}
+            </p>
+          </div>
+
+          <div className={s.ctas}>
             <Button href={hero.primaryCta.href} label={hero.primaryCta.label} arrow />
             <Button
               href={hero.secondaryCta.href}
@@ -80,18 +85,7 @@ export default function Hero() {
               variant="ghost"
             />
           </div>
-
-          <p
-            className={`t-caption ${s.trust} enter`}
-            style={{ "--i": 9 } as React.CSSProperties}
-          >
-            {hero.trustLine}
-          </p>
         </div>
-
-        <InViewGate className="enter">
-          <Ledger />
-        </InViewGate>
       </div>
     </section>
   );

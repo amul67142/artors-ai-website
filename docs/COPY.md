@@ -36,25 +36,32 @@ AI chatbot development · business process automation · AI consulting India · 
 
 ---
 
-## Section 1 — Hero
+## Section 1 - Hero
+
+**The hero is a call.** A recorded demo conversation plays out in large type, one line at
+a time: a caller asks to move an appointment, the Artors voice agent finds the booking,
+offers a slot, books it, and confirms on WhatsApp. Three confirmations follow (Calendar
+updated, WhatsApp sent, CRM logged), then the loop breathes and repeats. Labelled
+"Recorded demo call" because Artors has no clients yet and a fake live feed would be the
+same lie as a fake testimonial.
+
+The claim sits below the stage as a quiet band:
 
 **Headline**
-We're Not Here to Impress You With AI. We're Here to Grow Your Numbers.
+We're not here to impress you with AI.
+We're here to grow your numbers. *(gradient)*
 
-**Sub-headline** — short by design. Emphasis falls on the three outcomes only.
-A full-service AI agency. We build systems that run the repetitive work end to end — so
-**revenue goes up**, **cost comes down**, and **your team gets its hours back**.
+**Sub-headline** (one sentence, under twenty words)
+A full-service AI agency. We build the systems that **answer, book, follow up, and
+report**. Your numbers move.
 
-**Primary button** — Book a Free Strategy Call
-**Secondary button** — See What We Build
+**Primary button** - Book a Free Strategy Call
+**Secondary button** - See What We Build
 
-**Trust line (under buttons)**
-Gurugram · Working across India · Live in days
-
-> The hero is kept deliberately sparse — four blocks in the left column and nothing else.
-> Cut from an earlier draft: the "AI Agency · Gurugram" eyebrow, since the headline and sub
-> establish both already, and the long four-clause sub-headline. Six stacked blocks read as
-> clutter. Detail belongs further down the page, not in the first screen.
+> Earlier drafts (columns + ledger panel, statement type, index, console, bands) were all
+> rejected as either generic or flat. The demonstration replaced them: the product
+> performing is the layout. No trust strip in the hero; location and logistics live in
+> the footer.
 
 ---
 
