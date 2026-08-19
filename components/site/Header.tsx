@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { navItems, navCta } from "@/lib/content/nav";
+import { navItems } from "@/lib/content/nav";
 import wordmark from "@/public/artors-wordmark.png";
 import s from "./header.module.css";
 
@@ -76,8 +76,6 @@ export default function Header() {
       className={s.header}
       data-scrolled={scrolled}
       data-hidden={hidden && !open}
-      // Inline because the CSS pipeline strips backdrop-filter from modules.
-      style={{ backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)" }}
     >
       <div className={`shell ${s.bar}`}>
         <Link href="/" className={s.logo} aria-label="Artors home">
@@ -86,23 +84,25 @@ export default function Header() {
 
         <nav className={s.nav} aria-label="Primary">
           <ul className={s.list}>
-            {navItems.filter((item) => item.href !== "/contact").map((item) => (
+            {navItems.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   className={s.link}
                   aria-current={isCurrent(item.href) ? "page" : undefined}
                 >
-                  {item.label}
+                  <span className={s.mask}>
+                    <span className={s.track}>
+                      <span className={s.label}>{item.label}</span>
+                      <span className={s.label} aria-hidden="true">
+                        {item.label}
+                      </span>
+                    </span>
+                  </span>
+                  {item.arrow && <Arrow className={s.arrow} />}
                 </Link>
               </li>
             ))}
-            <li>
-              <Link href={navCta.href} className={s.cta}>
-                {navCta.label}
-                <Arrow className={s.ctaArrow} />
-              </Link>
-            </li>
           </ul>
         </nav>
 

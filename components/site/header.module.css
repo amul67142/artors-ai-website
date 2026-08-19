@@ -1,52 +1,35 @@
 /* ============================================================
-   HEADER  —  floating glass pill.
-   Detached from the page edge: a rounded capsule hovering over
-   the content, frosted, with the wordmark left, sentence-case
-   links centre, and the one action right. Hides on scroll down,
-   returns on scroll up.
+   HEADER  —  wordmark left, links right, hairline on scroll
    ============================================================ */
 
 .header {
-  position: fixed;
-  top: 14px;
-  left: 50%;
+  position: sticky;
+  top: 0;
   z-index: 50;
-  width: min(1060px, calc(100% - 24px));
-  transform: translateX(-50%);
-  border-radius: 100px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 78%, transparent);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 1px 2px rgba(10, 30, 80, 0.04),
-    0 12px 32px -16px rgba(10, 30, 80, 0.14);
+  background: var(--paper);
   transition:
     transform 0.35s var(--ease-reveal),
-    box-shadow 0.35s var(--ease-reveal);
+    border-color 0.35s var(--ease-reveal);
+  border-bottom: 1px solid transparent;
 }
 
-/* A touch more presence once the page is moving beneath it. */
+/* The rule only appears once the page has moved, so the top of the
+   site stays a clean sheet of paper. */
 .header[data-scrolled="true"] {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 2px 6px rgba(10, 30, 80, 0.06),
-    0 18px 44px -18px rgba(10, 30, 80, 0.2);
+  border-bottom-color: var(--line);
 }
 
 /* Out of the way going down, back on the way up. */
 .header[data-hidden="true"] {
-  transform: translateX(-50%) translateY(calc(-100% - 18px));
+  transform: translateY(-100%);
 }
 
 .bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  height: 56px;
-  padding-inline: 22px 8px;
+  gap: 24px;
+  height: 64px;
 }
 
 .logo {
@@ -57,7 +40,7 @@
 .logo img {
   display: block;
   width: auto;
-  height: 21px;
+  height: 24px;
 }
 
 /* ---------- desktop nav ------------------------------------------- */
@@ -69,87 +52,75 @@
 .list {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 26px;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-/* Sentence case, quiet, with a soft capsule hover. */
+/* Same label roll as the buttons — the site's one signature
+   micro-interaction, reused rather than reinvented. */
 .link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 13px;
-  border-radius: 100px;
   text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--muted);
-  transition:
-    color var(--dur-btn) var(--ease-btn),
-    background-color var(--dur-btn) var(--ease-btn);
-}
-.link:hover,
-.link:focus-visible {
   color: var(--ink);
-  background: rgba(10, 10, 10, 0.05);
-}
-.link[aria-current="page"] {
-  color: var(--ink);
+  padding-block: 4px;
 }
 
-/* ---------- the one action ----------------------------------------- */
-
-.cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  height: 40px;
-  padding: 0 18px;
-  margin-left: 8px;
-  border-radius: 100px;
-  background: var(--ink);
-  color: #fff;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  transition:
-    background-color var(--dur-btn) var(--ease-btn),
-    transform var(--dur-btn) var(--ease-btn);
+.mask {
+  display: block;
+  height: 14px;
+  overflow: clip;
 }
-.cta:hover,
-.cta:focus-visible {
-  background: var(--accent);
-}
-.cta:active {
-  transform: scale(0.97);
-}
-
-.ctaArrow {
-  width: 11px;
-  height: 11px;
+.track {
+  display: block;
   transition: transform var(--dur-btn) var(--ease-btn);
 }
-.cta:hover .ctaArrow,
-.cta:focus-visible .ctaArrow {
-  transform: translate(2px, -2px);
+.label {
+  display: block;
+  white-space: pre;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+.link:hover .track,
+.link:focus-visible .track {
+  transform: translateY(-14px);
 }
 
-/* ---------- mobile toggle ------------------------------------------ */
+/* The current section stays marked while you are inside it. */
+.link[aria-current="page"] .label {
+  color: var(--muted);
+}
+
+.arrow {
+  display: block;
+  width: 11px;
+  height: 11px;
+  flex: none;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+.link:hover .arrow,
+.link:focus-visible .arrow {
+  transform: translate(3px, -3px);
+}
+
+/* ---------- mobile toggle ----------------------------------------- */
 
 .toggle {
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   gap: 5px;
   width: 44px;
   height: 44px;
-  margin-right: 4px;
-  padding: 0;
+  margin-right: -10px;
+  padding: 0 10px;
   background: none;
   border: 0;
   cursor: pointer;
@@ -157,7 +128,7 @@
 
 .toggle span {
   display: block;
-  width: 20px;
+  width: 22px;
   height: 1.5px;
   background: var(--ink);
   transition: transform 0.3s var(--ease-reveal), opacity 0.2s linear;
@@ -173,29 +144,30 @@
   transform: translateY(-6.5px) rotate(-45deg);
 }
 
-/* ---------- mobile panel -------------------------------------------- */
+/* ---------- mobile panel ------------------------------------------ */
 
-/* A rounded card dropping out of the capsule. */
 .panel {
+  /* Anchored to the header rather than the viewport: a fixed element
+     inside a transformed ancestor resolves against that ancestor, so
+     absolute positioning here is both simpler and predictable. */
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 0;
   right: 0;
+  height: calc(100dvh - 64px);
   z-index: 49;
-  border-radius: 22px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--paper) 94%, transparent);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 18px 44px -18px rgba(10, 30, 80, 0.22);
-  padding: 8px 20px;
+  background: var(--paper);
+  padding: 8px var(--gutter) 40px;
+  overflow-y: auto;
+  /* Collapsed by height rather than display, so it can animate and
+     stays out of the tab order when shut. */
   visibility: hidden;
   opacity: 0;
-  transform: translateY(-6px);
+  transform: translateY(-8px);
   transition:
-    opacity 0.26s var(--ease-reveal),
-    transform 0.26s var(--ease-reveal),
-    visibility 0s linear 0.26s;
+    opacity 0.28s var(--ease-reveal),
+    transform 0.28s var(--ease-reveal),
+    visibility 0s linear 0.28s;
 }
 .panel[data-open="true"] {
   visibility: visible;
@@ -211,10 +183,7 @@
 }
 
 .panelItem {
-  border-bottom: 1px solid var(--line-soft);
-}
-.panelItem:last-child {
-  border-bottom: 0;
+  border-bottom: 1px solid var(--line);
 }
 
 .panelLink {
@@ -222,25 +191,32 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 16px 4px;
+  padding: 20px 0;
   text-decoration: none;
   color: var(--ink);
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 .panelArrow {
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
   color: var(--muted);
   flex: none;
 }
 
-/* ---------- responsive ---------------------------------------------- */
+/* ---------- responsive -------------------------------------------- */
 
 @media (min-width: 900px) {
+  .bar {
+    height: 76px;
+  }
+  .logo img {
+    height: 26px;
+  }
   .nav {
     display: block;
   }
@@ -248,23 +224,19 @@
   .panel {
     display: none;
   }
-  .logo img {
-    height: 23px;
-  }
 }
 
-/* ---------- reduced motion ------------------------------------------ */
+/* ---------- reduced motion ---------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   .header,
+  .track,
+  .arrow,
   .toggle span,
-  .panel,
-  .cta,
-  .ctaArrow,
-  .link {
+  .panel {
     transition-duration: 0.01ms;
   }
   .header[data-hidden="true"] {
-    transform: translateX(-50%);
+    transform: none;
   }
 }
