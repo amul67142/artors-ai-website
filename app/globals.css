@@ -1,26 +1,395 @@
 @import "tailwindcss";
 
+/* ============================================================
+   ARTORS — DESIGN TOKENS
+   Spec: docs/DESIGN.md
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* colour */
+  --ink: #0a0a0a;
+  --paper: #ffffff;
+  --muted: #4f4f4f;
+  --line: rgba(10, 10, 10, 0.12);
+  --line-soft: rgba(10, 10, 10, 0.07);
+  --accent: #2b5cff;
+  --accent-2: #5be0dc;
+
+  /* Text gradient runs ink -> accent ONLY.
+     --accent-2 is 1.6:1 on white and must never carry a letterform.
+     It is restricted to dots, rules and the corner wash. */
+  --grad-text: linear-gradient(
+    100deg,
+    var(--ink) 0%,
+    var(--accent) 42%,
+    var(--ink) 72%,
+    var(--accent) 100%
+  );
+
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* motion */
+  --ease-btn: cubic-bezier(1, 0.06, 0.37, 0.82);
+  --dur-btn: 0.4s;
+  --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-reveal: 0.7s;
+
+  /* layout */
+  --gutter: 24px;
+  --maxw: 1440px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 810px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --gutter: 40px;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --gutter: 64px;
   }
 }
 
+@theme inline {
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-inter);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 600;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* The page is a white-paper design by intent. It does not invert. */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: var(--paper);
+    color: var(--ink);
+  }
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 14px;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   TYPE SCALE  —  desktop >=1200 / tablet 810-1199 / mobile <=809
+   Inter, 600 and 700 only. Tracking tightens as size grows,
+   leading does the opposite.
+   ============================================================ */
+.t-display {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 0.85em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.t-statement {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05em;
+  margin: 0;
+}
+.t-lead {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.35em;
+  margin: 0;
+}
+.t-body {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.5em;
+  margin: 0;
+}
+.t-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+.t-caption {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.4em;
+  margin: 0;
+}
+.t-muted {
+  color: var(--muted);
+}
+
+@media (min-width: 810px) {
+  .t-display {
+    font-size: 72px;
+    letter-spacing: -0.04em;
+    line-height: 0.82em;
+  }
+  .t-statement {
+    font-size: 30px;
+  }
+  .t-lead {
+    font-size: 24px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .t-display {
+    font-size: 92px;
+    letter-spacing: -0.042em;
+    line-height: 0.8em;
+  }
+  .t-statement {
+    font-size: 34px;
+  }
+  .t-lead {
+    font-size: 26px;
+    line-height: 1.25em;
+  }
+}
+
+/* Gradient payoff line. Text-only gradient, ink -> accent.
+   The gradient sits on the word spans rather than the line, because those
+   spans are transform-animated and therefore paint in their own layer -
+   an ancestor's background-clip:text never reaches their glyphs.
+   --p walks each word along the ramp so the line still reads as one sweep. */
+.grad-line .rise-mask > span {
+  background: var(--grad-text);
+  background-size: 220% 100%;
+  background-position: calc(var(--p, 0) * 100%) 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   ENTRANCE  —  fires once on load, above the fold, no observer
+   ============================================================ */
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.enter {
+  animation: enter var(--dur-reveal) var(--ease-reveal) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Word-level mask reveal. The SplitText idea without the library. */
+.rise-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.06em;
+}
+.rise-mask > span {
+  display: inline-block;
+  animation: rise 0.85s var(--ease-reveal) both;
+  animation-delay: calc(180ms + var(--i, 0) * 70ms);
+}
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Sweep runs once as the words land, then the gradient sits still. */
+@keyframes sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: calc(var(--p, 0) * 100%) 0;
+  }
+}
+.grad-line .rise-mask > span {
+  animation:
+    rise 0.85s var(--ease-reveal) both,
+    sweep 1.1s var(--ease-reveal) both;
+  animation-delay:
+    calc(180ms + var(--i, 0) * 70ms),
+    calc(300ms + var(--i, 0) * 70ms);
+}
+
+/* ============================================================
+   BUTTON  —  label roll + diagonal icon swap
+   ============================================================ */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: max-content;
+  min-height: 44px;
+  padding: 12px 20px;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background: var(--ink);
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    background-color var(--dur-btn) var(--ease-btn),
+    color var(--dur-btn) var(--ease-btn),
+    border-color var(--dur-btn) var(--ease-btn);
+}
+
+.btn__mask {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: max-content;
+  padding: 3px 0;
+  height: 20px;
+  overflow: clip;
+}
+.btn__track {
+  position: relative;
+  display: block;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+.btn__label {
+  display: block;
+  white-space: pre;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+.btn__label--ghost {
+  position: absolute;
+  left: 0;
+  top: 40px;
+  width: 100%;
+}
+.btn:hover .btn__track,
+.btn:focus-visible .btn__track {
+  transform: translateY(-40px);
+}
+
+.btn__icons {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  overflow: clip;
+}
+.btn__icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+.btn__icon svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+.btn__icon--in {
+  transform: translate(-20px, 20px);
+}
+.btn:hover .btn__icon--out,
+.btn:focus-visible .btn__icon--out {
+  transform: translate(20px, -20px);
+}
+.btn:hover .btn__icon--in,
+.btn:focus-visible .btn__icon--in {
+  transform: translate(0, 0);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: rgba(10, 10, 10, 0.18);
+}
+.btn--ghost:hover {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+
+/* ============================================================
+   REDUCED MOTION
+   Every effect above has a counterpart here.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .enter,
+  .rise-mask > span,
+  .grad-line .rise-mask > span {
+    animation: none;
+  }
+  .btn,
+  .btn__track,
+  .btn__icon {
+    transition-duration: 0.01ms;
+  }
 }
