@@ -56,9 +56,10 @@
   flex: none;
 }
 
+/* Full ink, not muted — this line is the setup, not an aside. */
 .setup {
   display: block;
-  color: var(--muted);
+  color: var(--ink);
   margin-bottom: 14px;
   max-width: 22ch;
 }
@@ -72,6 +73,13 @@
   max-width: 52ch;
   color: var(--muted);
   margin-bottom: 36px;
+}
+
+/* Key phrases lift out of the paragraph so it can be skimmed before it
+   is read. Weight and colour only — no highlight, no underline. */
+.subEm {
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .ctas {
@@ -89,6 +97,7 @@
 
 .ledgerWrap {
   align-self: center;
+  margin: 0;
 }
 
 .ledger {
@@ -132,17 +141,32 @@
   margin: 0;
 }
 
+/* The spine. One hairline behind the nodes turns six entries into a
+   single visible sequence. It never animates — a fixed skeleton is what
+   keeps looping content calm instead of busy. */
 .rows {
+  position: relative;
   list-style: none;
   margin: 0;
-  padding: 6px 0;
+  padding: 10px 0;
+}
+.rows::before {
+  content: "";
+  position: absolute;
+  left: 26px;
+  top: 24px;
+  bottom: 24px;
+  width: 1px;
+  background: var(--line);
 }
 
 .row {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 2px 14px;
-  padding: 10px 18px;
+  grid-template-columns: 17px auto 1fr auto;
+  align-items: baseline;
+  column-gap: 12px;
+  row-gap: 3px;
+  padding: 9px 18px;
   animation: ledgerRow 12s linear infinite both;
   animation-delay: calc(600ms + var(--i) * 350ms);
 }
@@ -176,22 +200,54 @@
   }
 }
 
+/* Node on the spine. Hollow by default so the panel stays quiet; the
+   paper ring punches it out of the hairline behind it. */
+.node {
+  grid-row: 1;
+  justify-self: center;
+  align-self: center;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  box-shadow: 0 0 0 3px var(--paper);
+}
+
 .time {
+  grid-row: 1;
   font-variant-numeric: tabular-nums;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--muted);
 }
 
 .event {
+  grid-row: 1;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
+/* Which system did the step. Shows a connected stack, not one bot. */
+.channel {
+  grid-row: 1;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
 .detail {
-  grid-column: 2;
+  grid-row: 2;
+  grid-column: 3 / -1;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -202,15 +258,13 @@
 .rowHighlight .event {
   color: var(--accent);
 }
-.rowHighlight .event::after {
-  content: "";
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent-2);
-  margin-left: 8px;
-  vertical-align: middle;
+.rowHighlight .node {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.rowHighlight .channel {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .summary {
@@ -242,6 +296,19 @@
 }
 
 /* ---------- responsive -------------------------------------------- */
+
+/* Narrow phones: drop the channel tag rather than let the row wrap. */
+@media (max-width: 400px) {
+  .row {
+    grid-template-columns: 17px auto 1fr;
+  }
+  .channel {
+    display: none;
+  }
+  .detail {
+    grid-column: 3 / -1;
+  }
+}
 
 @media (min-width: 810px) {
   .hero {

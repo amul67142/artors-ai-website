@@ -10,11 +10,17 @@ import s from "./hero.module.css";
  * same lie as inventing a testimonial (docs/PLAN.md §2). The panel links
  * to /work, where the same run is published in full.
  *
+ * The spine down the left turns a list of events into a visible sequence,
+ * and the channel tag on the right shows which system did each step — so
+ * the panel reads as one connected process rather than a single bot. The
+ * spine is deliberately static while the rows cycle: a fixed skeleton is
+ * what keeps a looping panel calm instead of busy.
+ *
  * Server Component. The looping animation is CSS; InViewGate only pauses it.
  */
 export default function Ledger() {
   return (
-    <figure className={s.ledgerWrap} style={{ margin: 0 }}>
+    <figure className={s.ledgerWrap}>
       <Link href={ledger.href} className={s.ledger} aria-label="See the full sample run">
         <div className={s.ledgerHead}>
           <p className={s.ledgerLabel}>
@@ -30,8 +36,10 @@ export default function Ledger() {
               className={`${s.row} ${row.highlight ? s.rowHighlight : ""}`}
               style={{ "--i": i } as React.CSSProperties}
             >
+              <span className={s.node} aria-hidden="true" />
               <span className={s.time}>{row.time}</span>
               <span className={s.event}>{row.event}</span>
+              <span className={s.channel}>{row.channel}</span>
               <span className={s.detail}>{row.detail}</span>
             </li>
           ))}

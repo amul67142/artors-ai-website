@@ -66,7 +66,15 @@ export default function Hero() {
           </h1>
 
           <p className={`t-lead ${s.sub} enter`} style={{ "--i": 7 } as React.CSSProperties}>
-            {hero.sub}
+            {hero.sub.map((seg, i) =>
+              seg.em ? (
+                <strong key={i} className={s.subEm}>
+                  {seg.text}
+                </strong>
+              ) : (
+                <Fragment key={i}>{seg.text}</Fragment>
+              ),
+            )}
           </p>
 
           <div className={`${s.ctas} enter`} style={{ "--i": 8 } as React.CSSProperties}>
