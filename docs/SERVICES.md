@@ -2,25 +2,30 @@
 
 Source: `AI_Agency_Services_Catalog.docx`. **Internal sales reference, not the website.**
 
-The site publishes **five** service pages (see `docs/COPY.md` §4). This catalogue is the deeper
-menu those pages draw their deliverables from, and the pricing sheet Artors quotes from. Its own
-closing advice: *better to offer 5 services you excel at than 25 you deliver mediocre work on.*
+The site publishes **six** service pillars (see `docs/COPY.md` §4). This catalogue is the
+deeper menu those pages draw their deliverables from, and the pricing sheet Artors quotes from.
+
+Artors is a full-service AI agency, so nothing here is held back on principle — the catalogue is
+grouped for the site, not trimmed. What the source document warns against is selling 25 things
+badly, and the answer to that is six coherent pillars, not a narrower business.
 
 Prices are internal. On the site they appear only as indicative "starting at" bands, if at all.
 
-**Mapping to the five public service pages:**
+**Mapping to the six public service pages:**
 
 | Public page | Catalogue items |
 |---|---|
+| `/services/ai-automation` | 1.1, 1.2, 1.3 |
 | `/services/voice-agents` | 2.1, 2.2, 2.3 |
 | `/services/chatbots` | 3.1, 3.2, 3.3, 3.4 |
-| `/services/lead-generation` | 5.1, 5.2, 5.3, 5.4 |
-| `/services/workflow-automation` | 1.1, 1.3, 7.x |
-| `/services/crm-sales` | 1.2, 6.1, 6.2, 6.3 |
+| `/services/marketing-growth` | 5.1, 5.2, 5.3, 5.4 |
+| `/services/content-video` | 4.1, 4.2, 4.3, 4.4, 4.5 |
+| `/services/consulting-training` | 7.1, 7.2, 7.3 |
 
-Category 4 (video/content) and category 6 (real-estate specialty) are **not** published as
-service pages under the general positioning. Category 6 feeds `/industries/real-estate`;
-category 4 is held back for now.
+Category 6 (real-estate specialty) is not a service page — it is the substance behind
+`/industries/real-estate`. Items 6.1-6.3 also generalise well and are sold into other sectors
+as sales-operations work under `/services/ai-automation`.
+
 
 ---
 
@@ -119,7 +124,7 @@ availability · commission tracking · lead attribution and performance reports
 
 ---
 
-## 4. AI Video & Content Services *(held back — not published at launch)*
+## 4. AI Video & Content Services
 
 | | Service | Price |
 |---|---|---|
