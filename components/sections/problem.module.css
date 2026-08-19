@@ -1,0 +1,265 @@
+/* ============================================================
+   THE PROBLEM  —  scroll-fill statement + the leak board.
+   Left: the statement fills word-by-word from pale to ink as
+   the section scrolls (accent on the phrase that matters), and
+   stays sticky while the leaks pass. Right: five leaks as
+   hoverable ledger rows; each opens into the fix and links to
+   the pillar that solves it.
+
+   The word fill is a CSS scroll-driven animation — no JS, no
+   scroll listener. Browsers without animation-timeline (Firefox,
+   older Safari) simply see the statement in full ink.
+   ============================================================ */
+
+.section {
+  position: relative;
+  padding-block: 112px 128px;
+  border-top: 1px solid var(--line);
+  /* The named view timeline the words listen to. */
+  view-timeline: --problem block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+/* ---------- the statement ------------------------------------------ */
+
+.left {
+  max-width: 46rem;
+}
+
+.statement {
+  font-size: clamp(28px, 3.4vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.14;
+  margin: 0 0 28px;
+}
+
+/* Words start at 22% ink and fill as the section crosses the
+   viewport, each a beat after the last. */
+.word {
+  color: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+@supports (animation-timeline: view()) {
+  .word {
+    animation: wordInk linear both;
+    animation-timeline: --problem;
+    animation-range: cover calc(2% + var(--i) * 2.4%) cover
+      calc(14% + var(--i) * 2.4%);
+  }
+}
+/* No scroll timelines: full ink, no ceremony. */
+@supports not (animation-timeline: view()) {
+  .word {
+    color: var(--ink);
+  }
+  .wordAccent {
+    color: var(--accent);
+  }
+}
+
+@keyframes wordInk {
+  to {
+    color: var(--ink);
+  }
+}
+
+/* The phrase that matters fills to accent instead. */
+@supports (animation-timeline: view()) {
+  .wordAccent {
+    animation-name: wordAccent;
+  }
+}
+@keyframes wordAccent {
+  to {
+    color: var(--accent);
+  }
+}
+
+.callout {
+  color: var(--muted);
+  max-width: 40ch;
+}
+
+/* ---------- the leak board ----------------------------------------- */
+
+.board {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.rowWrap {
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  display: block;
+  padding: 22px 4px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.rowHead {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: baseline;
+  column-gap: 16px;
+}
+
+/* Hollow marker; fills accent when the row wakes up. */
+.marker {
+  align-self: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  background: var(--paper);
+  transition:
+    border-color var(--dur-btn) var(--ease-btn),
+    background-color var(--dur-btn) var(--ease-btn);
+}
+
+.leak {
+  font-size: clamp(16px, 1.5vw, 19px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+
+/* The fix: collapsed until the row is hovered or focused, always
+   open where hover doesn't exist. Grid-rows keeps it animatable
+   without JS. */
+.fixWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s var(--ease-reveal);
+}
+
+.fixClip {
+  overflow: hidden;
+  grid-column: 1 / -1;
+}
+
+.fix {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 0 2px 30px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.fixArrow {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  align-self: center;
+  color: var(--accent);
+  transform: translateX(-4px);
+  opacity: 0;
+  transition:
+    transform var(--dur-btn) var(--ease-btn),
+    opacity var(--dur-btn) var(--ease-btn);
+}
+
+.fixLead {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+@media (hover: hover) {
+  .row:hover .fixWrap,
+  .row:focus-visible .fixWrap {
+    grid-template-rows: 1fr;
+  }
+  .row:hover .marker,
+  .row:focus-visible .marker {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+  .row:hover .tag,
+  .row:focus-visible .tag {
+    color: var(--accent);
+  }
+  .row:hover .fixArrow,
+  .row:focus-visible .fixArrow {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Touch devices: nothing hidden behind a hover that never comes. */
+@media (hover: none) {
+  .fixWrap {
+    grid-template-rows: 1fr;
+  }
+  .fixArrow {
+    transform: none;
+    opacity: 1;
+  }
+  .marker {
+    border-color: var(--accent);
+  }
+}
+
+.closing {
+  margin-top: 36px;
+  color: var(--muted);
+  max-width: 44ch;
+}
+.closingEm {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* ---------- responsive ---------------------------------------------- */
+
+@media (min-width: 1000px) {
+  .grid {
+    grid-template-columns: 5fr 6fr;
+    gap: 96px;
+  }
+  /* The statement holds position while the leaks scroll past it. */
+  .left {
+    position: sticky;
+    top: 132px;
+  }
+}
+
+/* ---------- reduced motion ------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .word,
+  .wordAccent {
+    animation: none;
+    color: var(--ink);
+  }
+  .wordAccent {
+    color: var(--accent);
+  }
+  .fixWrap {
+    transition: none;
+  }
+}
