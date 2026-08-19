@@ -1,168 +1,113 @@
 /* ============================================================
-   HERO  —  the dawn composition.
-   Centered claim over a rising orbital arc and a soft blue-cyan
-   horizon glow, on a faint dot grid. The arc carries the logo's
-   node motif; the glow is the brand gradient used as light
-   rather than as paint. Six real service links close the screen
-   along the base.
+   HERO  —  modern product idiom.
+   Floating glass nav above (see header.module.css), then a
+   centered claim: badge, sentence-case headline with gradient
+   payoff, sub, CTAs, and the centerpiece — one automation drawn
+   as the workflow it is, in a soft-glowing panel.
 
-   Everything decorative is CSS. The only loop is a 120s rotation
-   of the arc and a slow breathe on the glow, both transform/
-   opacity only, both paused off-screen and under reduced motion.
+   The only loop is a travelling dash on the flow connectors,
+   paused off-screen and under reduced motion.
    ============================================================ */
 
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - 64px);
-  padding-top: 56px;
+  align-items: center;
+  min-height: 100dvh;
+  /* Clears the floating header. */
+  padding-top: 116px;
+  padding-bottom: 40px;
   overflow: hidden;
+  text-align: center;
 }
 
-/* ---------- backdrop ------------------------------------------------ */
-
-/* Faint dot grid, masked so it breathes around the headline and
-   dissolves before the edges. Reads as drafting paper, not decoration. */
-.grid {
+/* One soft brand wash behind the upper half. */
+.hero::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  background-image: radial-gradient(circle, var(--line) 1px, transparent 1px);
-  background-size: 26px 26px;
-  opacity: 0.5;
-  -webkit-mask-image: radial-gradient(
-    ellipse 70% 62% at 50% 38%,
-    #000 0%,
-    transparent 78%
-  );
-  mask-image: radial-gradient(ellipse 70% 62% at 50% 38%, #000 0%, transparent 78%);
-  pointer-events: none;
-}
-
-/* The horizon glow. Brand gradient as light. */
-.glow {
-  position: absolute;
+  top: -34%;
   left: 50%;
-  bottom: -22%;
-  z-index: 0;
+  transform: translateX(-50%);
   width: min(1100px, 120vw);
-  height: 52vh;
-  transform: translateX(-50%);
+  aspect-ratio: 1.6;
   background: radial-gradient(
-    ellipse 60% 68% at 50% 100%,
-    color-mix(in srgb, var(--accent) 13%, transparent) 0%,
-    color-mix(in srgb, var(--accent-2) 9%, transparent) 45%,
-    transparent 74%
+    ellipse 55% 55% at 50% 42%,
+    color-mix(in srgb, var(--accent) 7%, transparent) 0%,
+    color-mix(in srgb, var(--accent-2) 5%, transparent) 48%,
+    transparent 72%
   );
   pointer-events: none;
-  animation: breathe 14s ease-in-out infinite alternate;
-}
-
-@keyframes breathe {
-  from {
-    opacity: 0.72;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* The arc: the crest of a very large circle rising past the bottom
-   edge, nodes riding on it. One thin line; the polish is precision. */
-.orbit {
-  position: absolute;
-  left: 50%;
-  bottom: calc(-120 * 1vw);
   z-index: 0;
-  width: 150vw;
-  aspect-ratio: 1;
-  transform: translateX(-50%);
-  pointer-events: none;
 }
 
-.orbitSpin {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
-  animation: spin 120s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-[data-inview="false"] .orbitSpin,
-[data-inview="false"] .glow {
-  animation-play-state: paused;
-}
-
-/* Nodes on the arc — the logo's circuit dots, at architectural scale. */
-.node {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--paper);
-  border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent);
-  box-shadow: 0 0 0 4px var(--paper);
-}
-.nodeA {
-  left: 50%;
-  top: 0;
-}
-.nodeB {
-  left: 65.4%;
-  top: 2.5%;
-  background: var(--accent-2);
-  border-color: var(--accent-2);
-  box-shadow:
-    0 0 0 4px var(--paper),
-    0 0 0 5px color-mix(in srgb, var(--accent-2) 45%, transparent);
-}
-.nodeC {
-  left: 30%;
-  top: 8.4%;
-}
-
-/* ---------- the claim ----------------------------------------------- */
-
-.stack {
+.inner {
   position: relative;
   z-index: 1;
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding-bottom: 40px;
+  width: 100%;
 }
 
+/* ---------- badge --------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 15px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--paper) 70%, transparent);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-bottom: 26px;
+}
+.badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+}
+
+/* ---------- claim --------------------------------------------------- */
+
 .headline {
-  font-size: clamp(31px, 4.3vw, 60px);
+  font-size: clamp(34px, 5vw, 68px);
   font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.08;
-  margin: 0 0 26px;
-  max-width: 21em;
+  letter-spacing: -0.042em;
+  line-height: 1.06;
+  margin: 0 0 18px;
+  max-width: 20em;
 }
 .headline > span {
   display: block;
 }
 
+.payoff {
+  background: linear-gradient(
+    96deg,
+    var(--ink) 0%,
+    var(--accent) 55%,
+    color-mix(in srgb, var(--accent) 55%, var(--accent-2)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .sub {
-  font-size: clamp(15px, 1.25vw, 17px);
+  font-size: clamp(15px, 1.3vw, 18px);
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.6;
   color: var(--muted);
   max-width: 46ch;
-  margin: 0 0 36px;
+  margin: 0 0 28px;
 }
 .subEm {
   color: var(--ink);
@@ -174,63 +119,204 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
+  margin-bottom: 46px;
 }
 
-/* ---------- the base ------------------------------------------------ */
+/* ---------- the canvas ---------------------------------------------- */
 
-/* Six real links. Functional, not decoration: this row is what makes
-   "full-service" legible before a single scroll. */
-.strip {
+.canvasWrap {
   position: relative;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 12px 34px;
-  padding: 20px var(--gutter) 24px;
-  border-top: 1px solid var(--line);
+  width: min(1020px, calc(100vw - (2 * var(--gutter))));
+  margin: 0;
 }
 
-.stripLink {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--muted);
-  padding-block: 6px;
-  transition: color var(--dur-btn) var(--ease-btn);
+/* Brand glow bleeding out from behind the panel. */
+.canvasGlow {
+  position: absolute;
+  inset: -8% -4% -20%;
+  background: radial-gradient(
+    ellipse 55% 62% at 50% 48%,
+    color-mix(in srgb, var(--accent) 16%, transparent) 0%,
+    color-mix(in srgb, var(--accent-2) 11%, transparent) 46%,
+    transparent 74%
+  );
+  pointer-events: none;
 }
-.stripLink:hover,
-.stripLink:focus-visible {
-  color: var(--accent);
+
+.canvas {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle, var(--line-soft) 1px, transparent 1px) 0 0 / 22px 22px,
+    color-mix(in srgb, var(--paper) 88%, transparent);
+  box-shadow:
+    0 1px 2px rgba(10, 30, 80, 0.04),
+    0 24px 70px -30px rgba(43, 92, 255, 0.25);
+  padding: clamp(16px, 3vw, 34px);
+}
+
+.flowSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.flowPath {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+/* The travelling dash: the work moving through the system. */
+.flowPulse {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 7 90;
+  stroke-linecap: round;
+  animation: flowDash 3.2s linear infinite;
+}
+@keyframes flowDash {
+  to {
+    stroke-dashoffset: -97;
+  }
+}
+[data-inview="false"] .flowPulse {
+  animation-play-state: paused;
+}
+
+.flowNode {
+  fill: var(--paper);
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.flowNodeOn {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.flowDot {
+  fill: color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.flowDotOn {
+  fill: var(--accent-2);
+}
+
+.flowLabel {
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  fill: var(--ink);
+}
+.flowLabelOn {
+  fill: var(--accent);
+}
+
+.flowSub {
+  font-size: 11.5px;
+  font-weight: 600;
+  fill: var(--muted);
+}
+
+.canvasCaption {
+  margin-top: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  text-align: center;
 }
 
 /* ---------- responsive ---------------------------------------------- */
 
-@media (min-width: 810px) {
+@media (max-width: 640px) {
   .hero {
-    min-height: calc(100dvh - 76px);
-    padding-top: 48px;
+    padding-top: 108px;
   }
-}
-
-@media (max-width: 500px) {
-  .orbit {
-    width: 320vw;
-    bottom: calc(-276 * 1vw);
+  .ctas {
+    margin-bottom: 44px;
   }
-  .strip {
-    gap: 10px 22px;
+  /* The zigzag reads at any width thanks to the viewBox, but labels
+     get small below phone width; let the panel breathe less. */
+  .canvas {
+    border-radius: 16px;
   }
 }
 
 /* ---------- reduced motion ------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
-  .orbitSpin,
-  .glow {
+  .flowPulse {
     animation: none;
+    stroke-dasharray: none;
+    opacity: 0.35;
+  }
+}
+
+/* ---------- phone flow (vertical) ----------------------------------- */
+
+.flowList {
+  display: none;
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 4px 2px;
+}
+.flowList::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 18px;
+  bottom: 18px;
+  width: 1px;
+  background: var(--line);
+}
+
+.flowListRow {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  align-items: baseline;
+  column-gap: 14px;
+  padding-block: 11px;
+}
+
+.flowListDot {
+  align-self: center;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent);
+  background: var(--paper);
+  box-shadow: 0 0 0 3px var(--paper);
+}
+.flowListRowOn .flowListDot {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.flowListLabel {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+.flowListRowOn .flowListLabel {
+  color: var(--accent);
+}
+
+.flowListSub {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .flowSvg {
+    display: none;
+  }
+  .flowList {
+    display: block;
   }
 }

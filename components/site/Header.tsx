@@ -76,6 +76,8 @@ export default function Header() {
       className={s.header}
       data-scrolled={scrolled}
       data-hidden={hidden && !open}
+      // Inline because the CSS pipeline strips backdrop-filter from modules.
+      style={{ backdropFilter: "blur(14px) saturate(160%)", WebkitBackdropFilter: "blur(14px) saturate(160%)" }}
     >
       <div className={`shell ${s.bar}`}>
         <Link href="/" className={s.logo} aria-label="Artors home">
@@ -91,15 +93,7 @@ export default function Header() {
                   className={s.link}
                   aria-current={isCurrent(item.href) ? "page" : undefined}
                 >
-                  <span className={s.mask}>
-                    <span className={s.track}>
-                      <span className={s.label}>{item.label}</span>
-                      <span className={s.label} aria-hidden="true">
-                        {item.label}
-                      </span>
-                    </span>
-                  </span>
-                  {item.arrow && <Arrow className={s.arrow} />}
+                  {item.label}
                 </Link>
               </li>
             ))}
