@@ -34,33 +34,37 @@ Logo endpoints for reference: `#3E7BE8 → #5BE0DC`.
 that heaviness is what makes the page read "sharp" rather than soft. Loaded through
 `next/font/google`, self-hosted, so there is no CLS and no third-party request.
 
-Tracking tightens as size grows (`-0.01em` body → `-0.04em` display); leading does the
-opposite (`1.4em` body → `0.8em` display). The 13 px eyebrow is the only style with
-*positive* tracking.
+**The scale is deliberately small.** The site takes its presence from space and precision,
+not from size — display tops out at 54 px rather than the 90 px of the source system, and
+body copy sits at 16–17 px. Big type was tried and rejected: at 150 px the page read as a
+bigger plain page, not a designed one. What makes it feel sharp is heavy weight, tight
+tracking, and gaps generous enough that nothing is crowded.
+
+Tracking tightens as size grows (`-0.01em` body → `-0.038em` display). Leading does the
+opposite (`1.6` body → `1.1` display); note that body leading is *loose* here, which is
+what buys the air. Small uppercase labels are the only styles with positive tracking, and
+they carry a lot of it (`+0.06em` to `+0.12em`) — that spacing is what makes them read as
+precise rather than shrunken.
 
 Breakpoints: desktop ≥ 1200 · tablet 810–1199 · mobile ≤ 809.
 
 | Style | Size (d/t/m) | Weight | Tracking | Leading | Case |
 |---|---|---|---|---|---|
-| Display | 90 / 80 / 40 | 700 | −3.3px (−0.5px mobile) | 0.8em | UPPER |
-| Statement | 61 / 49 / 42 | 700 | −0.04em | 0.9em | UPPER |
-| Stat numeral | 63 | 700 | 0 | 1.0em | — |
-| Section heading | 38 / 38 / 31 | 700 | −0.03em | 0.9em | UPPER |
-| Card heading | 30 / 22 / 20 | 700 | −0.03em | 1.0em | UPPER |
-| Lead paragraph | 26 / 24 / 22 | 600 | −0.03em | 1.2em | — |
-| Sub heading | 22 / 18 | 700 | −0.03em | 1.0em | UPPER |
-| Minor heading | 20 / 18 | 700 | −0.02em | 1.0em | UPPER |
-| Card title | 16 | 700 | −0.02em | 1.1em | — |
-| Body | 16 | 600 | −0.01em | 1.4em | — |
-| Body muted | 16 | 600 | −0.01em | 1.4em | `--muted` |
-| Person name | 15 | 700 | 0 | 1.3em | — |
-| Button / nav label | 14 | 600 | −0.03em | 1.0em | UPPER |
-| Index numeral | 14 | 700 | −0.03em | 1.0em | UPPER |
-| Eyebrow | 13 | 700 | **+0.04em** | 1.3em | UPPER, `--muted` |
-| Caption | 13 | 600 | −0.03em | 1.4em | — |
+| Display | 54 / 42 / 30 | 700 | −0.038em | 1.1 | sentence |
+| Statement | 30 / 26 / 22 | 700 | −0.03em | 1.2 | sentence |
+| Lead | 17 / 17 / 16 | 600 | −0.01em | 1.6 | — |
+| Body | 15 | 600 | −0.01em | 1.6 | — |
+| Caption / trust | 12 | 700 | **+0.06em** | 1.5 | UPPER |
+| Eyebrow | 11 | 700 | **+0.1em** | 1.3 | UPPER, `--muted` |
+| Micro label | 10 | 700 | **+0.12em** | — | UPPER |
+| Button / nav label | 14 | 600 | −0.03em | 1.0 | UPPER |
 
-The logo wordmark is lowercase and rounded; it sits against uppercase tight headings as a
-lockup and is never restyled to match.
+Display is **sentence case, not uppercase** — a deviation from the source system. At 54 px
+a long uppercase sentence turns into a wall; sentence case keeps it clean and reads as
+modern rather than shouty. Uppercase is reserved for the small labels, where the wide
+tracking does the work.
+
+The logo wordmark is lowercase and rounded; it sits as a lockup and is never restyled.
 
 ---
 

@@ -7,7 +7,7 @@ import s from "./hero.module.css";
 
 type RisingWordsProps = {
   text: string;
-  /** Continues the stagger index across two separate lines. */
+  /** Continues the stagger index across both sentences. */
   offset?: number;
   /** Walks each word along the shared gradient ramp (see .grad-line). */
   gradient?: boolean;
@@ -49,13 +49,13 @@ export default function Hero() {
     <section className={s.hero}>
       <div className={`shell ${s.grid}`}>
         <div>
-          {/* One h1. The two movements are spans, so the heading still
-              reads as a single sentence to screen readers. */}
-          <h1>
-            <span className={`t-statement ${s.setup}`}>
+          {/* Both sentences at one size. The payoff is set apart by the
+              gradient alone — quieter, and sharper, than a size change. */}
+          <h1 className={`t-display ${s.headline}`}>
+            <span className={s.setup}>
               <RisingWords text={hero.headlineSetup} />
             </span>
-            <span className={`t-display grad-line ${s.payoff}`}>
+            <span className={`grad-line ${s.payoff}`}>
               <RisingWords text={hero.headlinePayoff} offset={setupWords} gradient />
             </span>
           </h1>

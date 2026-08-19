@@ -1,32 +1,33 @@
 /* ============================================================
-   HERO  —  asymmetric editorial split + sample-run ledger
-   Concept and layout: docs/PLAN.md, hero section plan
+   HERO
+   Presence comes from space and precision, not scale. One type
+   size for the whole headline, small heavy body copy, and gaps
+   large enough that nothing feels crowded.
    ============================================================ */
 
 .hero {
   position: relative;
   display: flex;
   align-items: center;
-  /* Discounts the sticky header so the hero still resolves in one screen. */
-  min-height: calc(88dvh - 64px);
-  padding-block: 56px 64px;
+  min-height: calc(100dvh - 64px);
+  padding-block: 72px 80px;
   overflow: hidden;
 }
 
-/* Faint blue-cyan wash in the top-right corner. Decorative only —
-   it never sits behind text, so it carries no contrast burden. */
+/* A single, very faint wash. Large and soft enough to read as paper
+   tone rather than as a gradient. Never sits behind text. */
 .hero::before {
   content: "";
   position: absolute;
-  top: -18%;
-  right: -12%;
-  width: min(760px, 78vw);
+  top: -32%;
+  right: -18%;
+  width: min(900px, 90vw);
   aspect-ratio: 1;
   background: radial-gradient(
     circle at 50% 50%,
-    color-mix(in srgb, var(--accent) 8%, transparent) 0%,
-    color-mix(in srgb, var(--accent-2) 6%, transparent) 42%,
-    transparent 68%
+    color-mix(in srgb, var(--accent) 5%, transparent) 0%,
+    color-mix(in srgb, var(--accent-2) 4%, transparent) 45%,
+    transparent 70%
   );
   pointer-events: none;
   z-index: 0;
@@ -37,33 +38,31 @@
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 56px;
+  gap: 64px;
   width: 100%;
 }
 
-/* Full ink, not muted — this line is the setup, not an aside. */
-.setup {
-  display: block;
-  color: var(--ink);
-  margin-bottom: 14px;
-  max-width: 22ch;
+/* ---------- headline ---------------------------------------------- */
+
+/* One size for both sentences. The payoff is separated by colour
+   alone, which is quieter and sharper than a second type size. */
+.headline {
+  max-width: 15ch;
+  margin: 0 0 32px;
 }
 
+.setup,
 .payoff {
   display: block;
-  margin-bottom: 32px;
 }
 
-/* Full ink and short. The hero says what we are and what changes;
-   the detail lives further down the page. */
 .sub {
-  max-width: 46ch;
-  color: var(--ink);
-  margin-bottom: 36px;
+  max-width: 40ch;
+  color: var(--muted);
+  margin-bottom: 44px;
 }
 
-/* Key phrases lift out of the paragraph so it can be skimmed before it
-   is read. Weight and colour only — no highlight, no underline. */
+/* Key phrases lift to full ink. Weight and colour only. */
 .subEm {
   color: var(--ink);
   font-weight: 700;
@@ -72,34 +71,29 @@
 .ctas {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 40px;
 }
 
 .trust {
   color: var(--muted);
 }
 
-/* ---------- ledger ------------------------------------------------ */
+/* ---------- the run ------------------------------------------------ */
 
+/* No card. A label, a spine, five rows and a rule — the panel was
+   competing with the copy for attention it did not need. */
 .ledgerWrap {
   align-self: center;
   margin: 0;
+  width: 100%;
+  max-width: 420px;
 }
 
 .ledger {
   display: block;
-  border: 1px solid var(--line);
-  background: var(--paper);
   text-decoration: none;
   color: inherit;
-  transition:
-    border-color var(--dur-btn) var(--ease-btn),
-    transform var(--dur-btn) var(--ease-btn);
-}
-.ledger:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
 }
 
 .ledgerHead {
@@ -107,53 +101,51 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px 18px;
+  padding-bottom: 20px;
   border-bottom: 1px solid var(--line);
 }
 
-.ledgerLabel {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-
+.ledgerLabel,
 .ledgerSubject {
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   margin: 0;
 }
+.ledgerLabel {
+  color: var(--muted);
+}
+.ledgerSubject {
+  color: var(--ink);
+}
 
-/* The spine. One hairline behind the nodes turns six entries into a
-   single visible sequence. It never animates — a fixed skeleton is what
-   keeps looping content calm instead of busy. */
 .rows {
   position: relative;
   list-style: none;
   margin: 0;
-  padding: 10px 0;
+  padding: 26px 0 6px;
 }
+
+/* The spine. Static while the rows cycle — a fixed skeleton is what
+   keeps looping content calm. */
 .rows::before {
   content: "";
   position: absolute;
-  left: 26px;
-  top: 24px;
-  bottom: 24px;
+  left: 3px;
+  top: 34px;
+  bottom: 22px;
   width: 1px;
   background: var(--line);
 }
 
 .row {
   display: grid;
-  grid-template-columns: 17px auto 1fr auto;
+  grid-template-columns: 7px 1fr auto;
   align-items: baseline;
-  column-gap: 12px;
-  row-gap: 3px;
-  padding: 9px 18px;
+  column-gap: 18px;
+  row-gap: 4px;
+  padding-block: 13px;
   animation: ledgerRow 12s linear infinite both;
   animation-delay: calc(600ms + var(--i) * 350ms);
 }
@@ -167,7 +159,7 @@
 @keyframes ledgerRow {
   0% {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   4% {
     opacity: 1;
@@ -179,19 +171,16 @@
   }
   85% {
     opacity: 0;
-    transform: translateY(-5px);
+    transform: translateY(-4px);
   }
   100% {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
 }
 
-/* Node on the spine. Hollow by default so the panel stays quiet; the
-   paper ring punches it out of the hairline behind it. */
 .node {
   grid-row: 1;
-  justify-self: center;
   align-self: center;
   width: 7px;
   height: 7px;
@@ -201,75 +190,63 @@
   box-shadow: 0 0 0 3px var(--paper);
 }
 
-.time {
+.event {
   grid-row: 1;
-  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Which system did the step. */
+.channel {
+  grid-row: 1;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.detail {
+  grid-row: 2;
+  grid-column: 2 / -1;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--muted);
 }
 
-.event {
-  grid-row: 1;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-/* Which system did the step. Shows a connected stack, not one bot. */
-.channel {
-  grid-row: 1;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  padding: 2px 6px;
-  white-space: nowrap;
-}
-
-.detail {
-  grid-row: 2;
-  grid-column: 3 / -1;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--muted);
+/* The timestamps were detail for its own sake at this size. */
+.time {
+  display: none;
 }
 
 /* The row the whole run exists to produce. */
-.rowHighlight .event {
+.rowHighlight .event,
+.rowHighlight .channel {
   color: var(--accent);
 }
 .rowHighlight .node {
   border-color: var(--accent);
   background: var(--accent);
 }
-.rowHighlight .channel {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
-}
 
 .summary {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 18px;
-  padding: 14px 18px;
+  gap: 6px 20px;
+  margin-top: 20px;
+  padding-top: 18px;
   border-top: 1px solid var(--line);
-  background: rgba(10, 10, 10, 0.015);
   animation: ledgerRow 12s linear infinite both;
-  animation-delay: calc(600ms + 6 * 350ms);
+  animation-delay: calc(600ms + 5 * 350ms);
 }
 
 .summaryItem {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.07em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -279,34 +256,37 @@
 
 /* ---------- responsive -------------------------------------------- */
 
-/* Narrow phones: drop the channel tag rather than let the row wrap. */
-@media (max-width: 400px) {
-  .row {
-    grid-template-columns: 17px auto 1fr;
-  }
-  .channel {
-    display: none;
-  }
-  .detail {
-    grid-column: 3 / -1;
-  }
-}
-
 @media (min-width: 810px) {
   .hero {
-    min-height: calc(88dvh - 76px);
-    padding-block: 72px 80px;
+    min-height: calc(100dvh - 76px);
+    padding-block: 104px 96px;
   }
-  .setup {
-    max-width: none;
+  .headline {
+    margin-bottom: 36px;
+  }
+  .sub {
+    margin-bottom: 48px;
+  }
+  .ctas {
+    margin-bottom: 44px;
   }
 }
 
 @media (min-width: 1200px) {
+  .hero {
+    padding-block: 128px 112px;
+  }
   .grid {
-    grid-template-columns: 7fr 5fr;
-    gap: 72px;
+    grid-template-columns: 1fr auto;
+    gap: 120px;
     align-items: center;
+  }
+  .headline {
+    max-width: 16ch;
+    margin-bottom: 40px;
+  }
+  .ledgerWrap {
+    width: 420px;
   }
 }
 
@@ -319,76 +299,4 @@
     opacity: 1;
     transform: none;
   }
-  .ledger:hover {
-    transform: none;
-  }
-}
-
-/* ============================================================
-   DARK TONE  —  the ledger as a black panel on a white page.
-   This is where --accent-2 finally earns its keep: the cyan is
-   1.6:1 on white but roughly 11:1 on ink, so on this surface it
-   can carry text and marks rather than being decoration only.
-   ============================================================ */
-
-.toneDark .ledger {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: #fff;
-}
-.toneDark .ledger:hover {
-  border-color: var(--accent-2);
-}
-
-.toneDark .ledgerHead,
-.toneDark .summary,
-.toneDark .rows::before {
-  border-color: rgba(255, 255, 255, 0.16);
-  background: none;
-}
-.toneDark .rows::before {
-  background: rgba(255, 255, 255, 0.18);
-}
-.toneDark .summary {
-  border-top-color: rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.03);
-}
-.toneDark .ledgerHead {
-  border-bottom-color: rgba(255, 255, 255, 0.16);
-}
-
-.toneDark .ledgerLabel,
-.toneDark .time,
-.toneDark .detail,
-.toneDark .summaryItem {
-  color: rgba(255, 255, 255, 0.58);
-}
-.toneDark .ledgerSubject,
-.toneDark .event {
-  color: #fff;
-}
-.toneDark .summaryItem:last-child {
-  color: var(--accent-2);
-}
-
-.toneDark .node {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: var(--ink);
-  box-shadow: 0 0 0 3px var(--ink);
-}
-.toneDark .channel {
-  border-color: rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.58);
-}
-
-.toneDark .rowHighlight .event {
-  color: var(--accent-2);
-}
-.toneDark .rowHighlight .node {
-  border-color: var(--accent-2);
-  background: var(--accent-2);
-}
-.toneDark .rowHighlight .channel {
-  color: var(--accent-2);
-  border-color: rgba(91, 224, 220, 0.4);
 }
