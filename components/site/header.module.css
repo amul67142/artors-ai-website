@@ -1,0 +1,242 @@
+/* ============================================================
+   HEADER  —  wordmark left, links right, hairline on scroll
+   ============================================================ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--paper);
+  transition:
+    transform 0.35s var(--ease-reveal),
+    border-color 0.35s var(--ease-reveal);
+  border-bottom: 1px solid transparent;
+}
+
+/* The rule only appears once the page has moved, so the top of the
+   site stays a clean sheet of paper. */
+.header[data-scrolled="true"] {
+  border-bottom-color: var(--line);
+}
+
+/* Out of the way going down, back on the way up. */
+.header[data-hidden="true"] {
+  transform: translateY(-100%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 64px;
+}
+
+.logo {
+  display: block;
+  flex: none;
+  line-height: 0;
+}
+.logo img {
+  display: block;
+  width: auto;
+  height: 24px;
+}
+
+/* ---------- desktop nav ------------------------------------------- */
+
+.nav {
+  display: none;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Same label roll as the buttons — the site's one signature
+   micro-interaction, reused rather than reinvented. */
+.link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  padding-block: 4px;
+}
+
+.mask {
+  display: block;
+  height: 14px;
+  overflow: clip;
+}
+.track {
+  display: block;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+.label {
+  display: block;
+  white-space: pre;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+.link:hover .track,
+.link:focus-visible .track {
+  transform: translateY(-14px);
+}
+
+/* The current section stays marked while you are inside it. */
+.link[aria-current="page"] .label {
+  color: var(--muted);
+}
+
+.arrow {
+  display: block;
+  width: 11px;
+  height: 11px;
+  flex: none;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+.link:hover .arrow,
+.link:focus-visible .arrow {
+  transform: translate(3px, -3px);
+}
+
+/* ---------- mobile toggle ----------------------------------------- */
+
+.toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  padding: 0 10px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.toggle span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--ink);
+  transition: transform 0.3s var(--ease-reveal), opacity 0.2s linear;
+}
+
+.toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+.toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* ---------- mobile panel ------------------------------------------ */
+
+.panel {
+  /* Anchored to the header rather than the viewport: a fixed element
+     inside a transformed ancestor resolves against that ancestor, so
+     absolute positioning here is both simpler and predictable. */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: calc(100dvh - 64px);
+  z-index: 49;
+  background: var(--paper);
+  padding: 8px var(--gutter) 40px;
+  overflow-y: auto;
+  /* Collapsed by height rather than display, so it can animate and
+     stays out of the tab order when shut. */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.28s var(--ease-reveal),
+    transform 0.28s var(--ease-reveal),
+    visibility 0s linear 0.28s;
+}
+.panel[data-open="true"] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.panelList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.panelItem {
+  border-bottom: 1px solid var(--line);
+}
+
+.panelLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.panelArrow {
+  width: 14px;
+  height: 14px;
+  color: var(--muted);
+  flex: none;
+}
+
+/* ---------- responsive -------------------------------------------- */
+
+@media (min-width: 900px) {
+  .bar {
+    height: 76px;
+  }
+  .logo img {
+    height: 26px;
+  }
+  .nav {
+    display: block;
+  }
+  .toggle,
+  .panel {
+    display: none;
+  }
+}
+
+/* ---------- reduced motion ---------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .track,
+  .arrow,
+  .toggle span,
+  .panel {
+    transition-duration: 0.01ms;
+  }
+  .header[data-hidden="true"] {
+    transform: none;
+  }
+}

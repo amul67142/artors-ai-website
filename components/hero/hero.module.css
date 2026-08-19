@@ -7,8 +7,9 @@
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 88dvh;
-  padding-block: 96px 72px;
+  /* Discounts the sticky header so the hero still resolves in one screen. */
+  min-height: calc(88dvh - 64px);
+  padding-block: 56px 64px;
   overflow: hidden;
 }
 
@@ -312,7 +313,8 @@
 
 @media (min-width: 810px) {
   .hero {
-    padding-block: 120px 88px;
+    min-height: calc(88dvh - 76px);
+    padding-block: 72px 80px;
   }
   .setup {
     max-width: none;

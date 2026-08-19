@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/site/Header";
 
 // Variable font — one file, full weight range. The design system only
 // ever uses 600 and 700 (docs/DESIGN.md §2).
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#main" className="skip-link">
           Skip to content
         </a>
+        <Header />
         {children}
       </body>
     </html>
