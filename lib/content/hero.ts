@@ -4,42 +4,35 @@
  */
 
 /**
- * A run of sub-headline copy. `em` lifts the phrase to full ink and 700,
- * so the paragraph can be skimmed on the key phrases alone before it is
- * read as a sentence.
+ * A run of sub-headline copy. `em` lifts the phrase to 700 so the three
+ * outcomes read as a set without the paragraph needing to be long.
  */
 export type SubSegment = { text: string; em?: boolean };
 
 export const hero = {
-  eyebrow: "AI Agency · Gurugram",
-
-  /** Setup line — quiet in tone, but full ink. */
+  /** Setup line — quiet in tone, full ink. */
   headlineSetup: "We're not here to impress you with AI.",
   /** Payoff — display size, uppercase, carries the gradient. */
   headlinePayoff: "We're here to grow your numbers.",
 
   /**
-   * Emphasis is rationed to five phrases: who we are, the three outcomes
-   * (kept parallel so they read as a triad), and the industry-agnostic
-   * promise. Everything else stays muted connective tissue.
+   * Deliberately short. The hero states what we are and what changes;
+   * the detail belongs further down the page, not in the first screen.
    */
   sub: [
-    { text: "Artors builds AI systems", em: true },
-    { text: " that " },
-    { text: "add revenue", em: true },
+    { text: "A full-service AI agency. We build systems that run the repetitive work end to end — so " },
+    { text: "revenue goes up", em: true },
     { text: ", " },
-    { text: "remove cost", em: true },
+    { text: "cost comes down", em: true },
     { text: ", and " },
-    { text: "give your team back its hours", em: true },
-    { text: " — across sales, operations, marketing and support. " },
-    { text: "Whatever your industry", em: true },
-    { text: ", we start with the number you want moved, then build the system that moves it." },
+    { text: "your team gets its hours back", em: true },
+    { text: "." },
   ] satisfies SubSegment[],
 
   primaryCta: { label: "Book a Free Strategy Call", href: "/contact" },
   secondaryCta: { label: "See What We Build", href: "/services" },
 
-  trustLine: "Gurugram-based · Working across India · Systems live in days, not months",
+  trustLine: "Gurugram · Working across India · Live in days",
 } as const;
 
 export type LedgerRow = {
@@ -62,6 +55,10 @@ export const ledger = {
   note: "Recorded",
   href: "/work",
 
+  /**
+   * Five steps, not six. Enough to show four systems handing work to
+   * each other; any more and the panel starts reading as a log file.
+   */
   rows: [
     {
       time: "09:42:07",
@@ -82,15 +79,9 @@ export const ledger = {
       channel: "Voice",
     },
     {
-      time: "09:43:20",
-      event: "Slot offered",
-      detail: "Tue 16:30",
-      channel: "Calendar",
-    },
-    {
       time: "09:43:31",
       event: "Appointment booked",
-      detail: "confirmed on WhatsApp",
+      detail: "Tue 16:30, confirmed",
       channel: "WhatsApp",
       highlight: true,
     },
@@ -102,5 +93,5 @@ export const ledger = {
     },
   ] satisfies LedgerRow[],
 
-  summary: ["6 steps", "85 seconds", "0 human minutes"],
+  summary: ["5 steps", "85 seconds", "0 human minutes"],
 } as const;

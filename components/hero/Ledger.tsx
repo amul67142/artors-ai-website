@@ -21,7 +21,7 @@ import s from "./hero.module.css";
 export default function Ledger() {
   return (
     <figure className={s.ledgerWrap}>
-      <Link href={ledger.href} className={s.ledger} aria-label="See the full sample run">
+      <Link href={ledger.href} className={s.ledger} aria-label="Sample run: a clinic receptionist system handling a call end to end. See the full run.">
         <div className={s.ledgerHead}>
           <p className={s.ledgerLabel}>
             {ledger.label} — {ledger.note}
@@ -53,10 +53,6 @@ export default function Ledger() {
           ))}
         </div>
       </Link>
-
-      <figcaption className={`t-caption ${s.caption}`}>
-        A real run of one of our systems, start to finish. No human touched it.
-      </figcaption>
     </figure>
   );
 }

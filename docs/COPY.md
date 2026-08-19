@@ -41,16 +41,20 @@ AI chatbot development · business process automation · AI consulting India · 
 **Headline**
 We're Not Here to Impress You With AI. We're Here to Grow Your Numbers.
 
-**Sub-headline**
-Artors builds AI systems that add revenue, remove cost, and give your team back its hours —
-across sales, operations, marketing and support. Whatever your industry, we start with the
-number you want moved, then build the system that moves it.
+**Sub-headline** — short by design. Emphasis falls on the three outcomes only.
+A full-service AI agency. We build systems that run the repetitive work end to end — so
+**revenue goes up**, **cost comes down**, and **your team gets its hours back**.
 
 **Primary button** — Book a Free Strategy Call
 **Secondary button** — See What We Build
 
 **Trust line (under buttons)**
-Gurugram-based · Working across India · Systems live in days, not months
+Gurugram · Working across India · Live in days
+
+> The hero is kept deliberately sparse — four blocks in the left column and nothing else.
+> Cut from an earlier draft: the "AI Agency · Gurugram" eyebrow, since the headline and sub
+> establish both already, and the long four-clause sub-headline. Six stacked blocks read as
+> clutter. Detail belongs further down the page, not in the first screen.
 
 ---
 

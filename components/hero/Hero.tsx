@@ -49,11 +49,6 @@ export default function Hero() {
     <section className={s.hero}>
       <div className={`shell ${s.grid}`}>
         <div>
-          <div className={`${s.eyebrow} enter`} style={{ "--i": 0 } as React.CSSProperties}>
-            <span className={s.dot} aria-hidden="true" />
-            <p className="t-eyebrow">{hero.eyebrow}</p>
-          </div>
-
           {/* One h1. The two movements are spans, so the heading still
               reads as a single sentence to screen readers. */}
           <h1>
