@@ -1,0 +1,173 @@
+/* ============================================================
+   WHAT WE DO  —  the AGR services grammar. Seven index rows:
+   number, uppercase title + result line, three micro-items.
+   Hairlines are structure inside the list; the section itself
+   separates by air.
+   ============================================================ */
+
+.section {
+  padding-block: 40px 136px;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 32px;
+  margin-bottom: 40px;
+}
+
+.label {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.intro {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+}
+
+/* ---------- rows ----------------------------------------------------- */
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.rowWrap {
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 26px 4px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+
+.main {
+  display: block;
+}
+
+.titleLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title {
+  display: block;
+  font-size: clamp(20px, 2.4vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+
+.arrow {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  color: var(--accent);
+  opacity: 0;
+  transform: translate(-6px, 6px);
+  transition:
+    opacity var(--dur-btn) var(--ease-btn),
+    transform var(--dur-btn) var(--ease-btn);
+}
+
+.result {
+  display: block;
+  margin-top: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+}
+
+/* Three micro-deliverables, stacked like AGR's. */
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.item {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+
+@media (hover: hover) {
+  .row:hover .title,
+  .row:focus-visible .title {
+    transform: translateX(10px);
+  }
+  .row:hover .arrow,
+  .row:focus-visible .arrow {
+    opacity: 1;
+    transform: none;
+  }
+  .row:hover .num,
+  .row:focus-visible .num {
+    color: var(--accent);
+  }
+  .row:hover .item {
+    color: var(--ink);
+  }
+}
+
+/* ---------- responsive ----------------------------------------------- */
+
+@media (min-width: 860px) {
+  .row {
+    grid-template-columns: 56px 1fr 240px;
+    align-items: start;
+    column-gap: 24px;
+    padding: 30px 4px;
+  }
+  .num {
+    padding-top: 6px;
+  }
+  .items {
+    padding-top: 4px;
+  }
+}
+
+/* ---------- reduced motion ------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .title,
+  .arrow,
+  .num,
+  .item {
+    transition: none;
+  }
+}

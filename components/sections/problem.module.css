@@ -57,8 +57,8 @@
   .word {
     animation: wordInk linear both;
     animation-timeline: --problem;
-    animation-range: cover calc(2% + var(--i) * 2.4%) cover
-      calc(14% + var(--i) * 2.4%);
+    animation-range: cover calc(6% + var(--i) * 2.6%) cover
+      calc(22% + var(--i) * 2.6%);
   }
   .wordAccent {
     animation-name: wordAccent;

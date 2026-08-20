@@ -14,11 +14,14 @@ export type Pillar = {
   blurb: string;
   /** The result it is bought for. */
   result: string;
+  /** Three micro-deliverables, 2–3 words each (AGR services rows). */
+  items: [string, string, string];
 };
 
 export const pillars = [
   {
     index: "01",
+    items: ["Embedded AI features", "Inside existing products", "Production-ready"],
     title: "AI Application Development",
     href: "/services/ai-application-development",
     blurb:
@@ -27,6 +30,7 @@ export const pillars = [
   },
   {
     index: "02",
+    items: ["Ops & finance flows", "Systems connected", "Work runs itself"],
     title: "Business Process Automation",
     href: "/services/business-process-automation",
     blurb:
@@ -35,6 +39,7 @@ export const pillars = [
   },
   {
     index: "03",
+    items: ["Multi-step agents", "Approval gates", "Research to action"],
     title: "Custom AI Agents",
     href: "/services/ai-agents",
     blurb:
@@ -43,6 +48,7 @@ export const pillars = [
   },
   {
     index: "04",
+    items: ["Voice & WhatsApp", "EN · HI · Hinglish", "Books around the clock"],
     title: "Conversational AI — Voice & Chat",
     href: "/services/conversational-ai",
     blurb:
@@ -51,6 +57,7 @@ export const pillars = [
   },
   {
     index: "05",
+    items: ["Lead generation", "Full-funnel ads", "SEO content"],
     title: "AI Marketing & Growth Systems",
     href: "/services/marketing-growth",
     blurb:
@@ -59,6 +66,7 @@ export const pillars = [
   },
   {
     index: "06",
+    items: ["Brand & product video", "Avatar-led content", "One asset, thirty out"],
     title: "AI Content & Video",
     href: "/services/content-video",
     blurb:
@@ -67,6 +75,7 @@ export const pillars = [
   },
   {
     index: "07",
+    items: ["AI audits", "Roadmaps & training", "Fractional AI officer"],
     title: "AI Consulting & Enablement",
     href: "/services/consulting",
     blurb:

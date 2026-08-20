@@ -1,0 +1,98 @@
+/* ============================================================
+   WHO WE ARE  —  the interstitial. Label, one statement that
+   fills on scroll, one link. Air does the rest.
+   ============================================================ */
+
+.section {
+  padding-block: 128px 136px;
+  view-timeline: --who block;
+}
+
+.label {
+  margin: 0 0 22px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.statement {
+  font-size: clamp(30px, 4.4vw, 58px);
+  font-weight: 700;
+  letter-spacing: -0.038em;
+  line-height: 1.12;
+  margin: 0 0 36px;
+  max-width: 24ch;
+}
+
+.word {
+  color: color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+@supports (animation-timeline: view()) {
+  .word {
+    animation: wordInk linear both;
+    animation-timeline: --who;
+    animation-range: cover calc(4% + var(--i) * 1.4%) cover
+      calc(16% + var(--i) * 1.4%);
+  }
+  .wordAccent {
+    animation-name: wordAccent;
+  }
+}
+@supports not (animation-timeline: view()) {
+  .word {
+    color: var(--ink);
+  }
+  .wordAccent {
+    color: var(--accent);
+  }
+}
+
+@keyframes wordInk {
+  to {
+    color: var(--ink);
+  }
+}
+@keyframes wordAccent {
+  to {
+    color: var(--accent);
+  }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.linkArrow {
+  width: 12px;
+  height: 12px;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+.link:hover .linkArrow,
+.link:focus-visible .linkArrow {
+  transform: translate(3px, -3px);
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word,
+  .wordAccent {
+    animation: none;
+    color: var(--ink);
+  }
+  .wordAccent {
+    color: var(--accent);
+  }
+  .linkArrow {
+    transition: none;
+  }
+}

@@ -428,8 +428,8 @@ body {
   .float-in {
     animation: floatIn linear both;
     animation-timeline: view();
-    animation-range: entry 0% entry 68%;
-    --float: calc(52px + var(--i, 0) * 16px);
+    animation-range: entry 0% cover 42%;
+    --float: calc(64px + var(--i, 0) * 22px);
   }
 }
 
