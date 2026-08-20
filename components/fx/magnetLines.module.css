@@ -1,0 +1,28 @@
+/* Magnet lines: a quiet field of hairline bars. Rotation rides one
+   CSS variable per bar; the short transition smooths the follow. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
+  place-items: center;
+  width: 100%;
+  aspect-ratio: calc(var(--cols) / var(--rows));
+}
+
+.grid span {
+  display: block;
+  width: 1.5px;
+  height: 20px;
+  border-radius: 1px;
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+  transform: rotate(var(--r, 0deg));
+  transition: transform 90ms linear;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid span {
+    transition: none;
+  }
+}

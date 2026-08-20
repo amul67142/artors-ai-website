@@ -6,7 +6,7 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: var(--paper);
+  background: color-mix(in srgb, var(--paper) 80%, transparent);
   transition:
     transform 0.35s var(--ease-reveal),
     border-color 0.35s var(--ease-reveal);

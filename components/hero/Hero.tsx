@@ -47,6 +47,13 @@ export default function Hero() {
 
   return (
     <section className={s.hero}>
+      {/* Hairline concentric rings in the wash corner — the logo's node
+          motif at architectural scale. Decorative, gated off-screen. */}
+      <InViewGate className={s.ringsGate}>
+        <div className={s.rings} aria-hidden="true">
+          <span className={s.ringNode} />
+        </div>
+      </InViewGate>
       <div className={`shell ${s.grid}`}>
         <div>
           {/* One h1. The two movements are spans, so the heading still

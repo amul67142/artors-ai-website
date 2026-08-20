@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { who } from "@/lib/content/about";
+import MagnetLines from "@/components/fx/MagnetLines";
 import s from "./who.module.css";
 
 /**
@@ -50,15 +51,18 @@ function StatementWords({ text }: { text: string }) {
 export default function WhoWeAre() {
   return (
     <section className={s.section} aria-labelledby="who-heading">
-      <div className="shell">
-        <p className={`${s.label} float-in`}>{who.label}</p>
-        <h2 id="who-heading" className={s.statement}>
-          <StatementWords text={who.statement} />
-        </h2>
-        <Link href={who.link.href} className={`${s.link} float-in`}>
-          {who.link.label}
-          <Arrow className={s.linkArrow} />
-        </Link>
+      <div className={`shell ${s.grid}`}>
+        <div>
+          <p className={`${s.label} float-in`}>{who.label}</p>
+          <h2 id="who-heading" className={s.statement}>
+            <StatementWords text={who.statement} />
+          </h2>
+          <Link href={who.link.href} className={`${s.link} float-in`}>
+            {who.link.label}
+            <Arrow className={s.linkArrow} />
+          </Link>
+        </div>
+        <MagnetLines className={s.magnet} />
       </div>
     </section>
   );

@@ -8,6 +8,29 @@
   view-timeline: --who block;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+/* The field only exists where a pointer does. */
+.magnet {
+  display: none;
+}
+
+@media (min-width: 1000px) and (hover: hover) {
+  .grid {
+    grid-template-columns: 1fr 300px;
+    gap: 96px;
+  }
+  .magnet {
+    display: grid;
+    width: 300px;
+  }
+}
+
 .label {
   margin: 0 0 22px;
   font-size: 15px;

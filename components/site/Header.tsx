@@ -76,6 +76,8 @@ export default function Header() {
       className={s.header}
       data-scrolled={scrolled}
       data-hidden={hidden && !open}
+    // Inline: the CSS pipeline strips backdrop-filter from modules.
+    style={{ backdropFilter: "blur(12px) saturate(150%)", WebkitBackdropFilter: "blur(12px) saturate(150%)" }}
     >
       <div className={s.bar}>
         <Link href="/" className={s.logo} aria-label="Artors home">
