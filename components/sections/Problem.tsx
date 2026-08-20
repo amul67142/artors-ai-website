@@ -4,13 +4,13 @@ import { problem, leaks } from "@/lib/content/problem";
 import s from "./problem.module.css";
 
 /**
- * Section 2 — the problem, as a scroll-fill statement and a leak board.
+ * Section 2 — the problem, in the AGR section grammar: label + count,
+ * a scroll-fill statement, one caption line, then index rows carrying
+ * 2–4 words each. The sentence lives only in the hover reveal.
  *
- * The statement fills word-by-word from pale to ink as the section
- * crosses the viewport (CSS scroll-driven animation; the ScrollReveal
- * idea from React Bits, without the library). The five leaks are
- * ledger-style rows: hover or focus opens the fix and the pillar link;
- * on touch the fix is simply always visible.
+ * The statement fill is a CSS scroll-driven animation on a named view
+ * timeline — no JS, no scroll listener. Browsers without
+ * animation-timeline see the statement in full ink.
  */
 
 function Arrow({ className }: { className?: string }) {
@@ -30,9 +30,10 @@ function Arrow({ className }: { className?: string }) {
 
 /** Parses "[bracketed]" words into accent-filled ones. */
 function StatementWords({ text }: { text: string }) {
+  const parts = text.split(" ");
   return (
     <>
-      {text.split(" ").map((raw, i) => {
+      {parts.map((raw, i) => {
         const accent = raw.startsWith("[");
         const word = raw.replace(/[[\]]/g, "");
         return (
@@ -43,7 +44,7 @@ function StatementWords({ text }: { text: string }) {
             >
               {word}
             </span>
-            {i < text.split(" ").length - 1 ? " " : null}
+            {i < parts.length - 1 ? " " : null}
           </span>
         );
       })}
@@ -56,49 +57,39 @@ export default function Problem() {
     <section className={s.section} aria-labelledby="problem-heading">
       <div className={`shell ${s.grid}`}>
         <div className={s.left}>
+          <p className={s.labelRow}>
+            <span>{problem.label}</span>
+            <span className={s.count}>({leaks.length})</span>
+          </p>
           <h2 id="problem-heading" className={s.statement}>
             <StatementWords text={problem.statement} />
           </h2>
-          <p className={`t-caption ${s.callout}`}>{problem.callout}</p>
+          <p className={`t-caption ${s.caption}`}>{problem.caption}</p>
         </div>
 
-        <div>
-          <ul className={s.board}>
-            {leaks.map((item, i) => (
-              <li key={item.href} className={s.rowWrap}>
-                <Reveal i={i}>
-                  <Link href={item.href} className={s.row}>
-                    <span className={s.rowHead}>
-                      <span className={s.marker} aria-hidden="true" />
-                      <span className={s.leak}>{item.leak}</span>
-                      <span className={s.tag}>{item.tag}</span>
-                    </span>
-                    <span className={s.fixWrap}>
-                      <span className={s.fixClip}>
-                        <span className={s.fix}>
-                          <Arrow className={s.fixArrow} />
-                          <span>
-                            <span className={s.fixLead}>Instead: </span>
-                            {item.fix}
-                          </span>
-                        </span>
+        <ul className={s.board}>
+          {leaks.map((item, i) => (
+            <li key={item.href} className={s.rowWrap}>
+              <Reveal i={i}>
+                <Link href={item.href} className={s.row}>
+                  <span className={s.rowHead}>
+                    <span className={s.num}>{item.num}</span>
+                    <span className={s.title}>{item.title}</span>
+                    <span className={s.tag}>{item.tag}</span>
+                  </span>
+                  <span className={s.fixWrap}>
+                    <span className={s.fixClip}>
+                      <span className={s.fix}>
+                        <Arrow className={s.fixArrow} />
+                        {item.fix}
                       </span>
                     </span>
-                  </Link>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-
-          <Reveal i={2}>
-            <p className={`t-body ${s.closing}`}>
-              <span className={s.closingEm}>
-                None of it appears on a P&L as a line item.
-              </span>{" "}
-              All of it is costing you money.
-            </p>
-          </Reveal>
-        </div>
+                  </span>
+                </Link>
+              </Reveal>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

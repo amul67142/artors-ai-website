@@ -1,28 +1,31 @@
 /**
  * Section 2 — the problem. Source: docs/COPY.md §2.
+ * Register: AGR section grammar — label + count, one-line context,
+ * then index rows that carry 2–4 words each. The sentence lives in
+ * the hover reveal, nowhere else.
  *
- * Ordering rule (see memory + COPY.md note): the back-office leak
- * leads; the missed call is the LAST example, never the first.
+ * Ordering rule (memory + COPY.md): back-office leaks lead; the
+ * missed call is the LAST example, never the first.
  */
 
 export const problem = {
+  label: "The problem",
+
   /**
    * The statement, filled word-by-word on scroll. Words in [brackets]
    * fill to accent instead of ink.
    */
   statement: "Every business is [leaking] [money] in places nobody is watching.",
 
-  callout:
-    "Most businesses run on manual work they've stopped noticing, because it's always been that way.",
-
-  closing:
-    "None of it appears on a P&L as a line item. All of it is costing you money.",
+  /** One line. The P&L line won over the longer callout. */
+  caption: "None of it shows up on a P&L. All of it costs you money.",
 } as const;
 
 export type Leak = {
-  /** The leak, phrased as the reader's own day. */
-  leak: string;
-  /** What Artors builds instead. */
+  num: string;
+  /** 2–4 words, set uppercase. The title IS the leak. */
+  title: string;
+  /** The fix, one short line, revealed on hover. */
   fix: string;
   /** Pillar tag, echoing the hero ledger's channel tags. */
   tag: string;
@@ -31,32 +34,37 @@ export type Leak = {
 
 export const leaks = [
   {
-    leak: "Hours lost to copy-pasting between tools that don't talk to each other.",
+    num: "01",
+    title: "Copy-paste operations",
     fix: "We connect the stack. Data moves itself.",
     tag: "Process Automation",
     href: "/services/business-process-automation",
   },
   {
-    leak: "Reports nobody has time to build, so decisions run on last month's numbers.",
-    fix: "Agents that assemble your numbers overnight, every night.",
+    num: "02",
+    title: "Reports nobody builds",
+    fix: "Your numbers, assembled overnight.",
     tag: "AI Agents",
     href: "/services/ai-agents",
   },
   {
-    leak: "The same content written five times for five channels.",
-    fix: "One asset in, thirty pieces out, in every language you sell in.",
+    num: "03",
+    title: "Content written five times",
+    fix: "One asset in, thirty out, every language.",
     tag: "Content & Video",
     href: "/services/content-video",
   },
   {
-    leak: "Follow-ups that depend on someone remembering.",
-    fix: "Sequences that never forget, across email, calls and WhatsApp.",
+    num: "04",
+    title: "Forgotten follow-ups",
+    fix: "Sequences that never forget.",
     tag: "Growth Systems",
     href: "/services/marketing-growth",
   },
   {
-    leak: "Enquiries at 10 PM answered the next afternoon. Calls in the rush hour missed.",
-    fix: "Answered, qualified and booked, any hour, in EN, HI or Hinglish.",
+    num: "05",
+    title: "Calls after hours",
+    fix: "Answered, qualified and booked, any hour.",
     tag: "Conversational AI",
     href: "/services/conversational-ai",
   },
