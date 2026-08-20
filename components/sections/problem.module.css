@@ -12,7 +12,6 @@
 .section {
   position: relative;
   padding-block: 104px 120px;
-  border-top: 1px solid var(--line);
   view-timeline: --problem block;
 }
 
