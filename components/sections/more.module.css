@@ -238,6 +238,7 @@
 }
 
 .flowPct {
+  display: block;
   margin: 0 0 9px;
   font-size: 13px;
   font-weight: 600;
@@ -245,6 +246,7 @@
 }
 
 .flowBar {
+  display: block;
   height: 7px;
   width: var(--pct);
   border-radius: 99px;
