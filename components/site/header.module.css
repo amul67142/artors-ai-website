@@ -74,7 +74,7 @@
 
 .mask {
   display: block;
-  height: 17px;
+  height: 14px;
   overflow: clip;
 }
 .track {
@@ -84,15 +84,15 @@
 .label {
   display: block;
   white-space: pre;
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   letter-spacing: -0.03em;
-  line-height: 17px;
+  line-height: 14px;
   text-transform: uppercase;
 }
 .link:hover .track,
 .link:focus-visible .track {
-  transform: translateY(-17px);
+  transform: translateY(-14px);
 }
 
 /* The current section stays marked while you are inside it. */
@@ -102,8 +102,8 @@
 
 .arrow {
   display: block;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
   flex: none;
   transition: transform var(--dur-btn) var(--ease-btn);
 }
