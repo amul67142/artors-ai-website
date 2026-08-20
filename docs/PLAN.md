@@ -22,6 +22,7 @@ site as *illustrations of the work*, never as the definition of the business.
 **Source of truth for copy:** `docs/COPY.md`.
 **Source of truth for what we sell and for what price:** `docs/SERVICES.md` — internal.
 **Source of truth for how it looks and moves:** `docs/DESIGN.md`.
+**Backend design:** `docs/BACKEND.md` — lead pipeline, schema, admin, phases.
 
 ### How the source documents were resolved
 
