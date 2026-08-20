@@ -30,6 +30,8 @@
   justify-content: space-between;
   gap: 24px;
   height: 64px;
+  width: 100%;
+  padding-inline: var(--gutter);
 }
 
 .logo {
@@ -52,7 +54,7 @@
 .list {
   display: flex;
   align-items: center;
-  gap: 26px;
+  gap: 22px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -72,7 +74,7 @@
 
 .mask {
   display: block;
-  height: 14px;
+  height: 17px;
   overflow: clip;
 }
 .track {
@@ -82,15 +84,15 @@
 .label {
   display: block;
   white-space: pre;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 14px;
+  line-height: 17px;
   text-transform: uppercase;
 }
 .link:hover .track,
 .link:focus-visible .track {
-  transform: translateY(-14px);
+  transform: translateY(-17px);
 }
 
 /* The current section stays marked while you are inside it. */
@@ -100,8 +102,8 @@
 
 .arrow {
   display: block;
-  width: 11px;
-  height: 11px;
+  width: 13px;
+  height: 13px;
   flex: none;
   transition: transform var(--dur-btn) var(--ease-btn);
 }

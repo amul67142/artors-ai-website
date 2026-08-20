@@ -57,10 +57,7 @@ export default function Problem() {
     <section className={s.section} aria-labelledby="problem-heading">
       <div className={`shell ${s.grid}`}>
         <div className={s.left}>
-          <p className={s.labelRow}>
-            <span>{problem.label}</span>
-            <span className={s.count}>({leaks.length})</span>
-          </p>
+          <p className={s.labelRow}>{problem.label}</p>
           <h2 id="problem-heading" className={s.statement}>
             <StatementWords text={problem.statement} />
           </h2>
