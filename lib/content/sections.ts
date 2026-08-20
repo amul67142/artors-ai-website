@@ -16,32 +16,30 @@ export const proof = {
 } as const;
 
 export const process = {
-  label: "How we work",
-  meta: ["4 steps", "Live in days"],
+  heading: "Flow",
+  intro: "How we turn one strategy call into a system that runs the work itself.",
+  metaLeft: { k: "Process", v: "4 steps" },
+  metaRight: { k: "Duration", v: "Days, not months" },
   steps: [
     {
-      num: "01",
-      title: "Strategy call",
-      text: "We map where you lose money and time, and what pays back first.",
-      pct: "25%",
+      title: "Map",
+      text: "We find where money and hours leak, and what pays back first.",
+      pct: 25,
     },
     {
-      num: "02",
-      title: "Build & train",
-      text: "Trained on your business, tested on real scenarios.",
-      pct: "50%",
+      title: "Build",
+      text: "Your system, trained on your business, tested on real scenarios.",
+      pct: 50,
     },
     {
-      num: "03",
-      title: "Go live",
-      text: "Every call, action and booking logged from day one.",
-      pct: "75%",
+      title: "Launch",
+      text: "Live in days. Every call, action and booking logged.",
+      pct: 75,
     },
     {
-      num: "04",
-      title: "Optimise & scale",
-      text: "We stay on it. An outcome, not a handoff.",
-      pct: "100%",
+      title: "Scale",
+      text: "We stay on it and expand what works. An outcome, not a handoff.",
+      pct: 100,
     },
   ],
 } as const;

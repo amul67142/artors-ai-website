@@ -121,91 +121,167 @@
   color: var(--accent);
 }
 
-/* ---------- PROCESS -------------------------------------------------- */
+/* ---------- FLOW (process) -----------------------------------------
+   The AGR FLOW anatomy: giant heading left, small intro right, a
+   PROCESS/DURATION meta rail over a hairline, then four columns
+   with vertical hairlines, stepped downward like a staircase.
+   Column two carries the technical-flow card. Percent bars draw on
+   their own view timelines.                                         */
 
 .process {
   padding-block: 40px 132px;
-  view-timeline: --flow block;
 }
 
-.processHead {
+.flowHead {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 12px 32px;
-  margin-bottom: 52px;
+  gap: 24px 48px;
+  margin-bottom: 64px;
 }
 
-.processMeta {
-  display: flex;
-  gap: 28px;
-  font-family: var(--font-mono);
-  font-size: 11px;
+.flowTitle {
+  margin: 0;
+  font-size: clamp(56px, 11vw, 148px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.flowIntro {
+  margin: 0;
+  padding-top: 12px;
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  line-height: 1.5;
+  color: var(--ink);
+  max-width: 24ch;
+}
+
+.flowMeta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px 32px;
+  padding-bottom: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--muted);
 }
-
-/* The track: one hairline with a fill that draws as you scroll. */
-.track {
-  position: relative;
-  height: 1px;
-  background: var(--line);
-  margin-bottom: 30px;
+.flowMeta b {
+  color: var(--ink);
+  font-weight: 700;
 }
 
-.trackFill {
-  position: absolute;
-  inset: 0;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-
-@supports (animation-timeline: view()) {
-  .trackFill {
-    animation: drawTrack linear both;
-    animation-timeline: --flow;
-    animation-range: cover 8% cover 60%;
-  }
-}
-@keyframes drawTrack {
-  to {
-    transform: scaleX(1);
-  }
-}
-
-.steps {
+.flowGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 36px 40px;
+  border-top: 1px solid var(--line);
 }
 
-.stepPct {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
+.flowCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 30px 6px 34px;
+  border-top: 1px solid var(--line);
+}
+.flowCol:first-child {
+  border-top: 0;
 }
 
-.stepTitle {
+/* The card: the AGR gradient tile, carrying our technical flow. */
+.flowCard {
+  width: 152px;
+  aspect-ratio: 150 / 152;
+  border-radius: 18px;
+  margin-bottom: 26px;
+  background: linear-gradient(
+    165deg,
+    var(--accent) 0%,
+    color-mix(in srgb, var(--accent) 45%, var(--accent-2)) 60%,
+    var(--accent-2) 100%
+  );
+  display: grid;
+  place-items: center;
+}
+.flowCard svg {
+  width: 74%;
+  height: auto;
   display: block;
-  margin: 10px 0 10px;
-  font-size: clamp(17px, 1.7vw, 22px);
+}
+
+.flowStepTitle {
+  margin: 0 0 12px;
+  font-size: clamp(20px, 2vw, 27px);
   font-weight: 700;
   letter-spacing: -0.03em;
   text-transform: uppercase;
 }
 
-.stepText {
+.flowText {
   margin: 0;
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
   line-height: 1.55;
   color: var(--muted);
-  max-width: 30ch;
+  max-width: 26ch;
+}
+
+.flowPctWrap {
+  width: 100%;
+  margin-top: 34px;
+}
+
+.flowPct {
+  margin: 0 0 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.flowBar {
+  height: 7px;
+  width: var(--pct);
+  border-radius: 99px;
+  background: var(--ink);
+  transform-origin: left;
+}
+
+@supports (animation-timeline: view()) {
+  .flowBar {
+    animation: barDraw linear both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 90%;
+  }
+}
+@keyframes barDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (min-width: 900px) {
+  .flowGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .flowCol {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+    padding: 44px 28px 40px 26px;
+    /* The staircase. */
+    padding-top: calc(44px + var(--step, 0) * 116px);
+  }
+  .flowPctWrap {
+    margin-top: 96px;
+  }
 }
 
 /* ---------- INDUSTRIES ----------------------------------------------- */
@@ -446,7 +522,7 @@ details[open] .faqIcon::after {
 /* ---------- reduced motion -------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .trackFill {
+  .flowBar {
     animation: none;
     transform: none;
   }

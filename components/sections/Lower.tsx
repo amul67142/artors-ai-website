@@ -63,36 +63,70 @@ export function Proof() {
   );
 }
 
+/** The technical flow inside the gradient tile: input, AI, actions. */
+function FlowMark() {
+  return (
+    <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      {/* input node */}
+      <circle cx="18" cy="20" r="5.5" fill="#fff" />
+      {/* connectors */}
+      <path d="M23 25 L36 39" stroke="#fff" strokeWidth="2" strokeDasharray="3 4" strokeLinecap="round" />
+      <path d="M55 44 L72 28" stroke="#fff" strokeWidth="2" strokeDasharray="3 4" strokeLinecap="round" />
+      <path d="M55 56 L72 72" stroke="#fff" strokeWidth="2" strokeDasharray="3 4" strokeLinecap="round" />
+      {/* the system */}
+      <rect x="34" y="40" width="22" height="18" rx="5" stroke="#fff" strokeWidth="2" />
+      <circle cx="45" cy="49" r="2.4" fill="#fff" />
+      {/* action nodes */}
+      <circle cx="78" cy="23" r="4.5" stroke="#fff" strokeWidth="2" />
+      <circle cx="78" cy="77" r="4.5" stroke="#fff" strokeWidth="2" />
+      {/* logged */}
+      <path d="M40 63 L40 80 L58 80" stroke="#fff" strokeWidth="2" strokeDasharray="3 4" strokeLinecap="round" />
+      <circle cx="63" cy="80" r="3" fill="#fff" />
+    </svg>
+  );
+}
+
 export function Process() {
   return (
     <section className={s.process} aria-labelledby="process-heading">
       <div className="shell">
-        <div className={`${s.processHead} float-in`}>
-          <h2 id="process-heading" className={s.sectionLabel}>
-            {process.label}
+        <div className={`${s.flowHead} float-in`}>
+          <h2 id="process-heading" className={s.flowTitle}>
+            {process.heading}
           </h2>
-          <div className={s.processMeta}>
-            {process.meta.map((m) => (
-              <span key={m}>{m}</span>
-            ))}
-          </div>
+          <p className={s.flowIntro}>{process.intro}</p>
         </div>
 
-        {/* The fill draws left to right as the section scrolls through. */}
-        <div className={s.track} aria-hidden="true">
-          <div className={s.trackFill} />
+        <div className={`${s.flowMeta} float-in`}>
+          <span>
+            {process.metaLeft.k}: <b>{process.metaLeft.v}</b>
+          </span>
+          <span>
+            {process.metaRight.k}: <b>{process.metaRight.v}</b>
+          </span>
         </div>
 
-        <ol className={s.steps}>
+        <ol className={s.flowGrid}>
           {process.steps.map((step, i) => (
             <li
-              key={step.num}
-              className="float-in"
-              style={{ "--i": i } as React.CSSProperties}
+              key={step.title}
+              className={`${s.flowCol} float-in`}
+              style={{ "--step": i, "--i": i } as React.CSSProperties}
             >
-              <span className={s.stepPct}>{step.pct}</span>
-              <span className={s.stepTitle}>{step.title}</span>
-              <p className={s.stepText}>{step.text}</p>
+              {i === 1 && (
+                <span className={s.flowCard} aria-hidden="true">
+                  <FlowMark />
+                </span>
+              )}
+              <span className={s.flowStepTitle}>{step.title}</span>
+              <p className={s.flowText}>{step.text}</p>
+              <span className={s.flowPctWrap}>
+                <span className={s.flowPct}>{step.pct}%</span>
+                <span
+                  className={s.flowBar}
+                  style={{ "--pct": `${step.pct}%` } as React.CSSProperties}
+                />
+              </span>
             </li>
           ))}
         </ol>
