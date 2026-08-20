@@ -1,0 +1,73 @@
+/* Footer: quiet close. Sits on paper below the dark CTA band. */
+
+.footer {
+  padding-block: 56px 88px;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px 48px;
+}
+
+.lockup {
+  display: block;
+  line-height: 0;
+}
+.lockup img {
+  width: auto;
+  height: 52px;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.link:hover,
+.link:focus-visible {
+  color: var(--ink);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 32px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.line {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

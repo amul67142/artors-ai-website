@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-type Variant = "primary" | "ghost";
+type Variant = "primary" | "ghost" | "invert";
 
 type Props = {
   href: string;
@@ -35,7 +35,7 @@ export default function Button({
   return (
     <Link
       href={href}
-      className={["btn", variant === "ghost" ? "btn--ghost" : "", className]
+      className={["btn", variant === "ghost" ? "btn--ghost" : "", variant === "invert" ? "btn--invert" : "", className]
         .filter(Boolean)
         .join(" ")}
     >

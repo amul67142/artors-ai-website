@@ -1,0 +1,459 @@
+/* ============================================================
+   LOWER SECTIONS  —  proof, process, industries, engagements,
+   FAQ, CTA band. One file; classes are namespaced per section.
+   Sections separate by air; hairlines are structure only.
+   ============================================================ */
+
+.sectionLabel {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.intro {
+  margin: 10px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+}
+
+/* ---------- PROOF --------------------------------------------------- */
+
+.proof {
+  padding-block: 40px 128px;
+}
+
+.proofStatement {
+  font-size: clamp(26px, 3.2vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  margin: 20px 0 44px;
+  max-width: 24ch;
+}
+
+.proofGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 40px;
+}
+
+.proofCell {
+  border-top: 1px solid var(--line);
+  padding: 20px 4px 26px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.proofNum {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+
+.proofTitle {
+  display: block;
+  margin-top: 12px;
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+
+.proofNote {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.proofCell:hover .proofNum {
+  color: var(--accent);
+}
+.proofCell:hover .proofTitle {
+  transform: translateX(8px);
+}
+
+.proofFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px 32px;
+  margin-top: 36px;
+}
+
+.proofClosing {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.inlineLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.inlineArrow {
+  width: 12px;
+  height: 12px;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+.inlineLink:hover .inlineArrow {
+  transform: translate(3px, -3px);
+  color: var(--accent);
+}
+
+/* ---------- PROCESS -------------------------------------------------- */
+
+.process {
+  padding-block: 40px 132px;
+  view-timeline: --flow block;
+}
+
+.processHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 32px;
+  margin-bottom: 52px;
+}
+
+.processMeta {
+  display: flex;
+  gap: 28px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* The track: one hairline with a fill that draws as you scroll. */
+.track {
+  position: relative;
+  height: 1px;
+  background: var(--line);
+  margin-bottom: 30px;
+}
+
+.trackFill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@supports (animation-timeline: view()) {
+  .trackFill {
+    animation: drawTrack linear both;
+    animation-timeline: --flow;
+    animation-range: cover 8% cover 60%;
+  }
+}
+@keyframes drawTrack {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px 40px;
+}
+
+.stepPct {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.stepTitle {
+  display: block;
+  margin: 10px 0 10px;
+  font-size: clamp(17px, 1.7vw, 22px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.stepText {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 30ch;
+}
+
+/* ---------- INDUSTRIES ----------------------------------------------- */
+
+.industries {
+  padding-block: 40px 128px;
+}
+
+.indGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 48px;
+  margin-top: 40px;
+}
+
+.indCell {
+  border-top: 1px solid var(--line);
+  padding: 18px 4px 24px;
+}
+
+.indName {
+  margin: 0;
+  font-size: clamp(17px, 1.7vw, 22px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.indNote {
+  margin: 7px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.indClosing {
+  margin: 40px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  max-width: 44ch;
+}
+
+/* ---------- ENGAGEMENTS ---------------------------------------------- */
+
+.engage {
+  padding-block: 40px 132px;
+}
+
+.engGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+  margin-top: 44px;
+}
+
+.engCol {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+.engTag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.engTitle {
+  margin: 12px 0 22px;
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.engPoints {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+  display: grid;
+  gap: 11px;
+}
+
+.engPoint {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.engPoint::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent);
+  align-self: center;
+}
+
+/* ---------- FAQ ------------------------------------------------------- */
+
+.faq {
+  padding-block: 40px 132px;
+}
+
+.faqList {
+  margin-top: 36px;
+  border-top: 1px solid var(--line);
+}
+
+.faqItem {
+  border-bottom: 1px solid var(--line);
+}
+
+.faqQ {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: baseline;
+  column-gap: 16px;
+  padding: 20px 4px;
+  cursor: pointer;
+  list-style: none;
+}
+.faqQ::-webkit-details-marker {
+  display: none;
+}
+
+.faqNum {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.faqText {
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.faqIcon {
+  align-self: center;
+  width: 12px;
+  height: 12px;
+  position: relative;
+}
+.faqIcon::before,
+.faqIcon::after {
+  content: "";
+  position: absolute;
+  background: var(--ink);
+  transition: transform 0.3s var(--ease-reveal);
+}
+.faqIcon::before {
+  left: 0;
+  top: 5px;
+  width: 12px;
+  height: 1.5px;
+}
+.faqIcon::after {
+  left: 5px;
+  top: 0;
+  width: 1.5px;
+  height: 12px;
+}
+details[open] .faqIcon::after {
+  transform: rotate(90deg);
+}
+
+.faqA {
+  margin: 0;
+  padding: 0 4px 24px 50px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+/* ---------- CTA BAND --------------------------------------------------
+   The one inversion on the page. --accent-2 finally carries text:
+   it is 1.6:1 on white but ~11:1 on ink.                              */
+
+.band {
+  background: var(--ink);
+  color: #fff;
+  padding-block: 108px 116px;
+}
+
+.bandHeadline {
+  margin: 0 0 20px;
+  font-size: clamp(30px, 4.4vw, 58px);
+  font-weight: 700;
+  letter-spacing: -0.038em;
+  line-height: 1.1;
+  max-width: 20ch;
+}
+
+.bandAccent {
+  background: linear-gradient(96deg, #fff 10%, var(--accent-2) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bandSub {
+  margin: 0 0 40px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.62);
+  max-width: 46ch;
+}
+
+/* ---------- responsive ------------------------------------------------ */
+
+@media (min-width: 760px) {
+  .proofGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .indGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .engGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+  }
+}
+
+/* ---------- reduced motion -------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .trackFill {
+    animation: none;
+    transform: none;
+  }
+  .proofTitle,
+  .inlineArrow,
+  .faqIcon::before,
+  .faqIcon::after {
+    transition: none;
+  }
+}

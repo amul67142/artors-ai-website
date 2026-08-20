@@ -451,3 +451,14 @@ body {
     transform: none;
   }
 }
+
+/* Button on dark surfaces. */
+.btn--invert {
+  background: #fff;
+  color: var(--ink);
+}
+.btn--invert:hover,
+.btn--invert:focus-visible {
+  background: var(--accent-2);
+  color: var(--ink);
+}

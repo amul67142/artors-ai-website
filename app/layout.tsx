@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/site/Header";
 import GradualBlur from "@/components/fx/GradualBlur";
+import Footer from "@/components/site/Footer";
 
 // Variable font — one file, full weight range. The design system only
 // ever uses 600 and 700 (docs/DESIGN.md §2).
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <Header />
         {children}
+        <Footer />
         <GradualBlur />
       </body>
     </html>
