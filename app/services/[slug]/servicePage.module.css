@@ -1,0 +1,217 @@
+/* ============================================================
+   SERVICE PAGE  —  head, flow, benefits, deliverables, pager.
+   The lead-form section styles live in lead.module.css.
+   ============================================================ */
+
+.head {
+  padding-top: 140px;
+  padding-bottom: 56px;
+}
+
+.kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin: 0 0 22px;
+}
+
+.kickerLink {
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.kickerLink:hover {
+  color: var(--accent);
+}
+
+.kickerNum {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.title {
+  margin: 0 0 20px;
+  font-size: clamp(32px, 5vw, 68px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  text-transform: uppercase;
+  max-width: 16ch;
+}
+
+.blurb {
+  margin: 0 0 32px;
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.ctas {
+  display: flex;
+  gap: 10px;
+}
+
+/* ---------- flow ----------------------------------------------------- */
+
+.flow {
+  padding-block: 24px 96px;
+}
+
+/* ---------- benefits ------------------------------------------------- */
+
+.benefits {
+  padding-block: 0 120px;
+}
+
+.sectionLabel {
+  margin: 0 0 36px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.benefitGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 44px;
+}
+
+.benefitCell {
+  border-top: 1px solid var(--line);
+  padding: 22px 4px 30px;
+}
+
+.benefitNum {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.benefitTitle {
+  margin: 12px 0 10px;
+  font-size: clamp(17px, 1.7vw, 21px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.benefitText {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 34ch;
+}
+
+/* ---------- deliverables --------------------------------------------- */
+
+.deliverables {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px 28px;
+  border-top: 1px solid var(--line);
+  padding-top: 26px;
+  margin-top: 8px;
+}
+
+.delLabel {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.delItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+
+.delItem {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.result {
+  margin: 0;
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ---------- pager ---------------------------------------------------- */
+
+.pager {
+  padding-bottom: 96px;
+}
+
+.pagerRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 1px solid var(--line);
+  padding-top: 26px;
+}
+
+.pagerLink {
+  text-decoration: none;
+  color: inherit;
+  display: grid;
+  gap: 8px;
+}
+.pagerRight {
+  text-align: right;
+}
+
+.pagerDir {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.pagerTitle {
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.pagerLink:hover .pagerTitle {
+  color: var(--accent);
+}
+
+/* ---------- responsive ----------------------------------------------- */
+
+@media (min-width: 810px) {
+  .head {
+    padding-top: 172px;
+  }
+  .benefitGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kickerLink,
+  .pagerTitle {
+    transition: none;
+  }
+}

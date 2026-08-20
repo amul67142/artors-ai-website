@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/site/Header";
 import GradualBlur from "@/components/fx/GradualBlur";
 import Footer from "@/components/site/Footer";
+import LeadModal from "@/components/lead/LeadModal";
 
 // Variable font — one file, full weight range. The design system only
 // ever uses 600 and 700 (docs/DESIGN.md §2).
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {children}
         <Footer />
+        <LeadModal />
         <GradualBlur />
       </body>
     </html>
