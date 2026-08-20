@@ -417,3 +417,37 @@ body {
     transition: none;
   }
 }
+
+/* ============================================================
+   FLOAT-IN  —  scroll-scrubbed entrance (the ScrollFloat idea).
+   The element rises as it crosses into the viewport, scrubbing
+   in both directions; --i deepens the travel so stacked items
+   cascade. Browsers without scroll timelines just show content.
+   ============================================================ */
+@supports (animation-timeline: view()) {
+  .float-in {
+    animation: floatIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 68%;
+    --float: calc(52px + var(--i, 0) * 16px);
+  }
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(var(--float, 52px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

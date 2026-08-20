@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Reveal from "@/components/ui/Reveal";
 import { problem, leaks } from "@/lib/content/problem";
 import s from "./problem.module.css";
 
@@ -56,7 +55,7 @@ export default function Problem() {
   return (
     <section className={s.section} aria-labelledby="problem-heading">
       <div className={`shell ${s.grid}`}>
-        <div className={s.left}>
+        <div className={`${s.left} float-in`}>
           <p className={s.labelRow}>{problem.label}</p>
           <h2 id="problem-heading" className={s.statement}>
             <StatementWords text={problem.statement} />
@@ -66,9 +65,12 @@ export default function Problem() {
 
         <ul className={s.board}>
           {leaks.map((item, i) => (
-            <li key={item.href} className={s.rowWrap}>
-              <Reveal i={i}>
-                <Link href={item.href} className={s.row}>
+            <li
+              key={item.href}
+              className={`${s.rowWrap} float-in`}
+              style={{ "--i": i } as React.CSSProperties}
+            >
+              <Link href={item.href} className={s.row}>
                   <span className={s.rowHead}>
                     <span className={s.num}>{item.num}</span>
                     <span className={s.title}>{item.title}</span>
@@ -83,7 +85,6 @@ export default function Problem() {
                     </span>
                   </span>
                 </Link>
-              </Reveal>
             </li>
           ))}
         </ul>
