@@ -1,0 +1,82 @@
+/* ============================================================
+   CLIENTS  —  one quiet line between the hero and the problem.
+   Label left, marks right, grayscale at rest. No card, no
+   marquee, no borders: the strip should read as a breath, not
+   a section.
+   ============================================================ */
+
+.section {
+  padding-block: 8px 56px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.label {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.marks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 44px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mark {
+  display: flex;
+  align-items: center;
+}
+
+.mark img {
+  display: block;
+  width: auto;
+  height: 24px;
+  /* Sober at rest; a touch more present on hover, still grayscale. */
+  filter: grayscale(1);
+  opacity: 0.5;
+  transition: opacity var(--dur-btn) var(--ease-btn);
+}
+.mark:hover img {
+  opacity: 0.85;
+}
+
+/* ---------- responsive ---------------------------------------------- */
+
+@media (min-width: 810px) {
+  .section {
+    padding-block: 8px 72px;
+  }
+  .row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+  }
+  .marks {
+    justify-content: flex-end;
+  }
+  .mark img {
+    height: 26px;
+  }
+}
+
+/* ---------- reduced motion ------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .mark img {
+    transition: none;
+  }
+}
