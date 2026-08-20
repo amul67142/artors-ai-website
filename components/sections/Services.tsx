@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { pillars } from "@/lib/content/services";
+import Cubes from "@/components/fx/Cubes";
 import s from "./services.module.css";
 
 /**
@@ -29,11 +30,14 @@ export default function Services() {
     <section className={s.section} aria-labelledby="services-heading">
       <div className="shell">
         <div className={`${s.head} float-in`}>
-          <h2 id="services-heading" className={s.label}>
-            What we do
-          </h2>
-          <p className={s.intro}>Seven practices, usually combined.</p>
-        </div>
+          <div>
+            <h2 id="services-heading" className={s.label}>
+              What we do
+            </h2>
+            <p className={s.intro}>Seven practices, usually combined.</p>
+          </div>
+          <Cubes className={s.cubes} rows={3} cols={8} />
+          </div>
 
         <ul className={s.list}>
           {pillars.map((p, i) => (

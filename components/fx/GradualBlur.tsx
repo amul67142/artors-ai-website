@@ -12,7 +12,7 @@
  * no motion, so no reduced-motion counterpart is needed.
  */
 
-const LAYERS = [0.5, 1, 2, 3.5, 6, 10];
+const LAYERS = [1, 2.5, 5];
 
 export default function GradualBlur() {
   const seg = 100 / (LAYERS.length + 1);
@@ -25,7 +25,7 @@ export default function GradualBlur() {
         left: 0,
         right: 0,
         bottom: 0,
-        height: "clamp(72px, 12vh, 128px)",
+        height: "clamp(52px, 8vh, 84px)",
         zIndex: 40,
         pointerEvents: "none",
       }}

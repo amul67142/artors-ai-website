@@ -18,7 +18,6 @@
   background: color-mix(in srgb, var(--ink) 18%, transparent);
   transform: rotate(var(--r, 0deg));
   transition: transform 90ms linear;
-  will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {

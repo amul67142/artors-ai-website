@@ -1,0 +1,42 @@
+/* Cubes: dashed squares that tilt into 3D near the pointer. The
+   extruded faces are edge-on at rest, so the resting state is a
+   plain dashed grid — quiet until touched. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 30px);
+  gap: 12px;
+  perspective: 700px;
+}
+
+.cube {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 150ms ease-out;
+}
+
+.cube i {
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed color-mix(in srgb, var(--ink) 22%, transparent);
+  border-radius: 3px;
+}
+
+.faceFront {
+  transform: translateZ(15px);
+}
+.faceTop {
+  transform: rotateX(90deg) translateZ(15px);
+}
+.faceSide {
+  transform: rotateY(90deg) translateZ(15px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cube {
+    transition: none;
+  }
+}

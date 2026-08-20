@@ -12,9 +12,9 @@
 .head {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: end;
   justify-content: space-between;
-  gap: 12px 32px;
+  gap: 24px 48px;
   margin-bottom: 40px;
 }
 
@@ -170,4 +170,19 @@
   .item {
     transition: none;
   }
+}
+
+
+/* The cubes field only exists where a pointer does. */
+.cubes {
+  display: none;
+}
+@media (min-width: 1000px) and (hover: hover) {
+  .cubes {
+    display: grid;
+  }
+}
+
+.intro {
+  margin-top: 10px;
 }
