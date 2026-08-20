@@ -17,7 +17,10 @@ export default function LeadForm({ presetService }: { presetService?: string }) 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries());
+    const data = {
+      ...Object.fromEntries(new FormData(form).entries()),
+      sourcePath: window.location.pathname,
+    };
     setStatus("sending");
     try {
       const res = await fetch("/api/lead", {

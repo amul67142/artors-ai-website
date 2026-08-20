@@ -1,6 +1,7 @@
 # Artors — Backend Design
 
-**Status:** designed, awaiting three decisions (§8), then built in phases.
+**Status:** decided 2026-08-21 — Hostinger MySQL + Resend email; WhatsApp channel skipped.
+Code for Phases A+B ships dark and activates via env vars.
 **Scope:** everything the marketing site needs server-side. This is not a product backend;
 it is a lead pipeline with an admin view.
 
@@ -33,9 +34,8 @@ Browser (LeadForm / popup)
 /api/lead  (route handler)
         │ 1. validate + anti-spam
         │ 2. PERSIST FIRST  ──────────►  MySQL `artors` DB  (leads table)
-        │ 3. fan out, best-effort:
-        │      ├─► WhatsApp notify   (Pabbly webhook → WhatsApp)
-        │      └─► Email notify      (transactional email API)
+        │ 3. notify, best-effort:
+        │      └─► Email notify      (Resend API)
         │ 4. record per-channel delivery status on the row
         ▼
    { ok: true }   (the visitor sees success as soon as persistence succeeds)
@@ -111,12 +111,7 @@ with the WhatsApp fallback line — the one case where the visitor should try an
 Both channels fire after persist, in parallel, each wrapped so one failing never blocks
 the other:
 
-- **WhatsApp (primary)** — `POST` the lead as JSON to a **Pabbly Connect webhook**. Pabbly
-  routes it to WhatsApp (and can additionally drop it into a sheet or CRM later without any
-  code change here). This reuses the exact stack the agency already operates for its own
-  clients' lead delivery — the tooling is known, and Artors eating its own integration
-  cooking is on-brand.
-- **Email (second channel + paper trail)** — one transactional email to the notification
+- **Email (Resend, the one channel)** — one transactional email to the notification
   address with every field, reply-to set to the lead's email when present.
 
 Each success stamps its timestamp column. A lead with both columns null after five minutes
@@ -152,8 +147,8 @@ hand-built system.
 
 ```
 DATABASE_URL=            mysql://…            (blocks Phase A)
-PABBLY_LEAD_WEBHOOK=     https://connect.pabbly.com/…   (blocks WhatsApp channel)
-EMAIL_API_KEY=           provider key         (blocks email channel)
+RESEND_API_KEY=          re_…                 (blocks email channel)
+LEAD_FROM_EMAIL=         leads@artors domain   (verified sender)
 LEAD_NOTIFY_EMAIL=       where notifications land
 ADMIN_PASSWORD=          admin login
 SESSION_SECRET=          jose signing key
@@ -176,14 +171,8 @@ Each phase ships independently; the site works (console transport) at every stag
 
 ---
 
-## 8. The three decisions this blocks on
+## 8. Decisions (taken 2026-08-21)
 
-1. **Database** — recommended: a new `artors` database on the same Hostinger MySQL server
-   the Spacetrans backend will use (one bill, one backup story). Alternative: any managed
-   MySQL. Needed: a connection string.
-2. **Email provider** — recommended: Resend (cleanest API on Vercel-style hosting; needs
-   DNS records on the artors domain once it exists). Alternative: Hostinger SMTP via
-   nodemailer — no new vendor, clunkier deliverability.
-3. **WhatsApp route** — recommended: Pabbly webhook (already operated in-house, zero new
-   API approvals). Alternative: Meta WhatsApp Cloud API direct — first-party but needs
-   Business verification and template approval before day one.
+1. **Database:** new `artors` database on the Hostinger MySQL server. Awaiting connection string.
+2. **Email:** Resend. Awaiting API key + domain DNS once the artors domain exists.
+3. **WhatsApp:** skipped for now. The adapter keeps a slot for it; a Pabbly webhook can be added later without touching the form or route.
