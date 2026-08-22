@@ -10,14 +10,38 @@ import s from "./serviceFlow.module.css";
  * list of the same steps.
  */
 
-const W = 960;
-const NODE_W = 168;
 const NODE_H = 58;
-const xs = [6, 200, 394, 588, 782];
-const ys = [28, 128, 28, 128, 28];
+const GAP = 30;
+const TEXT_X = 34; // dot + breathing room before the label
+const PAD_R = 18;
 
-function connector(i: number): string {
-  const x1 = xs[i] + NODE_W;
+/**
+ * Nodes size to their text. SVG text can't be measured at render time
+ * on the server, so widths come from a per-glyph estimate for Inter:
+ * measured in-browser at ~0.57em/0.58em, padded to 0.63/0.64 so every
+ * label and sub on every page clears the box with room; the viewBox
+ * grows to fit and the SVG scales.
+ */
+function nodeWidth(step: FlowStep): number {
+  const label = step.label.length * 14.5 * 0.63;
+  const sub = step.sub.length * 11.5 * 0.64;
+  return Math.max(150, Math.ceil(TEXT_X + Math.max(label, sub) + PAD_R));
+}
+
+function layout(steps: readonly FlowStep[]) {
+  const widths = steps.map(nodeWidth);
+  const xs: number[] = [];
+  let x = 6;
+  for (const w of widths) {
+    xs.push(x);
+    x += w + GAP;
+  }
+  const ys = steps.map((_, i) => (i % 2 === 0 ? 28 : 128));
+  return { widths, xs, ys, W: x - GAP + 6 };
+}
+
+function connector(xs: number[], ys: number[], widths: number[], i: number): string {
+  const x1 = xs[i] + widths[i];
   const y1 = ys[i] + NODE_H / 2;
   const x2 = xs[i + 1];
   const y2 = ys[i + 1] + NODE_H / 2;
@@ -34,23 +58,24 @@ export default function ServiceFlow({
   title: string;
   ariaLabel: string;
 }) {
+  const { widths, xs, ys, W } = layout(steps);
   return (
     <figure className={s.wrap}>
       <div className={s.glow} aria-hidden="true" />
       <div className={s.canvas}>
         <svg viewBox={`0 0 ${W} 216`} className={s.svg} role="img" aria-label={ariaLabel}>
           {steps.slice(0, -1).map((_, i) => (
-            <path key={`c${i}`} d={connector(i)} className={s.path} />
+            <path key={`c${i}`} d={connector(xs, ys, widths, i)} className={s.path} />
           ))}
           {steps.slice(0, -1).map((_, i) => (
-            <path key={`p${i}`} d={connector(i)} className={s.pulse} />
+            <path key={`p${i}`} d={connector(xs, ys, widths, i)} className={s.pulse} />
           ))}
           {steps.map((step, i) => (
             <g key={step.label}>
               <rect
                 x={xs[i]}
                 y={ys[i]}
-                width={NODE_W}
+                width={widths[i]}
                 height={NODE_H}
                 rx={13}
                 className={`${s.node} ${step.highlight ? s.nodeOn : ""}`}
