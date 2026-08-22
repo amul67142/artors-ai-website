@@ -303,6 +303,14 @@
   border-top: 1px solid var(--line);
   padding: 18px 4px 24px;
 }
+.indLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.indLink:hover .indName {
+  color: var(--accent);
+}
 
 .indName {
   margin: 0;

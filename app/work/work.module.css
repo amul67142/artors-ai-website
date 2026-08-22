@@ -1,0 +1,216 @@
+/* /work — the demonstration run: three artifacts on one index. */
+
+.runHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 32px;
+  margin-bottom: 36px;
+}
+
+.kicker {
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.runTitle {
+  margin: 0;
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.summary li:last-child {
+  color: var(--ink);
+}
+
+/* ---------- artifacts ---------------------------------------------- */
+
+.artifact {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  column-gap: 16px;
+  padding: 28px 4px 36px;
+  border-top: 1px solid var(--line);
+}
+
+.artNum {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding-top: 6px;
+}
+
+.artTitle {
+  margin: 0 0 18px;
+  font-size: clamp(18px, 1.9vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+/* The recording slot: honest placeholder until the file exists. */
+.audioSlot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted);
+  max-width: 60ch;
+}
+.audioDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 30%, transparent);
+}
+
+/* ---------- transcript ---------------------------------------------- */
+
+.transcript {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 62ch;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 44px 70px 1fr;
+  column-gap: 14px;
+  align-items: baseline;
+  padding: 9px 0;
+}
+
+.time {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.who {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.text {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.lineAgent .who {
+  color: var(--accent);
+}
+.lineAgent .text {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  max-width: 62ch;
+}
+
+.action {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.action::before {
+  content: "✓";
+  color: var(--accent);
+  margin-right: 8px;
+}
+
+.slotNote {
+  margin: 14px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.honesty {
+  margin: 8px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  font-weight: 700;
+  max-width: 52ch;
+}
+
+/* ---------- case study zero ---------------------------------------- */
+
+.zero {
+  border-top: 1px solid var(--line);
+  padding-top: 36px;
+}
+
+.zeroTitle {
+  margin: 0 0 14px;
+  font-size: clamp(26px, 3.4vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.zeroText {
+  margin: 0 0 28px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+@media (max-width: 520px) {
+  .line {
+    grid-template-columns: 44px 1fr;
+  }
+  .who {
+    grid-column: 2;
+  }
+  .text {
+    grid-column: 2;
+  }
+}

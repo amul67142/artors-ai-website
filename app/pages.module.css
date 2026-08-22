@@ -1,0 +1,351 @@
+/* ============================================================
+   SHARED PAGE STYLES  —  industries index, work, pricing, about.
+   Same grammar as the homepage: label, statement, index cells.
+   ============================================================ */
+
+.head {
+  padding-top: 140px;
+  padding-bottom: 48px;
+}
+
+.label {
+  margin: 0 0 18px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.statement {
+  margin: 0 0 22px;
+  font-size: clamp(30px, 4.6vw, 62px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+  max-width: 18ch;
+}
+
+.intro {
+  margin: 0;
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 56ch;
+}
+
+.section {
+  padding-block: 32px 120px;
+}
+
+.sectionLabel {
+  margin: 0 0 32px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+/* ---------- index cells (3-up) ------------------------------------ */
+
+.cells {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 44px;
+}
+
+.cell {
+  display: block;
+  border-top: 1px solid var(--line);
+  padding: 22px 4px 28px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cellNum {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+
+.cellTitle {
+  display: block;
+  margin-top: 12px;
+  font-size: clamp(18px, 1.8vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  transition: transform var(--dur-btn) var(--ease-btn);
+}
+
+.cellText {
+  display: block;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--muted);
+  max-width: 34ch;
+}
+
+a.cell:hover .cellNum {
+  color: var(--accent);
+}
+a.cell:hover .cellTitle {
+  transform: translateX(8px);
+}
+
+.closing {
+  margin: 40px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  max-width: 44ch;
+}
+
+/* ---------- rows (index list) ------------------------------------- */
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  column-gap: 16px;
+  padding: 22px 4px;
+  border-bottom: 1px solid var(--line);
+}
+
+.rowNum {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding-top: 4px;
+}
+
+.rowTitle {
+  margin: 0 0 8px;
+  font-size: clamp(17px, 1.7vw, 22px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.rowText {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+/* ---------- pricing bands ----------------------------------------- */
+
+.bands {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.band {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px 24px;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: inherit;
+}
+
+.bandTitle {
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+a.band:hover .bandTitle {
+  color: var(--accent);
+}
+
+.bandFrom {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.bandUnit {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.note {
+  margin: 18px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+/* ---------- pills (pillar links) ---------------------------------- */
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition:
+    border-color var(--dur-btn) var(--ease-btn),
+    color var(--dur-btn) var(--ease-btn);
+}
+.pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------- about: founder slot ----------------------------------- */
+
+.founder {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+  align-items: start;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+
+.portrait {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle, var(--line-soft) 1px, transparent 1px) 0 0 / 22px 22px,
+    var(--paper);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  padding: 16px;
+}
+
+.founderName {
+  margin: 0 0 6px;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.founderRole {
+  margin: 0 0 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.founderText {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+/* ---------- pager ------------------------------------------------- */
+
+.pager {
+  padding-bottom: 96px;
+}
+.pagerRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  border-top: 1px solid var(--line);
+  padding-top: 26px;
+}
+.pagerLink {
+  text-decoration: none;
+  color: inherit;
+  display: grid;
+  gap: 8px;
+}
+.pagerRight {
+  text-align: right;
+}
+.pagerDir {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pagerTitle {
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.pagerLink:hover .pagerTitle {
+  color: var(--accent);
+}
+
+/* ---------- responsive -------------------------------------------- */
+
+@media (min-width: 760px) {
+  .cells {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .band {
+    grid-template-columns: 1fr auto auto;
+    align-items: baseline;
+  }
+  .founder {
+    grid-template-columns: 320px 1fr;
+    gap: 56px;
+  }
+}
+
+@media (min-width: 810px) {
+  .head {
+    padding-top: 172px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cellNum,
+  .cellTitle,
+  .bandTitle,
+  .pill,
+  .pagerTitle {
+    transition: none;
+  }
+}

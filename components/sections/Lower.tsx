@@ -135,6 +135,9 @@ export function Process() {
   );
 }
 
+/** Order matches industries.items in lib/content/sections.ts. */
+const INDUSTRY_SLUGS = ["real-estate","healthcare","retail-d2c","education","hospitality-local","professional-services"];
+
 export function Industries() {
   return (
     <section className={s.industries} aria-labelledby="industries-heading">
@@ -148,14 +151,15 @@ export function Industries() {
 
         <div className={s.indGrid}>
           {industries.items.map((item, i) => (
-            <div
+            <Link
               key={item.name}
-              className={`${s.indCell} float-in`}
+              href={`/industries/${INDUSTRY_SLUGS[i]}`}
+              className={`${s.indCell} ${s.indLink} float-in`}
               style={{ "--i": i % 3 } as React.CSSProperties}
             >
               <h3 className={s.indName}>{item.name}</h3>
               <p className={s.indNote}>{item.note}</p>
-            </div>
+            </Link>
           ))}
         </div>
 
