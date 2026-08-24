@@ -10,22 +10,19 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 /**
  * The site-wide GSAP motion layer. Mounted once in the root layout.
  *
- * Replaces the CSS scroll-timeline system (Chromium-only — the site was
- * fully static in Safari/Firefox) with ScrollTrigger, and upgrades the
- * linear scrubbed entrances to decisive power3 reveals.
- *
  * Perf contract (docs/DESIGN.md §4 still holds):
  *  - transform/opacity/color only, no layout properties
  *  - no free-running rAF loops: everything is ScrollTrigger-driven or
  *    pointer-event-driven
- *  - every effect lives inside prefers-reduced-motion: no-preference;
+ *  - every effect lives behind prefers-reduced-motion: no-preference;
  *    with reduced motion (or no JS) the page renders complete and static,
  *    because base CSS never hides content
  *
  * Choreography, each with its one-sentence reason:
  *  - .float-in reveals      → hierarchy: sections introduce themselves
  *  - [data-fx=statement]    → storytelling: the claim inks in as you read
- *  - [data-fx=flowcol]      → storytelling: the FLOW staircase assembles
+ *  - FLOW pin (desktop)     → storytelling: the four steps play as a
+ *                             sequence you scroll through, not a list
  *  - [data-fx=bar|pct]      → feedback: numbers earn their size on arrival
  *  - [data-fx=ledger]       → depth: the proof panel drifts against copy
  *  - .btn magnetic pull     → feedback: primary actions answer the cursor
@@ -36,37 +33,41 @@ export default function PageFx() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
+      const MOTION = "(prefers-reduced-motion: no-preference)";
 
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      // ── Shared: reveals, statements, ledger drift ───────────
+      mm.add(MOTION, () => {
         const readIndex = (el: Element) =>
           parseFloat(getComputedStyle(el as HTMLElement).getPropertyValue("--i")) || 0;
 
-        // ── Section reveals ───────────────────────────────────
-        gsap.utils.toArray<HTMLElement>(".float-in").forEach((el) => {
-          const i = readIndex(el);
-          gsap.fromTo(
-            el,
-            { opacity: 0, y: 44 + i * 12 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.95,
-              delay: Math.min(i * 0.07, 0.35),
-              ease: "power3.out",
-              scrollTrigger: { trigger: el, start: "top 88%", once: true },
-            }
-          );
-        });
+        // Section reveals. FLOW columns are excluded: both FLOW branches
+        // below own their entrance completely.
+        gsap.utils
+          .toArray<HTMLElement>(".float-in")
+          .filter((el) => el.dataset.fx !== "flowcol")
+          .forEach((el) => {
+            const i = readIndex(el);
+            gsap.fromTo(
+              el,
+              { opacity: 0, y: 44 + i * 12 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.95,
+                delay: Math.min(i * 0.07, 0.35),
+                ease: "power3.out",
+                scrollTrigger: { trigger: el, start: "top 88%", once: true },
+              }
+            );
+          });
 
-        // ── Statement word-fills (Problem / Who we are) ───────
-        // The favourite effect, now scrubbed cross-browser: dull → ink,
-        // bracketed words → accent, walking with the reader's scroll.
+        // Statement word-fills: dull → ink, bracketed words → accent,
+        // walking with the reader. Literal colors on purpose: GSAP's
+        // interpolator can't parse color-mix()/var() (tokens: --ink
+        // #0a0a0a, --accent #2b5cff in globals.css).
         gsap.utils.toArray<HTMLElement>('[data-fx="statement"]').forEach((h) => {
           const words = h.querySelectorAll<HTMLElement>('[data-fx="word"]');
           if (!words.length) return;
-          // Literal colors: GSAP's color interpolator can't parse
-          // color-mix()/var() strings. Values mirror the tokens in
-          // globals.css (--ink #0a0a0a at 22%, --accent #2b5cff).
           gsap.fromTo(
             words,
             { color: "rgba(10, 10, 10, 0.22)" },
@@ -75,36 +76,90 @@ export default function PageFx() {
                 (el as HTMLElement).dataset.accent ? "#2b5cff" : "#0a0a0a",
               ease: "none",
               stagger: 0.05,
-              scrollTrigger: {
-                trigger: h,
-                start: "top 80%",
-                end: "top 30%",
-                scrub: 0.4,
-              },
+              scrollTrigger: { trigger: h, start: "top 80%", end: "top 30%", scrub: 0.4 },
             }
           );
         });
 
-        // ── FLOW: staircase assembles, bars draw, numbers count ─
+        // Ledger drift against the copy column.
+        gsap.utils.toArray<HTMLElement>('[data-fx="ledger"]').forEach((el) => {
+          gsap.to(el, {
+            y: -36,
+            ease: "none",
+            scrollTrigger: { trigger: el, start: "top 70%", end: "bottom top", scrub: 0.6 },
+          });
+        });
+      });
+
+      // ── FLOW, desktop: pinned sequence ──────────────────────
+      // The section locks to the viewport and the four steps play through
+      // under the scrollbar: column settles, bar draws, number counts.
+      mm.add(`${MOTION} and (min-width: 810px)`, () => {
+        const section = document.querySelector<HTMLElement>('[data-fx="process"]');
+        if (!section) return;
+        const cols = section.querySelectorAll<HTMLElement>('[data-fx="flowcol"]');
+        if (!cols.length) return;
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "+=1600",
+            pin: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+          },
+        });
+
+        cols.forEach((col, i) => {
+          const at = i * 0.9;
+          tl.fromTo(
+            col,
+            { y: 90, opacity: 0.12 },
+            { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+            at
+          );
+          const bar = col.querySelector<HTMLElement>('[data-fx="bar"]');
+          if (bar) {
+            tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "none" }, at + 0.35);
+          }
+          const pct = col.querySelector<HTMLElement>('[data-fx="pct"]');
+          if (pct) {
+            const target = parseFloat(pct.dataset.pct || "0");
+            const state = { v: 0 };
+            tl.to(
+              state,
+              {
+                v: target,
+                duration: 0.5,
+                ease: "none",
+                onUpdate: () => {
+                  pct.textContent = `${Math.round(state.v)}%`;
+                },
+              },
+              at + 0.35
+            );
+          }
+        });
+        // A short hold at the end so the finished sequence can be read
+        // before the section releases.
+        tl.to({}, { duration: 0.5 });
+      });
+
+      // ── FLOW, mobile: plain scrubbed assembly (no pinning) ──
+      mm.add(`${MOTION} and (max-width: 809px)`, () => {
         gsap.utils.toArray<HTMLElement>('[data-fx="flowcol"]').forEach((col) => {
-          const step =
-            parseFloat(getComputedStyle(col).getPropertyValue("--step")) || 0;
           gsap.fromTo(
             col,
-            { y: 30 + step * 26 },
+            { y: 44, opacity: 0.15 },
             {
               y: 0,
+              opacity: 1,
               ease: "none",
-              scrollTrigger: {
-                trigger: col.parentElement,
-                start: "top 88%",
-                end: "top 30%",
-                scrub: 0.5,
-              },
+              scrollTrigger: { trigger: col, start: "top 92%", end: "top 55%", scrub: 0.5 },
             }
           );
         });
-
         gsap.utils.toArray<HTMLElement>('[data-fx="bar"]').forEach((bar) => {
           gsap.fromTo(
             bar,
@@ -116,7 +171,6 @@ export default function PageFx() {
             }
           );
         });
-
         gsap.utils.toArray<HTMLElement>('[data-fx="pct"]').forEach((el) => {
           const target = parseFloat(el.dataset.pct || "0");
           const state = { v: 0 };
@@ -130,59 +184,39 @@ export default function PageFx() {
             },
           });
         });
-
-        // ── Ledger drift (hero proof panel) ───────────────────
-        gsap.utils.toArray<HTMLElement>('[data-fx="ledger"]').forEach((el) => {
-          gsap.to(el, {
-            y: -36,
-            ease: "none",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 70%",
-              end: "bottom top",
-              scrub: 0.6,
-            },
-          });
-        });
       });
 
       // ── Magnetic buttons (desktop pointers only) ────────────
-      mm.add(
-        "(prefers-reduced-motion: no-preference) and (pointer: fine)",
-        () => {
-          const cleanups: Array<() => void> = [];
-          gsap.utils.toArray<HTMLElement>(".btn").forEach((btn) => {
-            const xTo = gsap.quickTo(btn, "x", { duration: 0.35, ease: "power3.out" });
-            const yTo = gsap.quickTo(btn, "y", { duration: 0.35, ease: "power3.out" });
+      mm.add(`${MOTION} and (pointer: fine)`, () => {
+        const cleanups: Array<() => void> = [];
+        gsap.utils.toArray<HTMLElement>(".btn").forEach((btn) => {
+          const xTo = gsap.quickTo(btn, "x", { duration: 0.35, ease: "power3.out" });
+          const yTo = gsap.quickTo(btn, "y", { duration: 0.35, ease: "power3.out" });
 
-            const onMove = (e: PointerEvent) => {
-              const r = btn.getBoundingClientRect();
-              const relX = e.clientX - (r.left + r.width / 2);
-              const relY = e.clientY - (r.top + r.height / 2);
-              // Pull is capped tiny — a nod toward the cursor, not a chase.
-              xTo(gsap.utils.clamp(-6, 6, relX * 0.14));
-              yTo(gsap.utils.clamp(-5, 5, relY * 0.22));
-            };
-            const onLeave = () => {
-              xTo(0);
-              yTo(0);
-            };
+          const onMove = (e: PointerEvent) => {
+            const r = btn.getBoundingClientRect();
+            xTo(gsap.utils.clamp(-6, 6, (e.clientX - (r.left + r.width / 2)) * 0.14));
+            yTo(gsap.utils.clamp(-5, 5, (e.clientY - (r.top + r.height / 2)) * 0.22));
+          };
+          const onLeave = () => {
+            xTo(0);
+            yTo(0);
+          };
 
-            btn.addEventListener("pointermove", onMove);
-            btn.addEventListener("pointerleave", onLeave);
-            cleanups.push(() => {
-              btn.removeEventListener("pointermove", onMove);
-              btn.removeEventListener("pointerleave", onLeave);
-            });
+          btn.addEventListener("pointermove", onMove);
+          btn.addEventListener("pointerleave", onLeave);
+          cleanups.push(() => {
+            btn.removeEventListener("pointermove", onMove);
+            btn.removeEventListener("pointerleave", onLeave);
           });
-          return () => cleanups.forEach((fn) => fn());
-        }
-      );
+        });
+        return () => cleanups.forEach((fn) => fn());
+      });
     },
     { scope: ref }
   );
 
-  // Scope anchor only — renders nothing. Selectors above intentionally
-  // reach the whole document via gsap.utils.toArray.
+  // Scope anchor only — renders nothing visible. Selectors above reach
+  // the whole document via gsap.utils.toArray on purpose.
   return <div ref={ref} aria-hidden="true" />;
 }

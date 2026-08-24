@@ -28,7 +28,7 @@
 }
 
 .proofStatement {
-  font-size: clamp(26px, 3.2vw, 44px);
+  font-size: clamp(28px, 3.6vw, 50px);
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.12;
@@ -528,4 +528,41 @@ details[open] .faqIcon::after {
   .faqIcon::after {
     transition: none;
   }
+}
+
+/* ============================================================
+   PROOF ON INK - the one dark band in the body of the page.
+   The trust content carries the most weight, so it gets the
+   most contrast. Overrides are scoped; hover accents survive.
+   ============================================================ */
+.proof {
+  background: var(--ink);
+  color: #fff;
+}
+.proof .sectionLabel {
+  color: #fff;
+}
+.proof .intro {
+  color: rgba(255, 255, 255, 0.6);
+}
+.proof .proofStatement {
+  color: #fff;
+}
+.proof .proofCell {
+  border-top-color: rgba(255, 255, 255, 0.22);
+}
+.proof .proofCell:hover {
+  border-top-color: var(--accent-2);
+}
+.proof .proofNum {
+  color: rgba(255, 255, 255, 0.45);
+}
+.proof .proofNote {
+  color: rgba(255, 255, 255, 0.6);
+}
+.proof .proofClosing {
+  color: rgba(255, 255, 255, 0.62);
+}
+.proof .inlineLink {
+  color: #fff;
 }

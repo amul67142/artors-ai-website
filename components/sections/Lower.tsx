@@ -88,7 +88,7 @@ function FlowMark() {
 
 export function Process() {
   return (
-    <section className={s.process} aria-labelledby="process-heading">
+    <section className={s.process} aria-labelledby="process-heading" data-fx="process">
       <div className="shell">
         <div className={`${s.flowHead} float-in`}>
           <h2 id="process-heading" className={s.flowTitle}>
