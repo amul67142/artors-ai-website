@@ -46,7 +46,7 @@ export default function Hero() {
   const setupWords = hero.headlineSetup.split(" ").length;
 
   return (
-    <section className={s.hero}>
+    <section className={s.hero} data-fx="hero">
       <div className={`shell ${s.grid}`}>
         <div>
           {/* One h1. The two movements are spans, so the heading still

@@ -27,7 +27,7 @@ function Arrow({ className }: { className?: string }) {
 
 export function Proof() {
   return (
-    <section className={s.proof} aria-labelledby="proof-heading">
+    <section className={s.proof} aria-labelledby="proof-heading" data-fx="proof">
       <div className="shell">
         <div className="float-in">
           <h2 id="proof-heading" className={s.sectionLabel}>
@@ -42,6 +42,7 @@ export function Proof() {
               key={item.num}
               href={proof.link.href}
               className={`${s.proofCell} float-in`}
+              data-fx="proofcell"
               style={{ "--i": i } as React.CSSProperties}
             >
               <span className={s.proofNum}>{item.num}</span>
@@ -238,7 +239,7 @@ export function CtaBand() {
   return (
     <section className={s.band} aria-labelledby="cta-heading">
       <div className="shell">
-        <h2 id="cta-heading" className={`${s.bandHeadline} float-in`}>
+        <h2 id="cta-heading" className={`${s.bandHeadline} float-in`} data-fx="bandhead">
           Every day without this is{" "}
           <span className={s.bandAccent}>money left on the table.</span>
         </h2>

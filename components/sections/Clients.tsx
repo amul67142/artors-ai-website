@@ -33,7 +33,7 @@ export default function Clients() {
       <Reveal>
         <div className={`shell ${s.row}`}>
           <p className={s.label}>Brands we work with</p>
-          <ul className={s.marks}>
+          <ul className={s.marks} data-fx="marks">
             {clients.map((c) => (
               <li key={c.name} className={s.mark}>
                 <Image src={c.src} alt={c.name} title={c.name} />

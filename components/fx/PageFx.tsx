@@ -8,24 +8,30 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 /**
- * The site-wide GSAP motion layer. Mounted once in the root layout.
+ * The site-wide GSAP scrolltelling layer. Mounted once in the root layout.
+ *
+ * The whole page rides the scrollbar: reveals are scrubbed in BOTH
+ * directions (scroll back up and the page un-builds), the hero hands off
+ * as you leave it, and two sections pin as set pieces — the dark Proof
+ * band and the FLOW process sequence.
  *
  * Perf contract (docs/DESIGN.md §4 still holds):
  *  - transform/opacity/color only, no layout properties
- *  - no free-running rAF loops: everything is ScrollTrigger-driven or
+ *  - no free-running rAF loops: everything is ScrollTrigger- or
  *    pointer-event-driven
- *  - every effect lives behind prefers-reduced-motion: no-preference;
- *    with reduced motion (or no JS) the page renders complete and static,
- *    because base CSS never hides content
+ *  - all of it behind prefers-reduced-motion: no-preference; with reduced
+ *    motion (or no JS) the page renders complete and static, because base
+ *    CSS never hides content
  *
  * Choreography, each with its one-sentence reason:
- *  - .float-in reveals      → hierarchy: sections introduce themselves
- *  - [data-fx=statement]    → storytelling: the claim inks in as you read
- *  - FLOW pin (desktop)     → storytelling: the four steps play as a
- *                             sequence you scroll through, not a list
- *  - [data-fx=bar|pct]      → feedback: numbers earn their size on arrival
- *  - [data-fx=ledger]       → depth: the proof panel drifts against copy
- *  - .btn magnetic pull     → feedback: primary actions answer the cursor
+ *  - scrubbed .float-in       → the page assembles under your thumb
+ *  - hero exit               → the opening literally hands off to the page
+ *  - [data-fx=statement]     → the claim inks in as you read
+ *  - Proof pin (desktop)     → the trust content is a held beat, not a blur
+ *  - FLOW pin (desktop)      → the four steps play as a sequence
+ *  - [data-fx=bar|pct]       → numbers earn their size on arrival
+ *  - [data-fx=marks]         → the client strip drifts laterally: texture
+ *  - .btn magnetic pull      → primary actions answer the cursor
  */
 export default function PageFx() {
   const ref = useRef<HTMLDivElement>(null);
@@ -35,36 +41,43 @@ export default function PageFx() {
       const mm = gsap.matchMedia();
       const MOTION = "(prefers-reduced-motion: no-preference)";
 
-      // ── Shared: reveals, statements, ledger drift ───────────
+      /** Elements owned by a dedicated branch — generic reveals skip them. */
+      const isOwned = (el: HTMLElement) =>
+        el.dataset.fx === "flowcol" ||
+        el.dataset.fx === "bandhead" ||
+        el.closest('[data-fx="proof"]') !== null;
+
+      // ── Shared: scrubbed reveals + statements + hero + strip ─
       mm.add(MOTION, () => {
         const readIndex = (el: Element) =>
           parseFloat(getComputedStyle(el as HTMLElement).getPropertyValue("--i")) || 0;
 
-        // Section reveals. FLOW columns are excluded: both FLOW branches
-        // below own their entrance completely.
+        // Scrubbed section reveals — reversible, tied to the scrollbar.
         gsap.utils
           .toArray<HTMLElement>(".float-in")
-          .filter((el) => el.dataset.fx !== "flowcol")
+          .filter((el) => !isOwned(el))
           .forEach((el) => {
             const i = readIndex(el);
             gsap.fromTo(
               el,
-              { opacity: 0, y: 44 + i * 12 },
+              { opacity: 0, y: 56 + i * 14 },
               {
                 opacity: 1,
                 y: 0,
-                duration: 0.95,
-                delay: Math.min(i * 0.07, 0.35),
-                ease: "power3.out",
-                scrollTrigger: { trigger: el, start: "top 88%", once: true },
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: el,
+                  start: "top 96%",
+                  end: "top 58%",
+                  scrub: 0.6,
+                },
               }
             );
           });
 
-        // Statement word-fills: dull → ink, bracketed words → accent,
-        // walking with the reader. Literal colors on purpose: GSAP's
-        // interpolator can't parse color-mix()/var() (tokens: --ink
-        // #0a0a0a, --accent #2b5cff in globals.css).
+        // Statement word-fills: dull → ink, bracketed words → accent.
+        // Literal colors on purpose: GSAP's interpolator can't parse
+        // color-mix()/var() (tokens: --ink #0a0a0a, --accent #2b5cff).
         gsap.utils.toArray<HTMLElement>('[data-fx="statement"]').forEach((h) => {
           const words = h.querySelectorAll<HTMLElement>('[data-fx="word"]');
           if (!words.length) return;
@@ -76,78 +89,164 @@ export default function PageFx() {
                 (el as HTMLElement).dataset.accent ? "#2b5cff" : "#0a0a0a",
               ease: "none",
               stagger: 0.05,
-              scrollTrigger: { trigger: h, start: "top 80%", end: "top 30%", scrub: 0.4 },
+              scrollTrigger: { trigger: h, start: "top 82%", end: "top 32%", scrub: 0.4 },
             }
           );
         });
 
-        // Ledger drift against the copy column.
-        gsap.utils.toArray<HTMLElement>('[data-fx="ledger"]').forEach((el) => {
-          gsap.to(el, {
-            y: -36,
-            ease: "none",
-            scrollTrigger: { trigger: el, start: "top 70%", end: "bottom top", scrub: 0.6 },
+        // Hero exit — copy rises away, the ledger sinks and recedes, so
+        // the opening visibly hands the page over as you scroll.
+        const hero = document.querySelector<HTMLElement>('[data-fx="hero"]');
+        if (hero) {
+          const exit = gsap.timeline({
+            scrollTrigger: {
+              trigger: hero,
+              start: "top top",
+              end: "bottom 38%",
+              scrub: 0.5,
+            },
           });
+          const copy = hero.querySelector<HTMLElement>('[data-fx="herocopy"]');
+          const panel = hero.querySelector<HTMLElement>('[data-fx="ledger"]');
+          if (copy) exit.to(copy, { y: -72, opacity: 0.28, ease: "none" }, 0);
+          if (panel) exit.to(panel, { y: 48, scale: 0.965, opacity: 0.3, ease: "none" }, 0);
+        }
+
+        // Client strip drifts laterally as it passes — quiet texture.
+        gsap.utils.toArray<HTMLElement>('[data-fx="marks"]').forEach((el) => {
+          gsap.fromTo(
+            el,
+            { x: 36 },
+            {
+              x: -24,
+              ease: "none",
+              scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.8 },
+            }
+          );
+        });
+
+        // CTA band headline scales up into place.
+        gsap.utils.toArray<HTMLElement>('[data-fx="bandhead"]').forEach((el) => {
+          gsap.fromTo(
+            el,
+            { scale: 0.92, y: 44, opacity: 0 },
+            {
+              scale: 1,
+              y: 0,
+              opacity: 1,
+              ease: "power2.out",
+              scrollTrigger: { trigger: el, start: "top 92%", end: "top 45%", scrub: 0.5 },
+            }
+          );
         });
       });
 
-      // ── FLOW, desktop: pinned sequence ──────────────────────
-      // The section locks to the viewport and the four steps play through
-      // under the scrollbar: column settles, bar draws, number counts.
+      // ── Desktop set pieces: Proof pin + FLOW pin ────────────
       mm.add(`${MOTION} and (min-width: 810px)`, () => {
-        const section = document.querySelector<HTMLElement>('[data-fx="process"]');
-        if (!section) return;
-        const cols = section.querySelectorAll<HTMLElement>('[data-fx="flowcol"]');
-        if (!cols.length) return;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "+=1600",
-            pin: true,
-            scrub: 0.6,
-            anticipatePin: 1,
-          },
-        });
-
-        cols.forEach((col, i) => {
-          const at = i * 0.9;
-          tl.fromTo(
-            col,
-            { y: 90, opacity: 0.12 },
-            { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
-            at
-          );
-          const bar = col.querySelector<HTMLElement>('[data-fx="bar"]');
-          if (bar) {
-            tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "none" }, at + 0.35);
-          }
-          const pct = col.querySelector<HTMLElement>('[data-fx="pct"]');
-          if (pct) {
-            const target = parseFloat(pct.dataset.pct || "0");
-            const state = { v: 0 };
-            tl.to(
-              state,
-              {
-                v: target,
-                duration: 0.5,
-                ease: "none",
-                onUpdate: () => {
-                  pct.textContent = `${Math.round(state.v)}%`;
-                },
-              },
-              at + 0.35
+        // Proof (the dark band): pins briefly while the statement lands
+        // and the three cells arrive one by one — a held beat.
+        const proofSec = document.querySelector<HTMLElement>('[data-fx="proof"]');
+        if (proofSec) {
+          const head = proofSec.querySelectorAll<HTMLElement>(".float-in:not([data-fx='proofcell'])");
+          const cells = proofSec.querySelectorAll<HTMLElement>('[data-fx="proofcell"]');
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: proofSec,
+              start: "top top",
+              end: "+=1000",
+              pin: true,
+              scrub: 0.6,
+              anticipatePin: 1,
+            },
+          });
+          if (head.length) {
+            tl.fromTo(
+              head,
+              { y: 44, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5, stagger: 0.15, ease: "power2.out" },
+              0
             );
           }
-        });
-        // A short hold at the end so the finished sequence can be read
-        // before the section releases.
-        tl.to({}, { duration: 0.5 });
+          cells.forEach((cell, i) => {
+            tl.fromTo(
+              cell,
+              { y: 70, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+              0.55 + i * 0.45
+            );
+          });
+          tl.to({}, { duration: 0.4 });
+        }
+
+        // FLOW: the section locks and the four steps play through under
+        // the scrollbar — settle, bar draws, number counts.
+        const section = document.querySelector<HTMLElement>('[data-fx="process"]');
+        if (section) {
+          const cols = section.querySelectorAll<HTMLElement>('[data-fx="flowcol"]');
+          if (cols.length) {
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: section,
+                start: "top top",
+                end: "+=1600",
+                pin: true,
+                scrub: 0.6,
+                anticipatePin: 1,
+              },
+            });
+            cols.forEach((col, i) => {
+              const at = i * 0.9;
+              tl.fromTo(
+                col,
+                { y: 90, opacity: 0.12 },
+                { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+                at
+              );
+              const bar = col.querySelector<HTMLElement>('[data-fx="bar"]');
+              if (bar) {
+                tl.fromTo(bar, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "none" }, at + 0.35);
+              }
+              const pct = col.querySelector<HTMLElement>('[data-fx="pct"]');
+              if (pct) {
+                const target = parseFloat(pct.dataset.pct || "0");
+                const state = { v: 0 };
+                tl.to(
+                  state,
+                  {
+                    v: target,
+                    duration: 0.5,
+                    ease: "none",
+                    onUpdate: () => {
+                      pct.textContent = `${Math.round(state.v)}%`;
+                    },
+                  },
+                  at + 0.35
+                );
+              }
+            });
+            tl.to({}, { duration: 0.5 });
+          }
+        }
       });
 
-      // ── FLOW, mobile: plain scrubbed assembly (no pinning) ──
+      // ── Mobile: unpinned scrubbed equivalents ───────────────
       mm.add(`${MOTION} and (max-width: 809px)`, () => {
+        // Proof children scrub in like everything else (no pin).
+        gsap.utils
+          .toArray<HTMLElement>('[data-fx="proof"] .float-in')
+          .forEach((el, i) => {
+            gsap.fromTo(
+              el,
+              { y: 52 + i * 8, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                ease: "power2.out",
+                scrollTrigger: { trigger: el, start: "top 96%", end: "top 60%", scrub: 0.6 },
+              }
+            );
+          });
+
         gsap.utils.toArray<HTMLElement>('[data-fx="flowcol"]').forEach((col) => {
           gsap.fromTo(
             col,
