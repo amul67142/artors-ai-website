@@ -20,7 +20,7 @@ import s from "./hero.module.css";
  */
 export default function Ledger() {
   return (
-    <figure className={s.ledgerWrap}>
+    <figure className={s.ledgerWrap} data-fx="ledger">
       <Link href={ledger.href} className={s.ledger} aria-label="Sample run: a clinic receptionist system handling a call end to end. See the full run.">
         <div className={s.ledgerHead}>
           <p className={s.ledgerLabel}>

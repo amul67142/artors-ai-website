@@ -9,7 +9,7 @@ import s from "./problem.module.css";
  *
  * The statement fill is a CSS scroll-driven animation on a named view
  * timeline — no JS, no scroll listener. Browsers without
- * animation-timeline see the statement in full ink.
+ * JS see the statement in full ink (GSAP scrubs the fill).
  */
 
 function Arrow({ className }: { className?: string }) {
@@ -38,6 +38,8 @@ function StatementWords({ text }: { text: string }) {
         return (
           <span key={i}>
             <span
+              data-fx="word"
+              {...(accent ? { "data-accent": "" } : {})}
               className={`${s.word} ${accent ? s.wordAccent : ""}`}
               style={{ "--i": i } as React.CSSProperties}
             >
@@ -57,7 +59,7 @@ export default function Problem() {
       <div className={`shell ${s.grid}`}>
         <div className={`${s.left} float-in`}>
           <p className={s.labelRow}>{problem.label}</p>
-          <h2 id="problem-heading" className={s.statement}>
+          <h2 id="problem-heading" className={s.statement} data-fx="statement">
             <StatementWords text={problem.statement} />
           </h2>
           <p className={`t-caption ${s.caption}`}>{problem.caption}</p>

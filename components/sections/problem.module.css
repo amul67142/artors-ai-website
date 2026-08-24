@@ -6,13 +6,12 @@
    and opens the one-line fix. The sentence lives nowhere else.
 
    The word fill is a CSS scroll-driven animation — no JS.
-   Browsers without animation-timeline see full ink.
+   The word fill is scrubbed by GSAP (PageFx); base ink is the fallback.
    ============================================================ */
 
 .section {
   position: relative;
   padding-block: 104px 120px;
-  view-timeline: --problem block;
 }
 
 .grid {
@@ -50,39 +49,13 @@
 /* Words start at 22% ink and fill as the section crosses the
    viewport, each a beat after the last. */
 .word {
-  color: color-mix(in srgb, var(--ink) 22%, transparent);
+  color: var(--ink);
 }
-
-@supports (animation-timeline: view()) {
-  .word {
-    animation: wordInk linear both;
-    animation-timeline: --problem;
-    animation-range: cover calc(6% + var(--i) * 2.6%) cover
-      calc(22% + var(--i) * 2.6%);
-  }
-  .wordAccent {
-    animation-name: wordAccent;
-  }
+.wordAccent {
+  color: var(--accent);
 }
-@supports not (animation-timeline: view()) {
-  .word {
-    color: var(--ink);
-  }
-  .wordAccent {
-    color: var(--accent);
-  }
-}
-
-@keyframes wordInk {
-  to {
-    color: var(--ink);
-  }
-}
-@keyframes wordAccent {
-  to {
-    color: var(--accent);
-  }
-}
+/* The dull->ink fill is scrubbed by GSAP (PageFx); base color is the
+   readable fallback for no-JS and reduced motion. */
 
 .caption {
   color: var(--muted);

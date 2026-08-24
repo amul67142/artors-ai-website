@@ -110,6 +110,7 @@ export function Process() {
           {process.steps.map((step, i) => (
             <li
               key={step.title}
+              data-fx="flowcol"
               className={`${s.flowCol} float-in`}
               style={{ "--step": i, "--i": i } as React.CSSProperties}
             >
@@ -121,8 +122,11 @@ export function Process() {
               <span className={s.flowStepTitle}>{step.title}</span>
               <p className={s.flowText}>{step.text}</p>
               <span className={s.flowPctWrap}>
-                <span className={s.flowPct}>{step.pct}%</span>
+                <span className={s.flowPct} data-fx="pct" data-pct={step.pct}>
+                  {step.pct}%
+                </span>
                 <span
+                  data-fx="bar"
                   className={s.flowBar}
                   style={{ "--pct": `${step.pct}%` } as React.CSSProperties}
                 />

@@ -6,7 +6,7 @@
    ============================================================ */
 
 .section {
-  padding-block: 8px 56px;
+  padding-block: 8px 88px;
 }
 
 .row {
@@ -57,7 +57,7 @@
 
 @media (min-width: 810px) {
   .section {
-    padding-block: 8px 72px;
+    padding-block: 8px 112px;
   }
   .row {
     flex-direction: row;

@@ -24,7 +24,7 @@
 /* ---------- PROOF --------------------------------------------------- */
 
 .proof {
-  padding-block: 40px 128px;
+  padding-block: 104px 136px;
 }
 
 .proofStatement {
@@ -129,7 +129,7 @@
    their own view timelines.                                         */
 
 .process {
-  padding-block: 40px 132px;
+  padding-block: 104px 140px;
 }
 
 .flowHead {
@@ -254,21 +254,7 @@
   transform-origin: left;
 }
 
-@supports (animation-timeline: view()) {
-  .flowBar {
-    animation: barDraw linear both;
-    animation-timeline: view();
-    animation-range: entry 10% entry 90%;
-  }
-}
-@keyframes barDraw {
-  from {
-    transform: scaleX(0);
-  }
-  to {
-    transform: scaleX(1);
-  }
-}
+/* flowBar draw + pct count-up are GSAP-scrubbed (PageFx). */
 
 @media (min-width: 900px) {
   .flowGrid {
@@ -289,7 +275,7 @@
 /* ---------- INDUSTRIES ----------------------------------------------- */
 
 .industries {
-  padding-block: 40px 128px;
+  padding-block: 104px 136px;
 }
 
 .indGrid {
@@ -338,7 +324,7 @@
 /* ---------- ENGAGEMENTS ---------------------------------------------- */
 
 .engage {
-  padding-block: 40px 132px;
+  padding-block: 104px 140px;
 }
 
 .engGrid {
@@ -399,7 +385,7 @@
 /* ---------- FAQ ------------------------------------------------------- */
 
 .faq {
-  padding-block: 40px 132px;
+  padding-block: 104px 140px;
 }
 
 .faqList {

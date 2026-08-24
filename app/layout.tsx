@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/site/Header";
 import GradualBlur from "@/components/fx/GradualBlur";
+import PageFx from "@/components/fx/PageFx";
 import Footer from "@/components/site/Footer";
 import LeadModal from "@/components/lead/LeadModal";
 
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <LeadModal />
         <GradualBlur />
+        <PageFx />
       </body>
     </html>
   );

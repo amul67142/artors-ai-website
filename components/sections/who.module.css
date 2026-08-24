@@ -5,7 +5,6 @@
 
 .section {
   padding-block: 128px 136px;
-  view-timeline: --who block;
 }
 
 .grid {
@@ -50,39 +49,13 @@
 }
 
 .word {
-  color: color-mix(in srgb, var(--ink) 22%, transparent);
+  color: var(--ink);
 }
-
-@supports (animation-timeline: view()) {
-  .word {
-    animation: wordInk linear both;
-    animation-timeline: --who;
-    animation-range: cover calc(4% + var(--i) * 1.4%) cover
-      calc(16% + var(--i) * 1.4%);
-  }
-  .wordAccent {
-    animation-name: wordAccent;
-  }
+.wordAccent {
+  color: var(--accent);
 }
-@supports not (animation-timeline: view()) {
-  .word {
-    color: var(--ink);
-  }
-  .wordAccent {
-    color: var(--accent);
-  }
-}
-
-@keyframes wordInk {
-  to {
-    color: var(--ink);
-  }
-}
-@keyframes wordAccent {
-  to {
-    color: var(--accent);
-  }
-}
+/* The dull->ink fill is scrubbed by GSAP (PageFx); base color is the
+   readable fallback for no-JS and reduced motion. */
 
 .link {
   display: inline-flex;

@@ -35,6 +35,8 @@ function StatementWords({ text }: { text: string }) {
         return (
           <span key={i}>
             <span
+              data-fx="word"
+              {...(accent ? { "data-accent": "" } : {})}
               className={`${s.word} ${accent ? s.wordAccent : ""}`}
               style={{ "--i": i } as React.CSSProperties}
             >
@@ -54,7 +56,7 @@ export default function WhoWeAre() {
       <div className={`shell ${s.grid}`}>
         <div>
           <p className={`${s.label} float-in`}>{who.label}</p>
-          <h2 id="who-heading" className={s.statement}>
+          <h2 id="who-heading" className={s.statement} data-fx="statement">
             <StatementWords text={who.statement} />
           </h2>
           <Link href={who.link.href} className={`${s.link} float-in`}>
