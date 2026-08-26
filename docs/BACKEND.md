@@ -1,6 +1,7 @@
 # Artors — Backend Design
 
-**Status:** decided 2026-08-21 — Hostinger MySQL + Resend email; WhatsApp channel skipped.
+**Status:** decided 2026-08-21, email revised 2026-08-26 — Hostinger MySQL + Hostinger SMTP
+(`ai@artors.in`); WhatsApp channel skipped.
 Code for Phases A+B ships dark and activates via env vars.
 **Scope:** everything the marketing site needs server-side. This is not a product backend;
 it is a lead pipeline with an admin view.
@@ -35,7 +36,8 @@ Browser (LeadForm / popup)
         │ 1. validate + anti-spam
         │ 2. PERSIST FIRST  ──────────►  MySQL `artors` DB  (leads table)
         │ 3. notify, best-effort:
-        │      └─► Email notify      (Resend API)
+        │      ├─► Email notify      (SMTP → team)
+        │      └─► Email confirm     (SMTP → the visitor)
         │ 4. record per-channel delivery status on the row
         ▼
    { ok: true }   (the visitor sees success as soon as persistence succeeds)
@@ -73,8 +75,8 @@ leads = mysqlTable("leads", {
 
   status:      mysqlEnum(["new", "contacted", "qualified", "closed", "spam"])
                  .default("new").notNull(),
-  emailedAt:   timestamp(),                  // null = channel not yet delivered
-  whatsappAt:  timestamp(),
+  emailedAt:   timestamp(),                  // null = team notification undelivered
+  confirmedAt: timestamp(),                  // null = visitor confirmation unsent
   note:        text(),                       // admin's working note
 });
 ```
@@ -111,11 +113,17 @@ with the WhatsApp fallback line — the one case where the visitor should try an
 Both channels fire after persist, in parallel, each wrapped so one failing never blocks
 the other:
 
-- **Email (Resend, the one channel)** — one transactional email to the notification
-  address with every field, reply-to set to the lead's email when present.
+- **Team notification (Hostinger SMTP)** — one transactional email to `LEAD_NOTIFY_EMAIL`
+  with every field, Reply-To set to the lead's email when present, so hitting reply in the
+  inbox answers the visitor directly. Stamps `emailed_at`.
+- **Visitor confirmation (Hostinger SMTP)** — a short acknowledgement from `ai@artors.in`
+  repeating the form's promise ("we reply within a day"). Skipped when the visitor left no
+  email address, since email is optional on the form. Stamps `confirmed_at`.
 
-Each success stamps its timestamp column. A lead with both columns null after five minutes
-is visible in admin as "unnotified" — the safety net.
+Both go out through `lib/mail.ts`, one pooled SMTP transport. Each success stamps its
+timestamp column. A lead with `emailed_at` null after five minutes is visible in admin as
+"unnotified" — the safety net. `confirmed_at` null is normal (no email given) and is not an
+alarm condition.
 
 ### 4.4 Failure posture
 
@@ -147,8 +155,12 @@ hand-built system.
 
 ```
 DATABASE_URL=            mysql://…            (blocks Phase A)
-RESEND_API_KEY=          re_…                 (blocks email channel)
-LEAD_FROM_EMAIL=         leads@artors domain   (verified sender)
+SMTP_HOST=               smtp.hostinger.com   (blocks email channel)
+SMTP_PORT=               465                  (implicit TLS; 587 for STARTTLS)
+SMTP_USER=               ai@artors.in         (the mailbox)
+SMTP_PASS=               …                    (mailbox password)
+LEAD_FROM_EMAIL=         ai@artors.in         (must equal SMTP_USER — DMARC)
+LEAD_FROM_NAME=          Artors
 LEAD_NOTIFY_EMAIL=       where notifications land
 ADMIN_PASSWORD=          admin login
 SESSION_SECRET=          jose signing key
@@ -162,8 +174,8 @@ Secrets live in `.env.local` (gitignored) and the host's env store. Nothing in t
 
 - **Phase A — never lose a lead:** schema + migration, persist in `/api/lead`, zod
   validation, time-to-submit check, rate limit. *Blocks on: DATABASE_URL.*
-- **Phase B — hear about it:** Pabbly webhook + email delivery, delivery-status columns.
-  *Blocks on: webhook URL, email provider key, notify address.*
+- **Phase B — hear about it:** SMTP delivery (team notification + visitor confirmation),
+  delivery-status columns. *Blocks on: SMTP_PASS — the `ai@artors.in` mailbox password.*
 - **Phase C — manage it:** `/admin` with auth and the leads table.
 - **Phase D — polish:** unnotified-lead flag, CSV export, daily digest if wanted.
 
@@ -174,5 +186,16 @@ Each phase ships independently; the site works (console transport) at every stag
 ## 8. Decisions (taken 2026-08-21)
 
 1. **Database:** new `artors` database on the Hostinger MySQL server. Awaiting connection string.
-2. **Email:** Resend. Awaiting API key + domain DNS once the artors domain exists.
+2. **Email (revised 2026-08-26):** the Hostinger mailbox `ai@artors.in`, relayed over
+   `smtp.hostinger.com:465` with nodemailer — not Resend. The mailbox is already paid for, and
+   `artors.in` already publishes the records Hostinger mail needs: SPF
+   (`include:_spf.mail.hostinger.com`), three `hostingermail-a/b/c._domainkey` DKIM CNAMEs, and
+   DMARC at `p=none`. Sending through the same provider that owns those records means mail
+   authenticates with no new DNS and no second vendor, and replies land in a real inbox someone
+   reads rather than a no-reply void.
+   *Trade-off accepted:* SMTP has no delivery dashboard and Hostinger applies an hourly send cap.
+   At tens of leads a week that is invisible; if the site ever sends in bulk, revisit. The
+   `lib/mail.ts` seam means swapping to an API provider is one file.
+   **Two messages leave per lead:** the internal notification (Reply-To set to the visitor) and a
+   confirmation to the visitor, skipped when they left no email address.
 3. **WhatsApp:** skipped for now. The adapter keeps a slot for it; a Pabbly webhook can be added later without touching the form or route.

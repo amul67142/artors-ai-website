@@ -28,5 +28,6 @@ export const leads = mysqlTable("leads", {
     .default("new")
     .notNull(),
   emailedAt: timestamp("emailed_at"),
+  confirmedAt: timestamp("confirmed_at"),
   note: text("note"),
 });

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { persistLead, notifyEmail } from "@/lib/leads/deliver";
+import { persistLead, notifyEmail, confirmLead } from "@/lib/leads/deliver";
 
 /**
  * The lead endpoint — docs/BACKEND.md §4.
@@ -76,12 +76,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false }, { status: 500 });
   }
 
-  // Notify second — best-effort, never fails the request.
-  try {
-    await notifyEmail(lead, id);
-  } catch (e) {
-    console.error("[lead:notify-failed]", e);
-  }
+  // Notify second — best-effort, never fails the request. The team
+  // notification and the visitor confirmation go out together.
+  await Promise.allSettled([notifyEmail(lead, id), confirmLead(lead, id)]).then(
+    (rs) =>
+      rs.forEach((r) => {
+        if (r.status === "rejected") console.error("[lead:notify-failed]", r.reason);
+      }),
+  );
 
   return NextResponse.json({ ok: true });
 }

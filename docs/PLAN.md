@@ -211,5 +211,8 @@ Small, deliberate, all CSS-driven. Full specifications in `docs/DESIGN.md`.
 - [ ] Gurugram office address and company registration for the footer
 - [ ] WhatsApp business number
 - [ ] Booking tool — Cal.com or Calendly
-- [ ] Notification email address for form submissions
-- [ ] Domain and hosting
+- [x] Notification email — `ai@artors.in`, the Hostinger mailbox. Both the team notification
+  and the visitor confirmation send from it over SMTP (`docs/BACKEND.md` §8.2). Still needs
+  `SMTP_PASS` in `.env.local` before it does anything.
+- [x] Domain — `artors.in`, registered at Hostinger, renews 2027-06-24. DNS already carries
+  SPF, DKIM and DMARC for Hostinger mail. Hosting target still to confirm.

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "mail:test": "node --env-file=.env.local scripts/test-mail.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -16,6 +17,7 @@
     "gsap": "^3.15.0",
     "mysql2": "^3.23.4",
     "next": "16.3.0",
+    "nodemailer": "^9.0.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "zod": "^4.4.3"
@@ -23,6 +25,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "drizzle-kit": "^0.31.10",
