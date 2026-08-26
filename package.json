@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "mail:test": "node --env-file=.env.local scripts/test-mail.mjs"
+    "db:migrate": "node --env-file-if-exists=.env.local scripts/migrate.mjs",
+    "mail:test": "node --env-file-if-exists=.env.local scripts/test-mail.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

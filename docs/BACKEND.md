@@ -56,6 +56,15 @@ change as transports evolve.
 
 Same stack as the Spacetrans site (mysql2 + drizzle-orm), separate database.
 
+**Hostinger runs MariaDB, not MySQL** (11.8.8 as of 2026-08-26). Two consequences:
+
+- `id` is a declared `bigint(unsigned).autoincrement()`, never drizzle's `serial()`. MariaDB
+  already defines SERIAL as an alias for BIGINT UNSIGNED AUTO_INCREMENT UNIQUE, so the
+  `serial AUTO_INCREMENT` drizzle's mysql dialect emits is a parse error.
+- `drizzle-kit migrate` fails on that with a silent exit 1 and no message. Migrations run
+  through `scripts/migrate.mjs` (drizzle-orm's own migrator) instead, which prints the real
+  error. `drizzle-kit generate` is still used to author them.
+
 ```ts
 // lib/db/schema.ts
 leads = mysqlTable("leads", {
@@ -185,7 +194,13 @@ Each phase ships independently; the site works (console transport) at every stag
 
 ## 8. Decisions (taken 2026-08-21)
 
-1. **Database:** new `artors` database on the Hostinger MySQL server. Awaiting connection string.
+1. **Database:** `u839308886_artors` on `srv1742.hstgr.io:3306`, user
+   `u839308886_artorsAmul`. **Live since 2026-08-26** — schema applied, insert/update/read
+   verified end to end. Credentials in `.env.local` only.
+   *Open risk:* the remote-access rule is `%` (any IP on the internet). Fine while developing
+   from a changing address; narrow it to the deploy host — or drop it entirely and use
+   `localhost`, since artors.in is a Node.js site on the same Hostinger account
+   (`/home/u839308886/domains/artors.in/public_html`) — before launch.
 2. **Email (revised 2026-08-26):** the Hostinger mailbox `ai@artors.in`, relayed over
    `smtp.hostinger.com:465` with nodemailer — not Resend. The mailbox is already paid for, and
    `artors.in` already publishes the records Hostinger mail needs: SPF

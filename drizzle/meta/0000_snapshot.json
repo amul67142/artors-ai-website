@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "0ce5d66b-5b2b-4257-afd7-62acdbaeb08f",
+  "id": "d58a8363-f225-4d85-994c-aeb408df568e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "leads": {
@@ -9,7 +9,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "bigint unsigned",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": true
@@ -95,6 +95,13 @@
         },
         "emailed_at": {
           "name": "emailed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "confirmed_at": {
+          "name": "confirmed_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
