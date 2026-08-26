@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Button from "@/components/ui/Button";
 import { who } from "@/lib/content/about";
+import Team from "@/components/sections/Team";
 import s from "@/app/pages.module.css";
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ const why = [
   },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
   const plain = who.statement.replace(/[[\]]/g, "");
   return (
     <main id="main">
@@ -46,26 +47,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Founder — name, photo and bio land when supplied (PLAN §7). */}
-      <section className={s.section} aria-labelledby="founder-heading" style={{ paddingBottom: 72 }}>
-        <div className="shell">
-          <h2 id="founder-heading" className={`${s.sectionLabel} float-in`}>
-            Who you'll work with
-          </h2>
-          <div className={`${s.founder} float-in`}>
-            <div className={s.portrait}>Founder photo</div>
-            <div>
-              <p className={s.founderName}>Founder</p>
-              <p className={s.founderRole}>Founder · Artors</p>
-              <p className={s.founderText}>
-                The person who scopes your system on the first call is the person who designs
-                it, builds it and stays on it. No account managers, no junior handoffs, no
-                ticket queue between you and the work.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Team />
 
       <section className={s.section} aria-labelledby="why-heading" style={{ paddingTop: 0 }}>
         <div className="shell">

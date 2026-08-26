@@ -2,7 +2,7 @@
 
 **Status:** LIVE as of 2026-08-26 — Hostinger MariaDB + Hostinger SMTP (`ai@artors.in`);
 WhatsApp channel skipped. Phases A and B are verified end to end: a POST to `/api/lead`
-persists the row and stamps both `emailed_at` and `confirmed_at`. Phase C (`/admin`) is next.
+persists the row and stamps both `emailed_at` and `confirmed_at`. Phase C (`/admin`) is done — see `docs/ADMIN.md`.
 Code for Phases A+B ships dark and activates via env vars.
 **Scope:** everything the marketing site needs server-side. This is not a product backend;
 it is a lead pipeline with an admin view.
@@ -186,7 +186,9 @@ Secrets live in `.env.local` (gitignored) and the host's env store. Nothing in t
   validation, time-to-submit check, rate limit. **Done 2026-08-26.**
 - **Phase B — hear about it:** SMTP delivery (team notification + visitor confirmation),
   delivery-status columns. **Done 2026-08-26**, verified against a real send.
-- **Phase C — manage it:** `/admin` with auth and the leads table.
+- **Phase C — manage it:** `/admin` with auth and the leads table. **Done 2026-08-26** —
+  and extended past the original scope to cover logos, case studies, testimonials and team.
+  See `docs/ADMIN.md`.
 - **Phase D — polish:** unnotified-lead flag, CSV export, daily digest if wanted.
 
 Each phase ships independently; the site works (console transport) at every stage.

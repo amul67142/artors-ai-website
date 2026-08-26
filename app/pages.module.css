@@ -349,3 +349,39 @@ a.band:hover .bandTitle {
     transition: none;
   }
 }
+
+/* ---------- team, database-driven (components/sections/Team.tsx) ----- */
+
+/* .portrait is the dotted placeholder box; it becomes the frame for a real
+   photo once one is uploaded, so it needs a positioning context for
+   next/image fill and a clip for the rounded corners. */
+.portrait {
+  position: relative;
+  overflow: hidden;
+}
+
+.portraitImg {
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.founderLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 16px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.founderLinks a {
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1px;
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+
+.founderLinks a:hover {
+  color: var(--accent);
+}

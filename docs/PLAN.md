@@ -203,9 +203,11 @@ Small, deliberate, all CSS-driven. Full specifications in `docs/DESIGN.md`.
 
 ## 7. Open items
 
-- [ ] **Client strip carries PLACEHOLDER marks** (Vedansh instruction 2026-08-20): Spacetrans is
-  real; Emaar, Godrej, Eldeco, Advitya are dummies for layout. Replace or confirm every mark
-  before launch — real brands shown as clients without an engagement are a legal liability.
+- [x] **Client strip placeholders removed 2026-08-26.** The strip is now database-driven
+  (Admin → Logos) and the dummy Emaar / Godrej / Eldeco / Advitya imports are gone. `kind`
+  separates a real client from an integration mark, so §2.6 is enforced by the schema rather
+  than by memory. Nothing shows unless it was added and published. Remaining: the old image
+  files still sit unused in `public/clients/`.
 - [ ] Real phone number for a live voice demo (upgrades `/work` from recorded to live)
 - [ ] Founder photo, name, and bio for `/about`
 - [ ] Gurugram office address and company registration for the footer

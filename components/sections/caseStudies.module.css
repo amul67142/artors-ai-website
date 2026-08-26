@@ -1,0 +1,138 @@
+/* ============================================================
+   CASE STUDIES  —  hairline rows on /work. Same grammar as the
+   proof and engagement grids: rules for structure, no cards.
+   ============================================================ */
+
+.section {
+  padding-block: 96px 24px;
+}
+
+.sectionLabel {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  border-top: 1px solid var(--line);
+}
+
+.link {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: start;
+  padding: 28px 0 32px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cover {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.coverImg {
+  object-fit: cover;
+}
+
+.body {
+  display: block;
+}
+
+.meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.title {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.16;
+  color: var(--ink);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+
+.link:hover .title {
+  color: var(--accent);
+}
+
+.summary {
+  display: block;
+  margin-top: 10px;
+  max-width: 62ch;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 36px;
+  margin-top: 20px;
+}
+
+.metric {
+  display: block;
+}
+
+.metricValue {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.metricLabel {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* ---------- responsive ---------------------------------------------- */
+
+@media (min-width: 810px) {
+  .section {
+    padding-block: 112px 24px;
+  }
+  .link {
+    grid-template-columns: 340px 1fr;
+    gap: 40px;
+  }
+}
+
+/* ---------- reduced motion ------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .title {
+    transition: none;
+  }
+}

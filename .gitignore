@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 .claude/
 !.env.example
+
+# uploaded media (docs/ADMIN.md §5)
+.uploads/

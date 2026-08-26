@@ -1,0 +1,96 @@
+/* ============================================================
+   TESTIMONIALS  —  hairline-separated columns, no cards.
+   Matches the engagements/proof grammar in more.module.css:
+   air between sections, rules for structure only.
+   ============================================================ */
+
+.section {
+  padding-block: 104px 136px;
+}
+
+.sectionLabel {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 48px;
+  list-style: none;
+  margin: 40px 0 0;
+  padding: 0;
+}
+
+.cell {
+  border-top: 1px solid var(--line);
+  padding: 26px 0 30px;
+}
+
+.quote {
+  margin: 0;
+}
+
+.quoteText {
+  margin: 0;
+  font-size: clamp(18px, 1.7vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.36;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+/* No decorative quote glyph: the design system has no ornament. */
+.author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: grayscale(1);
+}
+
+.name {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.role {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* ---------- responsive ---------------------------------------------- */
+
+@media (min-width: 810px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .section {
+    padding-block: 120px 152px;
+  }
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

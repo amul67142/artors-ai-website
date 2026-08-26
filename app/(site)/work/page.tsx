@@ -4,6 +4,7 @@ import ServiceFlow from "@/components/services/ServiceFlow";
 import { work } from "@/lib/content/work";
 import s from "@/app/pages.module.css";
 import w from "./work.module.css";
+import CaseStudies from "@/components/sections/CaseStudies";
 
 export const metadata: Metadata = {
   title: "Work | Artors",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     "One system shown end to end: the recording, the transcript and the workflow behind it. Artors publishes demonstrations instead of a logo wall.",
 };
 
-export default function WorkPage() {
+export default async function WorkPage() {
   const { run } = work;
   return (
     <main id="main">
@@ -26,6 +27,9 @@ export default function WorkPage() {
           </p>
         </div>
       </section>
+
+      {/* ---- published case studies, when there are any ---- */}
+      <CaseStudies />
 
       {/* ---- the run ---- */}
       <section className={s.section} aria-labelledby="run-heading" style={{ paddingBottom: 64 }}>

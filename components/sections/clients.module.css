@@ -80,3 +80,23 @@
     transition: none;
   }
 }
+
+/* ---------- database-driven marks ------------------------------------ */
+
+/* Two labelled rows (clients, integrations) instead of one, stacked so
+   each keeps the original single-line grammar. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+/* Fallback when a mark has a name but no logo uploaded yet. Reads as a
+   wordmark rather than a broken image. */
+.wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  opacity: 0.62;
+}

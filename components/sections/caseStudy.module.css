@@ -1,0 +1,134 @@
+/* ============================================================
+   CASE STUDY DETAIL  —  /work/[slug]. Long-form, one column,
+   generous measure. Rules for structure, no cards.
+   ============================================================ */
+
+.back {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.back:hover {
+  color: var(--accent);
+}
+
+.coverSection {
+  padding-block: 8px 56px;
+}
+
+.cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.coverImg {
+  object-fit: cover;
+}
+
+/* ---------- metrics -------------------------------------------------- */
+
+.metricsSection {
+  padding-block: 0 64px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 28px 40px;
+  margin: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+
+.metric {
+  margin: 0;
+}
+
+.metricLabel {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.metricValue {
+  margin: 6px 0 0;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+/* ---------- prose blocks --------------------------------------------- */
+
+.block {
+  border-top: 1px solid var(--line);
+  padding: 30px 0 34px;
+}
+
+.blockHeading {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.blockBody {
+  max-width: 68ch;
+}
+
+.blockBody p {
+  margin: 0 0 16px;
+  font-size: clamp(16px, 1.5vw, 18px);
+  font-weight: 600;
+  line-height: 1.62;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.blockBody p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- closing -------------------------------------------------- */
+
+.cta {
+  border-top: 1px solid var(--line);
+  padding-top: 32px;
+}
+
+.ctaText {
+  margin: 0 0 22px;
+  max-width: 26ch;
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+  color: var(--ink);
+}
+
+/* ---------- responsive ----------------------------------------------- */
+
+@media (min-width: 810px) {
+  .coverSection {
+    padding-block: 8px 72px;
+  }
+}
+
+/* ---------- reduced motion ------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .back {
+    transition: none;
+  }
+}
