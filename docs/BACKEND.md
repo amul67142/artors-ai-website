@@ -1,7 +1,8 @@
 # Artors — Backend Design
 
-**Status:** decided 2026-08-21, email revised 2026-08-26 — Hostinger MySQL + Hostinger SMTP
-(`ai@artors.in`); WhatsApp channel skipped.
+**Status:** LIVE as of 2026-08-26 — Hostinger MariaDB + Hostinger SMTP (`ai@artors.in`);
+WhatsApp channel skipped. Phases A and B are verified end to end: a POST to `/api/lead`
+persists the row and stamps both `emailed_at` and `confirmed_at`. Phase C (`/admin`) is next.
 Code for Phases A+B ships dark and activates via env vars.
 **Scope:** everything the marketing site needs server-side. This is not a product backend;
 it is a lead pipeline with an admin view.
@@ -182,9 +183,9 @@ Secrets live in `.env.local` (gitignored) and the host's env store. Nothing in t
 ## 7. Build phases
 
 - **Phase A — never lose a lead:** schema + migration, persist in `/api/lead`, zod
-  validation, time-to-submit check, rate limit. *Blocks on: DATABASE_URL.*
+  validation, time-to-submit check, rate limit. **Done 2026-08-26.**
 - **Phase B — hear about it:** SMTP delivery (team notification + visitor confirmation),
-  delivery-status columns. *Blocks on: SMTP_PASS — the `ai@artors.in` mailbox password.*
+  delivery-status columns. **Done 2026-08-26**, verified against a real send.
 - **Phase C — manage it:** `/admin` with auth and the leads table.
 - **Phase D — polish:** unnotified-lead flag, CSV export, daily digest if wanted.
 
