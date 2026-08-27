@@ -46,7 +46,7 @@ Stateless session, one operator, no user table.
 POST login (server action)
    │ 1. zod-validate the fields
    │ 2. per-IP failure count from the login_attempts table   → lock at 8 per 15 min
-   │ 3. compare email, and ALWAYS run the scrypt compare
+   │ 3. compare email, and ALWAYS run the password compare
    │ 4. jose HS256 JWT  →  httpOnly cookie "artors_admin", 8 hours
    ▼
 /admin
@@ -54,8 +54,9 @@ POST login (server action)
 
 | Concern | Decision |
 |---|---|
-| Password storage | **scrypt hash in `ADMIN_PASSWORD_HASH`.** The plaintext is nowhere — not in the repo, not in `.env.local`, not in the host's env store. `node:crypto`, so no dependency. Cost parameters are stored inline in the hash, so they can be raised later without invalidating existing hashes. |
-| Comparison | `timingSafeEqual`. The hash comparison runs **even when the email is wrong**, so response time does not disclose which half failed. |
+| Password storage | **`ADMIN_PASSWORD`, plain, by default.** Optionally `ADMIN_PASSWORD_HASH` (scrypt, `node:crypto`, no dependency) instead — the hash wins when both are set, so hardening never needs a code change. Cost parameters are stored inline in the hash, so they can be raised later without invalidating existing ones. |
+| Why plain is the default | One paste into the host's env editor, and the hash's `$` separators are mangled by some of those editors. The security gap is narrower than it looks: the same env store already holds `DATABASE_URL` and `SMTP_PASS` in the clear, so anything able to read `ADMIN_PASSWORD` already has the database and the mailbox. The hash only helps when that one value leaks alone — a screenshot, a pasted config. |
+| Comparison | Constant time on both paths. The plain path compares fixed-width SHA-256 digests, because `timingSafeEqual` throws on a length mismatch and the length itself would leak. The comparison runs **even when the email is wrong**, so response time does not disclose which half failed. |
 | Failure message | One string for every failure. Never reveals whether the account exists or the password was close. |
 | Brute force | Failures counted per IP in `login_attempts` — a table, not an in-memory map, so a restart does not reset an attacker's budget and the count survives multiple Node processes. |
 | Session | `jose` HS256 signed with `SESSION_SECRET`, `httpOnly` + `sameSite=lax` + `secure` in production, 8-hour expiry. Client JavaScript cannot read it; the server cannot be handed a session it did not mint. |
@@ -63,12 +64,16 @@ POST login (server action)
 
 ### Rotating the password
 
+Change `ADMIN_PASSWORD` in `.env.local` and in hPanel's environment store, then restart the app.
+
+To harden instead, generate a hash and set `ADMIN_PASSWORD_HASH` (it takes precedence, so you
+can leave or remove `ADMIN_PASSWORD`):
+
 ```bash
 npm run admin:hash -- 'the new password'
 ```
 
-Paste the printed line into `.env.local` and into hPanel's environment store. Refuses anything
-under 10 characters.
+Refuses anything under 10 characters.
 
 ### Two layers, on purpose
 
@@ -160,7 +165,8 @@ a build without `DATABASE_URL` still succeeds and simply renders the empty state
 
 ```
 ADMIN_EMAIL=              ai@artors.in
-ADMIN_PASSWORD_HASH=      scrypt$16384$8$1$…   (npm run admin:hash)
+ADMIN_PASSWORD=           the plain password
+ADMIN_PASSWORD_HASH=      optional; scrypt$16384$8$1$… — wins over the above
 SESSION_SECRET=           base64, 32 bytes     (openssl rand -base64 32)
 UPLOAD_DIR=               .uploads
 ```
@@ -171,8 +177,10 @@ Plus `DATABASE_URL` and the SMTP block from `docs/BACKEND.md` §6.
 
 ## 8. Open items
 
-- [ ] **`ADMIN_PASSWORD` and the database password are currently the same string.** If one
-      leaks, both go. Rotate one of them.
+- [ ] The admin password is stored plain in the env store (Vedansh's call, 2026-08-27 — see the
+      table in §2 for why the trade-off is modest). `ADMIN_PASSWORD_HASH` is wired and takes
+      precedence whenever it is worth switching.
+- [ ] **The database and the ai@artors.in mailbox share one password.** If one leaks, both go.
 - [ ] **MySQL remote access is `%`** — open to every IP on the internet. `artors.in` is a
       Node.js site on the same Hostinger account, so after deploy the app can use `localhost`
       and the rule can be deleted.

@@ -1,17 +1,24 @@
-import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
+import { createHash, randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 
 /**
- * Password hashing — docs/ADMIN.md §2.
+ * Password checking — docs/ADMIN.md §2.
  *
- * scrypt from node:crypto, so no dependency. The stored form is
- *   scrypt$N$r$p$<salt-b64>$<key-b64>
- * with the parameters inline, so raising the cost later does not invalidate
- * hashes made under the old ones.
+ * Two ways to configure the admin password, checked in this order:
  *
- * The admin password is never stored in plaintext, not even in .env.local —
- * ADMIN_PASSWORD_HASH holds this string. Generate one with:
- *   npm run admin:hash -- 'the password'
+ *   ADMIN_PASSWORD_HASH   a scrypt hash; the password itself is stored
+ *                         nowhere. Generate with: npm run admin:hash -- '…'
+ *   ADMIN_PASSWORD        the plain password.
+ *
+ * Plain is the default because it is one paste into the host's env editor,
+ * and the hash format's separators are mangled by some of those editors.
+ * The security difference is narrower than it first looks: the same env store
+ * already holds DATABASE_URL and SMTP_PASS in the clear, so anything able to
+ * read ADMIN_PASSWORD already has the database and the mailbox. The hash only
+ * helps when that one value leaks on its own — a screenshot, a pasted config.
+ * Prefer it when that is a real risk. Both paths compare in constant time.
+ *
+ * scrypt comes from node:crypto, so neither path adds a dependency.
  */
 
 const scryptAsync = promisify(scrypt) as (
@@ -26,13 +33,28 @@ const R = 8;
 const P = 1;
 const KEYLEN = 64;
 
+/** Stored form: scrypt$N$r$p$<salt-b64>$<key-b64>. Cost parameters are inline,
+ *  so raising them later does not invalidate hashes made under the old ones. */
 export async function hashPassword(password: string): Promise<string> {
   const salt = randomBytes(16);
   const key = await scryptAsync(password.normalize("NFKC"), salt, KEYLEN, { N, r: R, p: P });
   return `scrypt$${N}$${R}$${P}$${salt.toString("base64")}$${key.toString("base64")}`;
 }
 
-/** Constant-time compare. Returns false on any malformed input rather than throwing. */
+/**
+ * Constant-time compare of two plaintext passwords.
+ *
+ * timingSafeEqual throws when the buffers differ in length, and the length
+ * itself would leak, so both sides are reduced to a fixed-width SHA-256 digest
+ * first. That is not password storage — it only equalises the comparison.
+ */
+export function verifyPlainPassword(input: string, expected: string): boolean {
+  const a = createHash("sha256").update(input.normalize("NFKC")).digest();
+  const b = createHash("sha256").update(expected.normalize("NFKC")).digest();
+  return timingSafeEqual(a, b);
+}
+
+/** Constant-time compare against a stored hash. False on malformed input, never throws. */
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
   try {
     const parts = stored.split("$");

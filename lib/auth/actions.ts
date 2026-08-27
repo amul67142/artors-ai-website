@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import { and, eq, gte, sql } from "drizzle-orm";
 import { z } from "zod";
 import { getDb, schema } from "@/lib/db";
-import { verifyPassword } from "./password";
+import { verifyPassword, verifyPlainPassword } from "./password";
 import { createSession, destroySession } from "./session";
 
 /**
@@ -71,15 +71,21 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
 
   const expectedEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
   const expectedHash = process.env.ADMIN_PASSWORD_HASH;
-  if (!expectedEmail || !expectedHash) {
-    console.error("[admin:misconfigured] ADMIN_EMAIL or ADMIN_PASSWORD_HASH is missing");
+  const expectedPlain = process.env.ADMIN_PASSWORD;
+  if (!expectedEmail || (!expectedHash && !expectedPlain)) {
+    console.error(
+      "[admin:misconfigured] need ADMIN_EMAIL plus ADMIN_PASSWORD or ADMIN_PASSWORD_HASH",
+    );
     return { error: "Admin is not configured on this server." };
   }
 
-  // Always run the hash comparison, even when the email is wrong, so response
-  // time does not disclose which half of the credentials failed.
+  // Always run the password comparison, even when the email is wrong, so
+  // response time does not disclose which half of the credentials failed.
+  // The hash wins when both are set, so hardening never needs a code change.
   const emailOk = parsed.data.email === expectedEmail;
-  const passwordOk = await verifyPassword(parsed.data.password, expectedHash);
+  const passwordOk = expectedHash
+    ? await verifyPassword(parsed.data.password, expectedHash)
+    : verifyPlainPassword(parsed.data.password, expectedPlain!);
 
   if (!emailOk || !passwordOk) {
     await recordFailure(ip);
