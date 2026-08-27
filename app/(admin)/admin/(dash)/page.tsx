@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { getOverview } from "@/lib/admin/queries";
+import { getHealth } from "@/lib/admin/health";
 import { COLLECTION_LIST } from "@/lib/admin/collections";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/admin/ui/card";
 import { Badge } from "@/components/admin/ui/badge";
@@ -24,13 +25,38 @@ function Stat({ label, value, hint }: { label: string; value: number; hint?: str
 }
 
 export default async function OverviewPage() {
-  const data = await getOverview();
+  const [data, health] = await Promise.all([getOverview().catch(() => null), getHealth()]);
+  const broken = health.filter((c) => !c.ok);
+
+  const healthPanel = broken.length > 0 && (
+    <section className="space-y-2">
+      {broken.map((c) => (
+        <div
+          key={c.label}
+          className="rounded-lg border border-destructive/30 bg-destructive/5 p-4 text-sm"
+        >
+          <p className="flex items-center gap-2 font-medium text-destructive">
+            <XCircle className="size-4 shrink-0" aria-hidden />
+            {c.label}
+          </p>
+          <p className="mt-1 font-mono text-xs break-all text-muted-foreground">{c.detail}</p>
+          {c.hint && <p className="mt-2 text-muted-foreground">{c.hint}</p>}
+        </div>
+      ))}
+    </section>
+  );
 
   if (!data) {
     return (
-      <p className="text-sm text-muted-foreground">
-        No database connection. Check <code>DATABASE_URL</code>.
-      </p>
+      <div className="space-y-6">
+        <header>
+          <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            The dashboard cannot load until the database connects. The exact error is below.
+          </p>
+        </header>
+        {healthPanel}
+      </div>
     );
   }
 
@@ -42,6 +68,15 @@ export default async function OverviewPage() {
           Leads and everything the public site reads from the database.
         </p>
       </header>
+
+      {healthPanel}
+
+      {broken.length === 0 && (
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
+          <CheckCircle2 className="size-4 text-emerald-600" aria-hidden />
+          Database and email are both connected.
+        </p>
+      )}
 
       {data.leads.unnotified > 0 && (
         <div className="flex items-start gap-3 rounded-lg border border-destructive/30 bg-destructive/5 p-4">

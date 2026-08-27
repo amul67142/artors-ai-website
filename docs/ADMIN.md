@@ -175,7 +175,31 @@ Plus `DATABASE_URL` and the SMTP block from `docs/BACKEND.md` §6.
 
 ---
 
-## 8. Open items
+## 8. System health
+
+The overview page runs live checks and shows the failure inline, because a
+broken `DATABASE_URL` is otherwise invisible: a wrong host, a wrong database
+name, a wrong password and a blocked port all surface identically as a 500.
+
+- **Database** — opens a real connection and reports the driver's own error
+  code, plus the URL decomposed into user / host / port / database. The
+  password is never printed. Those four fields are where the mistakes are.
+- **Email** — SMTP verify.
+- **Admin credentials** — which variables are set, and a warning when both
+  `ADMIN_PASSWORD` and `ADMIN_PASSWORD_HASH` are present.
+
+When the database is down the dashboard renders this panel *instead of*
+failing, which is only possible because the login no longer depends on the
+database (§2, brute force).
+
+**A note for the next person to debug a connection string:** an unescaped
+`@` inside the password is *not* a fault. URL parsing splits on the **last**
+`@`, so `mysql://user:pa@ss@host/db` resolves correctly — verified against
+this server. Do not send anyone chasing `%40`.
+
+---
+
+## 9. Open items
 
 - [ ] The admin password is stored plain in the env store (Vedansh's call, 2026-08-27 — see the
       table in §2 for why the trade-off is modest). `ADMIN_PASSWORD_HASH` is wired and takes
