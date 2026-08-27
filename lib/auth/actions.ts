@@ -31,15 +31,30 @@ async function clientIp(): Promise<string> {
   return h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "unknown";
 }
 
+/**
+ * Failed attempts for this IP inside the window.
+ *
+ * Fails OPEN, deliberately. This query runs before credentials are checked, so
+ * an unreachable database used to throw and turn every login into a 500 — the
+ * admin was completely unusable, and the error said nothing about why. Auth
+ * integrity does not depend on it: the password check reads from env, not the
+ * database, so a lockout counter that cannot be read degrades brute-force
+ * protection without ever letting a wrong password through.
+ */
 async function recentFailures(ip: string): Promise<number> {
   const db = getDb();
   if (!db) return 0;
-  const since = new Date(Date.now() - WINDOW_MIN * 60 * 1000);
-  const rows = await db
-    .select({ n: sql<number>`count(*)` })
-    .from(schema.loginAttempts)
-    .where(and(eq(schema.loginAttempts.ip, ip), gte(schema.loginAttempts.at, since)));
-  return Number(rows[0]?.n ?? 0);
+  try {
+    const since = new Date(Date.now() - WINDOW_MIN * 60 * 1000);
+    const rows = await db
+      .select({ n: sql<number>`count(*)` })
+      .from(schema.loginAttempts)
+      .where(and(eq(schema.loginAttempts.ip, ip), gte(schema.loginAttempts.at, since)));
+    return Number(rows[0]?.n ?? 0);
+  } catch (e) {
+    console.error("[admin:lockout-unavailable] login rate limiting is off:", e);
+    return 0;
+  }
 }
 
 async function recordFailure(ip: string): Promise<void> {
