@@ -94,9 +94,19 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
     return { error: "Admin is not configured on this server." };
   }
 
+  // A stale ADMIN_PASSWORD_HASH silently outranking a freshly set
+  // ADMIN_PASSWORD looks exactly like a wrong password, and cost an hour in
+  // production on 2026-08-27. The precedence stays — never silently downgrade
+  // to the weaker credential — but it says so out loud now.
+  if (expectedHash && expectedPlain) {
+    console.warn(
+      "[admin:both-credentials-set] ADMIN_PASSWORD_HASH takes precedence and " +
+        "ADMIN_PASSWORD is being ignored. Delete one of them.",
+    );
+  }
+
   // Always run the password comparison, even when the email is wrong, so
   // response time does not disclose which half of the credentials failed.
-  // The hash wins when both are set, so hardening never needs a code change.
   const emailOk = parsed.data.email === expectedEmail;
   const passwordOk = expectedHash
     ? await verifyPassword(parsed.data.password, expectedHash)
