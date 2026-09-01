@@ -85,6 +85,11 @@ export default function Footer() {
             <p className={s.colLabel}>More</p>
             <ul className={s.contactList}>
               <li>
+                <Link href="/tools" className={s.contactLink}>
+                  Free calculators
+                </Link>
+              </li>
+              <li>
                 <Link href="/insights" className={s.contactLink}>
                   Insights
                 </Link>

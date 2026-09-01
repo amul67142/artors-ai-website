@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/seo/site";
 import { pillars } from "@/lib/content/services";
 import { industries } from "@/lib/content/industries";
 import { getCaseStudies, getInsights, getGlossary } from "@/lib/content/db";
+import { tools } from "@/lib/content/tools";
 
 /**
  * /sitemap.xml — SEO-AUDIT.md Phase 1.2.
@@ -36,6 +37,7 @@ const STATIC_ROUTES: { path: string; priority: number; changeFrequency: Entry["c
     { path: "/work", priority: 0.8, changeFrequency: "weekly" },
     { path: "/pricing", priority: 0.7, changeFrequency: "monthly" },
     { path: "/about", priority: 0.6, changeFrequency: "monthly" },
+    { path: "/tools", priority: 0.8, changeFrequency: "monthly" },
     { path: "/insights", priority: 0.8, changeFrequency: "weekly" },
     { path: "/glossary", priority: 0.7, changeFrequency: "monthly" },
     { path: "/security", priority: 0.5, changeFrequency: "yearly" },
@@ -101,6 +103,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: term.updatedAt ?? buildTime,
       changeFrequency: "monthly",
       priority: 0.6,
+    });
+  }
+
+  // Calculators change only when the code does, so the build time is their
+  // real lastModified.
+  for (const tool of tools) {
+    entries.push({
+      url: `${SITE_URL}/tools/${tool.slug}`,
+      lastModified: buildTime,
+      changeFrequency: "yearly",
+      priority: 0.8,
     });
   }
 

@@ -1,0 +1,81 @@
+/* ============================================================
+   TOOLS  —  index rows and the calculator page shell.
+   ============================================================ */
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  border-top: 1px solid var(--line);
+}
+
+.link {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0 16px;
+  align-items: start;
+  padding: 26px 0 30px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding-top: 6px;
+}
+
+.title {
+  display: block;
+  font-size: clamp(21px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.16;
+  color: var(--ink);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.link:hover .title {
+  color: var(--accent);
+}
+
+.desc {
+  display: block;
+  margin-top: 10px;
+  max-width: 62ch;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* ---------- calculator page ------------------------------------------- */
+
+.calcSection {
+  padding-block: 8px 72px;
+}
+
+.calcIntro {
+  margin: 0 0 26px;
+  max-width: 60ch;
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.calcCta {
+  margin-top: 30px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title {
+    transition: none;
+  }
+}

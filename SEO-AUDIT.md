@@ -192,9 +192,39 @@ Skipped: Lighthouse (§3, no capable browser here).
 1.7 and 1.8 landed together because the working tree was staged as one. The
 message says so rather than pretending otherwise.
 
-### Phase 2 — new page types
+### Phase 2 — new page types (partial)
 
-**Not started.** Blocked on the decisions in §2.
+**Done:**
+
+| Item | What shipped | Verified |
+|---|---|---|
+| 2.4 Insights | 6 articles, ~5,000 words, RSS at /insights/feed.xml, Article + FAQPage schema | all routes 200; article renders 8 H2s, a real table with 4 th, 3 visible FAQ items |
+| 2.5 Glossary | 12 terms, DefinedTerm + FAQPage schema, alphabetical index | all routes 200 |
+| 2.7 Tools | Two calculators — missed-call cost, automation ROI. Client components, zero dependencies, SoftwareApplication schema | arithmetic checked against hand calculation on both; reactivity confirmed; mobile 375px has no horizontal scroll, 16px inputs, numeric keypad |
+
+Vedansh asked on 2026-08-27 for the content to be **written rather than
+scaffolded**, which reverses the brief's "never write marketing copy" rule
+(§5). The rule kept regardless: **no fabricated proof** — not one client name,
+metric or claimed result appears in any of it.
+
+Both calculators deliberately report **cost today**, never a saving. A savings
+figure would require assuming how much work automation removes, and that
+assumption would be ours rather than the visitor's — an invented number dressed
+as a calculation. Each states its assumptions on screen and says outright that
+nothing is stored, which is checkable in the network tab.
+
+**Not done:**
+
+- **2.1 Locations, 2.2 service children, 2.3 industry children** — each needs
+  real per-page copy. Thin, near-duplicate city pages are treated as doorway
+  pages and can discount the set, so these are worth doing only properly.
+- **2.6 Case studies** — still recommend dropping in favour of the existing
+  /work/[slug]. See §2.5.
+- **2.8 /security-and-data** — see §2.4, still undecided.
+- **Section 4 Analytics** — needs a GA4 measurement ID from Vedansh. Nothing
+  invented.
+
+Sitemap is now **44 URLs**, up from 21 at the start of Phase 1.
 
 ---
 
