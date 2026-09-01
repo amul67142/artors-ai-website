@@ -82,6 +82,60 @@ const testimonialsSchema = z.object({
   published: bool,
 });
 
+const faqArray = z.preprocess(
+  (v) => {
+    if (typeof v !== "string" || v.trim() === "") return undefined;
+    try {
+      const parsed = JSON.parse(v);
+      return Array.isArray(parsed) ? parsed : undefined;
+    } catch {
+      return undefined;
+    }
+  },
+  z.array(z.object({ q: z.string().trim().max(300), a: z.string().trim().max(3000) })).max(12).optional(),
+);
+
+/** "2026-08-27" -> Date. Empty stays undefined so the column keeps its NULL. */
+const dateField = z.preprocess((v) => {
+  if (typeof v !== "string" || v.trim() === "") return undefined;
+  const d = new Date(v);
+  return Number.isNaN(d.getTime()) ? undefined : d;
+}, z.date().optional());
+
+const slug = z
+  .string()
+  .trim()
+  .min(1)
+  .max(160)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Lowercase letters, numbers and hyphens only");
+
+const insightsSchema = z.object({
+  title: z.string().trim().min(1).max(200),
+  slug,
+  excerpt: optionalText(400),
+  directAnswer: optionalText(1200),
+  body: optionalText(200000),
+  faq: faqArray,
+  tags: optionalText(240),
+  coverUrl: optionalText(400),
+  authorName: optionalText(120),
+  publishedAt: dateField,
+  sortOrder,
+  published: bool,
+});
+
+const glossarySchema = z.object({
+  term: z.string().trim().min(1).max(140),
+  slug,
+  definition: z.string().trim().min(1).max(500),
+  body: optionalText(200000),
+  faq: faqArray,
+  relatedTerms: optionalText(400),
+  relatedService: optionalText(140),
+  sortOrder,
+  published: bool,
+});
+
 const teamSchema = z.object({
   name: z.string().trim().min(1).max(120),
   role: optionalText(140),
@@ -99,6 +153,8 @@ export const REGISTRY = {
   caseStudies: { table: schema.caseStudies, schema: caseStudiesSchema, revalidate: ["/work"] },
   testimonials: { table: schema.testimonials, schema: testimonialsSchema, revalidate: ["/"] },
   team: { table: schema.teamMembers, schema: teamSchema, revalidate: ["/about"] },
+  insights: { table: schema.insights, schema: insightsSchema, revalidate: ["/insights"] },
+  glossary: { table: schema.glossaryTerms, schema: glossarySchema, revalidate: ["/glossary"] },
 } as const;
 
 export function entry(key: string) {

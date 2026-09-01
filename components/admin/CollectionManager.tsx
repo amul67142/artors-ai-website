@@ -56,6 +56,7 @@ import {
 
 type Row = Record<string, unknown>;
 type Metric = { label: string; value: string };
+type Faq = { q: string; a: string };
 
 export default function CollectionManager({
   spec,
@@ -391,6 +392,22 @@ function Control({
         />
       );
 
+    case "markdown":
+      return (
+        <Textarea
+          id={id}
+          name={field.name}
+          rows={18}
+          defaultValue={str}
+          placeholder={field.placeholder}
+          aria-describedby={describedBy}
+          className="font-mono text-[13px] leading-relaxed"
+        />
+      );
+
+    case "faq":
+      return <FaqControl name={field.name} defaultValue={defaultValue} />;
+
     case "image":
       return <ImageControl name={field.name} defaultValue={str} />;
 
@@ -521,6 +538,59 @@ function ImageControl({ name, defaultValue }: { name: string; defaultValue: stri
         </div>
       </div>
       <p className="text-xs text-muted-foreground">PNG, JPEG, WebP, SVG or AVIF. Max 4 MB.</p>
+    </div>
+  );
+}
+
+/** Repeatable question/answer pairs. Emits FAQPage schema on the public page. */
+function FaqControl({ name, defaultValue }: { name: string; defaultValue: unknown }) {
+  const initial: Faq[] = Array.isArray(defaultValue) ? (defaultValue as Faq[]) : [];
+  const [items, setItems] = useState<Faq[]>(initial);
+
+  function update(i: number, patch: Partial<Faq>) {
+    setItems((prev) => prev.map((f, idx) => (idx === i ? { ...f, ...patch } : f)));
+  }
+
+  return (
+    <div className="space-y-3">
+      <input type="hidden" name={name} value={JSON.stringify(items.filter((f) => f.q))} />
+      {items.map((item, i) => (
+        <div key={i} className="space-y-2 rounded-md border border-border p-3">
+          <div className="flex gap-2">
+            <Input
+              value={item.q}
+              placeholder="Question"
+              onChange={(e) => update(i, { q: e.target.value })}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label="Remove question"
+              onClick={() => setItems((prev) => prev.filter((_, idx) => idx !== i))}
+            >
+              <X className="size-4" aria-hidden />
+            </Button>
+          </div>
+          <Textarea
+            rows={3}
+            value={item.a}
+            placeholder="Answer — a complete one. This is what gets quoted."
+            onChange={(e) => update(i, { a: e.target.value })}
+          />
+        </div>
+      ))}
+      {items.length < 12 && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setItems((prev) => [...prev, { q: "", a: "" }])}
+        >
+          <Plus className="size-3.5" aria-hidden />
+          Add question
+        </Button>
+      )}
     </div>
   );
 }

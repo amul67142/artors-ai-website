@@ -113,3 +113,73 @@ export async function getCaseStudy(slug: string): Promise<CaseStudy | null> {
     return null;
   }
 }
+
+/* ------------------------------------------------------- insights ------- */
+
+export type Insight = typeof schema.insights.$inferSelect;
+
+export async function getInsights(): Promise<Insight[]> {
+  const db = getDb();
+  if (!db) return [];
+  try {
+    return await db
+      .select()
+      .from(schema.insights)
+      .where(eq(schema.insights.published, true))
+      .orderBy(desc(schema.insights.publishedAt), desc(schema.insights.id));
+  } catch (e) {
+    console.error("[content:insights]", e);
+    return [];
+  }
+}
+
+export async function getInsight(slug: string): Promise<Insight | null> {
+  const db = getDb();
+  if (!db) return null;
+  try {
+    const [row] = await db
+      .select()
+      .from(schema.insights)
+      .where(and(eq(schema.insights.slug, slug), eq(schema.insights.published, true)))
+      .limit(1);
+    return row ?? null;
+  } catch (e) {
+    console.error("[content:insight]", e);
+    return null;
+  }
+}
+
+/* ------------------------------------------------------- glossary ------- */
+
+export type GlossaryTerm = typeof schema.glossaryTerms.$inferSelect;
+
+export async function getGlossary(): Promise<GlossaryTerm[]> {
+  const db = getDb();
+  if (!db) return [];
+  try {
+    return await db
+      .select()
+      .from(schema.glossaryTerms)
+      .where(eq(schema.glossaryTerms.published, true))
+      .orderBy(asc(schema.glossaryTerms.term));
+  } catch (e) {
+    console.error("[content:glossary]", e);
+    return [];
+  }
+}
+
+export async function getGlossaryTerm(slug: string): Promise<GlossaryTerm | null> {
+  const db = getDb();
+  if (!db) return null;
+  try {
+    const [row] = await db
+      .select()
+      .from(schema.glossaryTerms)
+      .where(and(eq(schema.glossaryTerms.slug, slug), eq(schema.glossaryTerms.published, true)))
+      .limit(1);
+    return row ?? null;
+  } catch (e) {
+    console.error("[content:glossary-term]", e);
+    return null;
+  }
+}

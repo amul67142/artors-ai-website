@@ -1,0 +1,44 @@
+/* FAQ block — hairline rows, answers always visible. */
+
+.section {
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.heading {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.list {
+  margin: 0;
+  max-width: 68ch;
+}
+
+.item {
+  border-top: 1px solid var(--line);
+  padding: 22px 0 24px;
+}
+
+.q {
+  margin: 0;
+  font-size: clamp(16px, 1.6vw, 19px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.a {
+  margin: 10px 0 0;
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.62;
+  color: var(--muted);
+  text-wrap: pretty;
+}

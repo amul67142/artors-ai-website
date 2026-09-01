@@ -9,6 +9,8 @@ import {
   FileText,
   Quote,
   Users,
+  Newspaper,
+  BookA,
   LogOut,
   ExternalLink,
 } from "lucide-react";
@@ -23,6 +25,8 @@ const NAV = [
   { href: "/admin/case-studies", label: "Case studies", icon: FileText },
   { href: "/admin/testimonials", label: "Testimonials", icon: Quote },
   { href: "/admin/team", label: "Founders & team", icon: Users },
+  { href: "/admin/insights", label: "Insights", icon: Newspaper },
+  { href: "/admin/glossary", label: "Glossary", icon: BookA },
 ];
 
 export default function AdminNav({ email }: { email: string }) {

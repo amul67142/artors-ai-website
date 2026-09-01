@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo/site";
 import { pillars } from "@/lib/content/services";
 import { industries } from "@/lib/content/industries";
-import { getCaseStudies } from "@/lib/content/db";
+import { getCaseStudies, getInsights, getGlossary } from "@/lib/content/db";
 
 /**
  * /sitemap.xml — SEO-AUDIT.md Phase 1.2.
@@ -36,6 +36,8 @@ const STATIC_ROUTES: { path: string; priority: number; changeFrequency: Entry["c
     { path: "/work", priority: 0.8, changeFrequency: "weekly" },
     { path: "/pricing", priority: 0.7, changeFrequency: "monthly" },
     { path: "/about", priority: 0.6, changeFrequency: "monthly" },
+    { path: "/insights", priority: 0.8, changeFrequency: "weekly" },
+    { path: "/glossary", priority: 0.7, changeFrequency: "monthly" },
     { path: "/security", priority: 0.5, changeFrequency: "yearly" },
     { path: "/contact", priority: 0.9, changeFrequency: "yearly" },
   ];
@@ -79,6 +81,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: study.updatedAt ?? study.createdAt ?? buildTime,
       changeFrequency: "monthly",
       priority: 0.7,
+    });
+  }
+
+  // Insights carry a real publish date, which is the lastModified crawlers
+  // actually use to decide whether to refetch.
+  for (const post of await getInsights()) {
+    entries.push({
+      url: `${SITE_URL}/insights/${post.slug}`,
+      lastModified: post.updatedAt ?? post.publishedAt ?? buildTime,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+  }
+
+  for (const term of await getGlossary()) {
+    entries.push({
+      url: `${SITE_URL}/glossary/${term.slug}`,
+      lastModified: term.updatedAt ?? buildTime,
+      changeFrequency: "monthly",
+      priority: 0.6,
     });
   }
 

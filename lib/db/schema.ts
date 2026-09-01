@@ -149,6 +149,77 @@ export const teamMembers = mysqlTable(
   (t) => [index("team_pub_idx").on(t.published, t.sortOrder)],
 );
 
+/**
+ * Insights — the blog. docs/PLAN.md §4 extends the site map here.
+ *
+ * `directAnswer` is the passage AI search engines lift: 40–60 words of plain
+ * text under the H1, answering the title's question outright. It is a separate
+ * column rather than the first paragraph of the body so it can be written and
+ * reviewed as what it is.
+ *
+ * `body` is Markdown, rendered server-side. Markdown rather than a rich-text
+ * editor because GFM tables give the comparison tables the brief requires
+ * without adding an editor dependency.
+ */
+export const insights = mysqlTable(
+  "insights",
+  {
+    id: id(),
+    slug: varchar("slug", { length: 160 }).notNull(),
+    title: varchar("title", { length: 200 }).notNull(),
+    excerpt: varchar("excerpt", { length: 400 }),
+    /** 40–60 words. Rendered as the lede; the passage AI search extracts. */
+    directAnswer: text("direct_answer"),
+    body: text("body"),
+    faq: json("faq").$type<{ q: string; a: string }[]>(),
+    tags: varchar("tags", { length: 240 }),
+    coverUrl: varchar("cover_url", { length: 400 }),
+    /** Falls back to the founder when empty. */
+    authorName: varchar("author_name", { length: 120 }),
+    publishedAt: timestamp("published_at"),
+    sortOrder: int("sort_order").default(0).notNull(),
+    published: boolean("published").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("insights_slug_key").on(t.slug),
+    index("insights_pub_idx").on(t.published, t.publishedAt),
+  ],
+);
+
+/**
+ * Glossary — short definition pages.
+ *
+ * `definition` is one sentence and doubles as the direct-answer block. These
+ * are the highest-yield pages for AI citation: a question with a crisp,
+ * self-contained answer is exactly what gets quoted.
+ */
+export const glossaryTerms = mysqlTable(
+  "glossary_terms",
+  {
+    id: id(),
+    slug: varchar("slug", { length: 160 }).notNull(),
+    term: varchar("term", { length: 140 }).notNull(),
+    /** One sentence. Used as the lede and as DefinedTerm.description. */
+    definition: varchar("definition", { length: 500 }).notNull(),
+    body: text("body"),
+    faq: json("faq").$type<{ q: string; a: string }[]>(),
+    /** Comma-separated slugs of related glossary terms. */
+    relatedTerms: varchar("related_terms", { length: 400 }),
+    /** Slug of the service pillar this belongs to, if any. */
+    relatedService: varchar("related_service", { length: 140 }),
+    sortOrder: int("sort_order").default(0).notNull(),
+    published: boolean("published").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("glossary_slug_key").on(t.slug),
+    index("glossary_pub_idx").on(t.published, t.term),
+  ],
+);
+
 /** Uploaded files. Rows are the index; bytes live under UPLOAD_DIR. */
 export const media = mysqlTable("media", {
   id: id(),

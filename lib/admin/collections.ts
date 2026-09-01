@@ -16,7 +16,9 @@ export type FieldType =
   | "bool"
   | "select"
   | "image"
-  | "metrics";
+  | "metrics"
+  | "markdown"
+  | "faq";
 
 export type Field = {
   name: string;
@@ -28,7 +30,13 @@ export type Field = {
   options?: { value: string; label: string }[];
 };
 
-export type CollectionKey = "clients" | "caseStudies" | "testimonials" | "team";
+export type CollectionKey =
+  | "clients"
+  | "caseStudies"
+  | "testimonials"
+  | "team"
+  | "insights"
+  | "glossary";
 
 export type CollectionSpec = {
   key: CollectionKey;
@@ -138,6 +146,92 @@ export const COLLECTIONS: Record<CollectionKey, CollectionSpec> = {
       { name: "authorRole", label: "Role", type: "text" },
       { name: "company", label: "Company", type: "text" },
       { name: "avatarUrl", label: "Photo", type: "image" },
+      ...PUBLISH_FIELDS,
+    ],
+  },
+
+  insights: {
+    key: "insights",
+    href: "/admin/insights",
+    title: "Insights",
+    singular: "Article",
+    blurb:
+      "The blog. The direct answer under the title is the passage AI search engines quote — write it as a complete answer, not a teaser.",
+    columns: ["title", "publishedAt", "published"],
+    fields: [
+      { name: "title", label: "Title", type: "text", required: true },
+      {
+        name: "slug",
+        label: "Slug",
+        type: "text",
+        required: true,
+        help: "Lowercase, hyphens, no spaces.",
+      },
+      {
+        name: "excerpt",
+        label: "Excerpt",
+        type: "textarea",
+        help: "One or two sentences for the index and the meta description.",
+      },
+      {
+        name: "directAnswer",
+        label: "Direct answer",
+        type: "textarea",
+        help: "40–60 words, plain text, answering the title outright. Rendered as the lede.",
+      },
+      {
+        name: "body",
+        label: "Body",
+        type: "markdown",
+        help: "Markdown. ## for headings, | pipes | for tables, - for lists.",
+      },
+      { name: "faq", label: "FAQ", type: "faq", help: "Emits FAQPage schema. Answers are always visible." },
+      { name: "tags", label: "Tags", type: "text", help: "Comma separated." },
+      { name: "authorName", label: "Author", type: "text", help: "Defaults to the founder if empty." },
+      { name: "coverUrl", label: "Cover image", type: "image" },
+      {
+        name: "publishedAt",
+        label: "Publish date",
+        type: "text",
+        placeholder: "2026-08-27",
+        help: "YYYY-MM-DD. Used for Article schema and the visible date.",
+      },
+      ...PUBLISH_FIELDS,
+    ],
+  },
+
+  glossary: {
+    key: "glossary",
+    href: "/admin/glossary",
+    title: "Glossary",
+    singular: "Term",
+    blurb:
+      "Short definition pages. One crisp sentence answering \"what is X\" is what AI assistants quote — these are the highest-yield pages on the site for citation.",
+    columns: ["term", "relatedService", "published"],
+    fields: [
+      { name: "term", label: "Term", type: "text", required: true },
+      { name: "slug", label: "Slug", type: "text", required: true },
+      {
+        name: "definition",
+        label: "Definition",
+        type: "textarea",
+        required: true,
+        help: "ONE sentence. Self-contained — it has to make sense quoted on its own.",
+      },
+      { name: "body", label: "Body", type: "markdown", help: "200–400 words. Markdown." },
+      { name: "faq", label: "FAQ", type: "faq" },
+      {
+        name: "relatedTerms",
+        label: "Related terms",
+        type: "text",
+        help: "Comma-separated slugs of other glossary terms.",
+      },
+      {
+        name: "relatedService",
+        label: "Related service",
+        type: "text",
+        help: "Service pillar slug, e.g. ai-agents.",
+      },
       ...PUBLISH_FIELDS,
     ],
   },

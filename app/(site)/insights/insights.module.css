@@ -1,0 +1,64 @@
+/* Insights index — hairline rows, same grammar as the case-study list. */
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  border-top: 1px solid var(--line);
+}
+
+.link {
+  display: block;
+  padding: 26px 0 30px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.title {
+  display: block;
+  margin-top: 8px;
+  max-width: 24ch;
+  font-size: clamp(21px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.16;
+  color: var(--ink);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.link:hover .title {
+  color: var(--accent);
+}
+
+.excerpt {
+  display: block;
+  margin-top: 10px;
+  max-width: 62ch;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+@media (min-width: 810px) {
+  .title {
+    max-width: 30ch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .title {
+    transition: none;
+  }
+}
