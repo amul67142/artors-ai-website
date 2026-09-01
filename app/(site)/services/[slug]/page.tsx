@@ -23,6 +23,7 @@ export async function generateMetadata({
   return {
     title: `${data.pillar.title} | Artors`,
     description: data.pillar.blurb,
+    alternates: { canonical: `/services/${slug}` },
   };
 }
 

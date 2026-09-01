@@ -7,6 +7,7 @@ import { pillars } from "@/lib/content/services";
 import s from "@/app/pages.module.css";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/pricing" },
   title: "Pricing | Artors",
   description:
     "Pilot first: one system, one outcome, a fixed price, a clean exit if it isn't paying. Scope and an itemised number come out of a thirty-minute consultation call.",

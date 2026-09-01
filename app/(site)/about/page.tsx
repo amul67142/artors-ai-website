@@ -5,6 +5,7 @@ import Team from "@/components/sections/Team";
 import s from "@/app/pages.module.css";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About | Artors",
   description:
     "A senior AI agency in Gurugram. The people who scope your system design it, build it, and stay on it. No handoffs, no account managers.",

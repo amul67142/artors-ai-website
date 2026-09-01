@@ -4,6 +4,7 @@ import { company, addressLine, hasFullAddress, whatsappUrl } from "@/lib/content
 import l from "@/components/lead/lead.module.css";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact | Artors",
   description:
     "Book a free strategy call. Tell us the number you want moved; we reply within a day with a clear next step.",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/seo/site";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import Header from "@/components/site/Header";
@@ -16,7 +17,14 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Artors | AI Agency in Gurugram. AI Systems That Grow Your Numbers",
+  // metadataBase makes every relative canonical, OG and Twitter URL below
+  // resolve to an absolute one. Without it Next emits relative canonicals,
+  // which crawlers ignore.
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "/" },
+  // Trimmed from 65 to 53 characters for the <=60 target. Same claim, same
+  // keywords, no positioning change.
+  title: "Artors | AI Agency in Gurugram That Grows Your Numbers",
   description:
     "Artors is an AI agency in Gurugram building automation, voice agents, chatbots, content engines and analytics that add revenue, cut operating cost, and give your team its hours back. Any industry, across India. Live in days.",
 };

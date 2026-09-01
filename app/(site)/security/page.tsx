@@ -5,6 +5,7 @@ import { company } from "@/lib/content/company";
 import s from "@/app/pages.module.css";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/security" },
   title: "Security & data handling | Artors",
   description:
     "Where your data sits, who can reach it, our position on the DPDP Act, what happens to call recordings, and what you take with you if we part ways.",

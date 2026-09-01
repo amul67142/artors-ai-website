@@ -7,6 +7,7 @@ import w from "./work.module.css";
 import CaseStudies from "@/components/sections/CaseStudies";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/work" },
   title: "Work | Artors",
   description:
     "One system shown end to end: the recording, the transcript and the workflow behind it. Artors publishes demonstrations instead of a logo wall.",

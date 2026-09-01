@@ -5,6 +5,7 @@ import { industries } from "@/lib/content/industries";
 import s from "@/app/pages.module.css";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/industries" },
   title: "Industries | Artors",
   description:
     "What AI systems look like in real estate, healthcare, retail, education, hospitality and professional services. Illustrations of the work, not restrictions on it.",

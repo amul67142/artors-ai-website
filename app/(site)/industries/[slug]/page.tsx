@@ -24,6 +24,7 @@ export async function generateMetadata({
   return {
     title: `AI Systems for ${ind.name} | Artors`,
     description: ind.blurb,
+    alternates: { canonical: `/industries/${slug}` },
   };
 }
 
