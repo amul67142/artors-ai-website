@@ -108,6 +108,14 @@ export const faq = {
       a: "It frees them. AI takes the repetitive, high-volume work so your people do the work that needs a human.",
     },
     {
+      q: "Who owns what you build? What if we part ways?",
+      a: "You do. The workflows, the prompts and the integration configuration are yours, and we build on tools you can hold accounts for directly — there is no proprietary Artors platform to be locked into. If you want to take it in-house or move to another vendor, you get everything in a form they can run. That is a handover, not a rebuild.",
+    },
+    {
+      q: "Where does our data sit, and what about the DPDP Act?",
+      a: "Our own systems run in India, and for your systems data residency is scoped and named in the proposal rather than assumed. We act as your Data Processor: your purpose, your retention period, no reuse to train anything, no sharing between clients. The full position is on our security page.",
+    },
+    {
       q: "Do you work with my industry?",
       a: "Almost certainly. The systems are industry-agnostic; what changes is the workflow and vocabulary. If we are not the right fit, we say so on the first call.",
     },

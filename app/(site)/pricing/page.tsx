@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Button from "@/components/ui/Button";
 import { Engagements } from "@/components/sections/Lower";
 import { pricing } from "@/lib/content/pricing";
 import { pillars } from "@/lib/content/services";
@@ -8,7 +9,7 @@ import s from "@/app/pages.module.css";
 export const metadata: Metadata = {
   title: "Pricing | Artors",
   description:
-    "Pilot first: one system, one outcome, a fixed price, a clean exit if it isn't paying. Indicative ranges for each practice, itemised scope after a strategy call.",
+    "Pilot first: one system, one outcome, a fixed price, a clean exit if it isn't paying. Scope and an itemised number come out of a thirty-minute consultation call.",
 };
 
 export default function PricingPage() {
@@ -26,7 +27,11 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className={s.section} aria-labelledby="principles-heading" style={{ paddingBottom: 64 }}>
+      <section
+        className={s.section}
+        aria-labelledby="principles-heading"
+        style={{ paddingBottom: 64 }}
+      >
         <div className="shell">
           <h2 id="principles-heading" className={`${s.sectionLabel} float-in`}>
             How we price
@@ -47,30 +52,40 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section className={s.section} aria-labelledby="bands-heading" style={{ paddingTop: 0, paddingBottom: 40 }}>
+      <section
+        className={s.section}
+        aria-labelledby="practices-heading"
+        style={{ paddingTop: 0, paddingBottom: 40 }}
+      >
         <div className="shell">
-          <h2 id="bands-heading" className={`${s.sectionLabel} float-in`}>
-            {pricing.bandsLabel}
+          <h2 id="practices-heading" className={`${s.sectionLabel} float-in`}>
+            {pricing.practicesLabel}
           </h2>
+
           <ul className={s.bands}>
-            {pricing.bands.map((b, i) => {
-              const pillar = pillars.find((p) => p.href.endsWith(`/${b.slug}`));
+            {pricing.practices.map((practice, i) => {
+              const pillar = pillars.find((p) => p.href.endsWith(`/${practice.slug}`));
               if (!pillar) return null;
               return (
-                <li key={b.slug} className="float-in" style={{ "--i": Math.min(i, 3) } as React.CSSProperties}>
+                <li
+                  key={practice.slug}
+                  className="float-in"
+                  style={{ "--i": Math.min(i, 3) } as React.CSSProperties}
+                >
                   <Link href={pillar.href} className={s.band}>
                     <span className={s.bandTitle}>{pillar.title}</span>
-                    <span className={s.bandFrom}>
-                      {b.unit ? "from " : ""}
-                      {b.from}
-                    </span>
-                    <span className={s.bandUnit}>{b.unit}</span>
+                    <span className={s.bandUnit}>{practice.note}</span>
                   </Link>
                 </li>
               );
             })}
           </ul>
-          <p className={`${s.note} float-in`}>{pricing.bandsNote}</p>
+
+          <p className={`${s.note} float-in`}>{pricing.practicesNote}</p>
+
+          <div className="float-in" style={{ marginTop: 32 }}>
+            <Button href={pricing.cta.href} label={pricing.cta.label} arrow />
+          </div>
         </div>
       </section>
 

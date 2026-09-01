@@ -78,7 +78,13 @@ itself without a portfolio; an AI agency can show the thing running.
 3. **Named humans, real place.** Founder photo and name, Gurugram address, direct WhatsApp,
    company registration in the footer. An anonymous agency in this category reads as a scam.
 4. **Risk reversal, made structural.** A scoped paid pilot — fixed price, one defined outcome,
-   clean exit. No hidden pricing.
+   clean exit.
+   *"No hidden pricing" was REVERSED on 2026-08-27* at Vedansh's instruction: /pricing no longer
+   publishes indicative bands and routes to a consultation call instead. The argument for
+   publishing them still stands — a new agency with no case studies buys trust by being
+   unusually concrete, and a visitor can no longer self-qualify — so this is a live trade-off,
+   not a settled one. `lib/content/pricing.ts` carries the same note. Do not restore the bands
+   without asking.
 5. **Process depth as proof.** The four-step "How it works" names real tools and real timelines.
    Vagueness reads as inexperience.
 6. **Integration marks, not client logos.** WhatsApp Business, Google Calendar, HubSpot, Zoho,
@@ -208,6 +214,19 @@ Small, deliberate, all CSS-driven. Full specifications in `docs/DESIGN.md`.
   separates a real client from an integration mark, so §2.6 is enforced by the schema rather
   than by memory. Nothing shows unless it was added and published. Remaining: the old image
   files still sit unused in `public/clients/`.
+- [x] **Ownership objection answered 2026-08-27.** The FAQ now covers who owns the workflows,
+  what happens on exit, and whether it can be run in-house — the objection buyers actually
+  raise, which the old FAQ skipped. **The answer commits Artors to client ownership and a full
+  handover; confirm it matches the contracts.** `/security` §"If we part ways" must stay in
+  step with it.
+- [x] **`/security` published 2026-08-27** — data residency, DPDP posture, recording retention,
+  access, exit. Healthcare is listed as an industry, so the absence of this page was a silent
+  deal-blocker. Copy lives in `lib/content/security.ts`; two items in it are marked
+  NEEDS CONFIRMATION (the 90-day recording retention default, and the exit terms).
+- [ ] **Company identity — `lib/content/company.ts` is wired but mostly empty.** The footer and
+  contact page render each line only when it holds a real value, so nothing is invented. Still
+  needed: registered entity name, CIN, GSTIN, street address, phone, WhatsApp number, LinkedIn.
+  Indian B2B buyers check for these; their absence reads as a shell company.
 - [ ] Real phone number for a live voice demo (upgrades `/work` from recorded to live)
 - [ ] Founder photo, name, and bio for `/about`
 - [ ] Gurugram office address and company registration for the footer

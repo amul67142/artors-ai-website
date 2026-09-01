@@ -57,7 +57,7 @@ export default async function Clients() {
     <section className={s.section} aria-label="Brands and tools we work with">
       <Reveal>
         <div className={s.stack}>
-          {clients.length > 0 && <Marks label="Brands we work with" marks={clients} />}
+          {clients.length > 0 && <Marks label="Trusted by" marks={clients} />}
           {integrations.length > 0 && <Marks label="Built with" marks={integrations} />}
         </div>
       </Reveal>

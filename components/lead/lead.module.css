@@ -255,3 +255,60 @@
     transform: none;
   }
 }
+
+/* ---------- direct contact details (contact page) -------------------- */
+
+/* A form alone is a weak signal in Indian B2B: buyers look for a number to
+   ring and a real place. Rows render only when the value exists. */
+.direct {
+  margin: 32px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.directRow {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.directLabel {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.directValue {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.directValue a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  transition: color var(--dur-btn) var(--ease-btn);
+}
+.directValue a:hover {
+  color: var(--accent);
+}
+
+.directAddress {
+  font-style: normal;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .directValue a {
+    transition: none;
+  }
+}
