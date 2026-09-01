@@ -7,6 +7,8 @@ import LeadForm from "@/components/lead/LeadForm";
 import { industries, getIndustry, adjacentIndustry } from "@/lib/content/industries";
 import { pillars } from "@/lib/content/services";
 import l from "@/components/lead/lead.module.css";
+import JsonLd from "@/components/seo/JsonLd";
+import { trail } from "@/lib/seo/breadcrumbs";
 import s from "@/app/pages.module.css";
 
 export function generateStaticParams() {
@@ -41,6 +43,12 @@ export default async function IndustryPage({
 
   return (
     <main id="main">
+      <JsonLd
+        schema={trail(
+          { name: "Industries", path: "/industries" },
+          { name: ind.name, path: `/industries/${slug}` },
+        )}
+      />
       <section className={s.head}>
         <div className="shell">
           <p className={`${s.label} enter`}>

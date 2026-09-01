@@ -6,6 +6,9 @@ import ServiceFlow from "@/components/services/ServiceFlow";
 import LeadForm from "@/components/lead/LeadForm";
 import { getServicePage, serviceSlugs, adjacent } from "@/lib/content/servicePages";
 import l from "@/components/lead/lead.module.css";
+import JsonLd from "@/components/seo/JsonLd";
+import { serviceSchema } from "@/lib/schema";
+import { trail } from "@/lib/seo/breadcrumbs";
 import s from "./servicePage.module.css";
 
 export function generateStaticParams() {
@@ -40,6 +43,19 @@ export default async function ServicePage({
 
   return (
     <main id="main">
+      <JsonLd
+        schema={[
+          serviceSchema({
+            name: pillar.title,
+            description: pillar.blurb,
+            path: `/services/${slug}`,
+          }),
+          trail(
+            { name: "Services", path: "/services" },
+            { name: pillar.title, path: `/services/${slug}` },
+          ),
+        ]}
+      />
       {/* ---- head ---- */}
       <section className={s.head}>
         <div className="shell">
