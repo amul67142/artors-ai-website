@@ -164,10 +164,37 @@ file written. Contradictions in §2 raised for decision.
 
 Skipped: Lighthouse (§3, no capable browser here).
 
-### Phase 1 — technical foundation
+### Phase 1 — technical foundation (partial, 2026-08-27)
 
-*In progress. Items depending on the unresolved contradictions in §2 are not
-started.*
+**Done — the items that carry no dependency on the §2 contradictions:**
+
+| Item | Commit | Verified by |
+|---|---|---|
+| 1.1 robots.txt | `8ca9cb2` | served 200 text/plain; ten AI/search agents named; `/api/`, `/admin`, `/*?*` disallowed; sitemap + host lines present |
+| 1.2 sitemap.xml | `f12cc16` | 21 URLs, zero `/admin` or `/api` leakage; case studies filtered on published |
+| 1.3 metadataBase + canonicals | `42f1094` | absolute canonical confirmed on `/`, `/pricing`, `/services/ai-agents`, `/industries/healthcare`, `/security`; homepage title 65 → 54 chars |
+| 1.4 structured data | `2fb20c7` | 4 graphs on `/`, 2 on a service page, 1 on an industry page; all parse; **no empty properties**; `offers` absent by design |
+| 1.7 404 | `05c99ce` | `/nonsense-page` → 404 **and** renders nav + CTA; real routes unaffected |
+| 1.8 /work placeholders | `05c99ce` | zero occurrences of either placeholder string |
+
+**Not done, and why:**
+
+- **1.5 Performance / Lighthouse** — cannot be measured from here (§3). Needs a
+  run against production. No numbers invented.
+- **1.6 Image alt fields** — depends on §2.1. Media has no alt column today;
+  adding one is a schema migration against the live database, which is a
+  decision, not a detail.
+- **1.9 Footer trust signals** — already done before this brief (§2.2). The
+  values are still empty pending Vedansh.
+- Everything in **Phase 2** — blocked on §2.1, §2.4 and §2.5.
+
+**A note on commit granularity:** the brief asks for one commit per sub-task.
+1.7 and 1.8 landed together because the working tree was staged as one. The
+message says so rather than pretending otherwise.
+
+### Phase 2 — new page types
+
+**Not started.** Blocked on the decisions in §2.
 
 ---
 
