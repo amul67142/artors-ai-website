@@ -214,3 +214,13 @@
     grid-column: 2;
   }
 }
+
+/* Workflow screenshot, rendered only when the asset exists. */
+.flowShot {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}

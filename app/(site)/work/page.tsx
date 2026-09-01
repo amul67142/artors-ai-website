@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 import ServiceFlow from "@/components/services/ServiceFlow";
-import { work } from "@/lib/content/work";
+import { work, workAssets } from "@/lib/content/work";
 import s from "@/app/pages.module.css";
 import w from "./work.module.css";
 import CaseStudies from "@/components/sections/CaseStudies";
@@ -54,10 +55,18 @@ export default async function WorkPage() {
             <span className={w.artNum}>01</span>
             <div>
               <h3 className={w.artTitle}>The recording</h3>
-              <div className={w.audioSlot} role="group" aria-label="Call recording">
-                <span className={w.audioDot} aria-hidden="true" />
-                <span>Recording file drops in here. Until then, the transcript below is the call, word for word.</span>
-              </div>
+              {workAssets.recordingUrl ? (
+                <div className={w.audioSlot} role="group" aria-label="Call recording">
+                  <span className={w.audioDot} aria-hidden="true" />
+                  <audio controls preload="none" src={workAssets.recordingUrl}>
+                    Your browser cannot play audio. The full transcript is below.
+                  </audio>
+                </div>
+              ) : (
+                <p className={w.slotNote}>
+                  The transcript below is the call, word for word.
+                </p>
+              )}
             </div>
           </div>
 
@@ -98,9 +107,17 @@ export default async function WorkPage() {
                 title={run.flowTitle}
                 ariaLabel={`Workflow: ${run.flow.map((f) => f.label).join(", ")}.`}
               />
-              <p className={w.slotNote}>
-                The n8n build screenshot sits here once exported — every node, no blur.
-              </p>
+              {workAssets.workflowImageUrl && (
+                <Image
+                  src={workAssets.workflowImageUrl}
+                  alt="The n8n workflow behind this call, showing every node."
+                  width={1600}
+                  height={900}
+                  className={w.flowShot}
+                  sizes="(min-width: 810px) 900px, 100vw"
+                  unoptimized
+                />
+              )}
             </div>
           </div>
 

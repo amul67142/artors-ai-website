@@ -5,6 +5,23 @@
  * (docs/PLAN.md §7); the transcript below is the scripted demo call.
  */
 
+/**
+ * Assets for the sample run. Both are EMPTY on purpose.
+ *
+ * The page used to print "Recording file drops in here" and "The n8n build
+ * screenshot sits here once exported" to visitors — internal notes leaking
+ * onto a public page that is meant to be the site's proof. Each slot now
+ * renders only when its asset exists, and nothing at all until then.
+ *
+ * Fill with a path under /public, or an /api/media/... key from the admin.
+ */
+export const workAssets = {
+  /** Audio file for the call recording. e.g. "/work/sample-call.mp3" */
+  recordingUrl: "",
+  /** Screenshot of the n8n workflow. e.g. "/work/n8n-flow.png" */
+  workflowImageUrl: "",
+} as const;
+
 export const work = {
   label: "Work",
   statement: "No logo wall yet. One system, shown end to end instead.",
