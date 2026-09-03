@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/seo/JsonLd";
-import Prose from "@/components/content/Prose";
+import ArticleBody from "@/components/content/ArticleBody";
 import FaqBlock from "@/components/content/FaqBlock";
 import Button from "@/components/ui/Button";
 import { articleSchema, faqSchema } from "@/lib/schema";
@@ -124,32 +124,32 @@ export default async function InsightPage({ params }: PageProps<"/insights/[slug
 
       <section className={s.section} style={{ paddingTop: 0 }}>
         <div className="shell">
-          <Prose markdown={post.body} />
+          <ArticleBody markdown={post.body}>
+            <FaqBlock items={post.faq} />
 
-          <FaqBlock items={post.faq} />
+            {others.length > 0 && (
+              <section className={a.related}>
+                <h2 className={a.relatedHeading}>More insights</h2>
+                <ul className={a.relatedList}>
+                  {others.map((other) => (
+                    <li key={other.id}>
+                      <Link href={`/insights/${other.slug}`} className={a.relatedLink}>
+                        {other.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
-          {others.length > 0 && (
-            <section className={a.related}>
-              <h2 className={a.relatedHeading}>More insights</h2>
-              <ul className={a.relatedList}>
-                {others.map((other) => (
-                  <li key={other.id}>
-                    <Link href={`/insights/${other.slug}`} className={a.relatedLink}>
-                      {other.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          <div className={a.cta}>
-            <p className={a.ctaText}>
-              Want this working on your numbers rather than in an article? We scope it on one
-              call.
-            </p>
-            <Button href="/contact" label="Book a Consultation Call" arrow />
-          </div>
+            <div className={a.cta}>
+              <p className={a.ctaText}>
+                Want this working on your numbers rather than in an article? We scope it on
+                one call.
+              </p>
+              <Button href="/contact" label="Book a Consultation Call" arrow />
+            </div>
+          </ArticleBody>
         </div>
       </section>
     </main>

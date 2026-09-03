@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/seo/JsonLd";
-import Prose from "@/components/content/Prose";
+import ArticleBody from "@/components/content/ArticleBody";
 import FaqBlock from "@/components/content/FaqBlock";
 import Button from "@/components/ui/Button";
 import MissedCallCalculator from "@/components/tools/MissedCallCalculator";
@@ -108,30 +108,30 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
 
       <section className={s.section} style={{ paddingTop: 0 }}>
         <div className="shell">
-          <Prose markdown={tool.body} />
+          <ArticleBody markdown={tool.body}>
+            <FaqBlock items={tool.faq} />
 
-          <FaqBlock items={tool.faq} />
+            <section className={a.related}>
+              <h2 className={a.relatedHeading}>Related</h2>
+              <ul className={a.relatedList}>
+                {tool.related.map((r) => (
+                  <li key={r.href}>
+                    <Link href={r.href} className={a.relatedLink}>
+                      {r.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
 
-          <section className={a.related}>
-            <h2 className={a.relatedHeading}>Related</h2>
-            <ul className={a.relatedList}>
-              {tool.related.map((r) => (
-                <li key={r.href}>
-                  <Link href={r.href} className={a.relatedLink}>
-                    {r.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <div className={a.cta}>
-            <p className={a.ctaText}>
-              Now you have the number, the useful question is what to do about it. That is one
-              call.
-            </p>
-            <Button href="/contact" label="Book a Consultation Call" arrow />
-          </div>
+            <div className={a.cta}>
+              <p className={a.ctaText}>
+                Now you have the number, the useful question is what to do about it. That is
+                one call.
+              </p>
+              <Button href="/contact" label="Book a Consultation Call" arrow />
+            </div>
+          </ArticleBody>
         </div>
       </section>
     </main>

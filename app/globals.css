@@ -433,3 +433,28 @@ body {
   background: var(--accent-2);
   color: var(--ink);
 }
+
+/* ============================================================
+   SMOOTH SCROLL  —  site-wide.
+
+   CSS rather than a scroll-hijacking library: no JavaScript, no
+   scroll position to keep in sync with the browser, and nothing
+   for GSAP ScrollTrigger to fight with. A smooth-scroll library
+   would also break the back button restoring your place.
+
+   scroll-padding-top clears the sticky header, so an anchor from
+   the contents rail lands under it rather than beneath it.
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 104px;
+}
+
+/* A vestibular trigger for some people, and the one motion setting the OS
+   asks us to respect without exception. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

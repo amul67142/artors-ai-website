@@ -1,0 +1,26 @@
+/* Body + contents rail. */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.main {
+  min-width: 0;
+}
+
+.aside {
+  display: none;
+}
+
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 72px;
+    align-items: start;
+  }
+  .aside {
+    display: block;
+  }
+}

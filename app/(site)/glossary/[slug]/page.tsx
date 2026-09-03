@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/seo/JsonLd";
-import Prose from "@/components/content/Prose";
+import ArticleBody from "@/components/content/ArticleBody";
 import FaqBlock from "@/components/content/FaqBlock";
 import Button from "@/components/ui/Button";
 import { faqSchema } from "@/lib/schema";
@@ -99,39 +99,39 @@ export default async function GlossaryTermPage({ params }: PageProps<"/glossary/
 
       <section className={s.section} style={{ paddingTop: 0 }}>
         <div className="shell">
-          <Prose markdown={term.body} />
+          <ArticleBody markdown={term.body}>
+            <FaqBlock items={term.faq} />
 
-          <FaqBlock items={term.faq} />
+            {(related.length > 0 || service) && (
+              <section className={a.related}>
+                <h2 className={a.relatedHeading}>Related</h2>
+                <ul className={a.relatedList}>
+                  {related.map((r) => (
+                    <li key={r.id}>
+                      <Link href={`/glossary/${r.slug}`} className={a.relatedLink}>
+                        {r.term}
+                      </Link>
+                    </li>
+                  ))}
+                  {service && (
+                    <li>
+                      <Link href={service.href} className={a.relatedLink}>
+                        {service.title}
+                      </Link>
+                    </li>
+                  )}
+                </ul>
+              </section>
+            )}
 
-          {(related.length > 0 || service) && (
-            <section className={a.related}>
-              <h2 className={a.relatedHeading}>Related</h2>
-              <ul className={a.relatedList}>
-                {related.map((r) => (
-                  <li key={r.id}>
-                    <Link href={`/glossary/${r.slug}`} className={a.relatedLink}>
-                      {r.term}
-                    </Link>
-                  </li>
-                ))}
-                {service && (
-                  <li>
-                    <Link href={service.href} className={a.relatedLink}>
-                      {service.title}
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </section>
-          )}
-
-          <div className={a.cta}>
-            <p className={a.ctaText}>
-              Wondering whether this applies to your business? That is a thirty-minute call,
-              not a research project.
-            </p>
-            <Button href="/contact" label="Book a Consultation Call" arrow />
-          </div>
+            <div className={a.cta}>
+              <p className={a.ctaText}>
+                Wondering whether this applies to your business? That is a thirty-minute
+                call, not a research project.
+              </p>
+              <Button href="/contact" label="Book a Consultation Call" arrow />
+            </div>
+          </ArticleBody>
         </div>
       </section>
     </main>
