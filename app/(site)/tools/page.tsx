@@ -47,6 +47,9 @@ export default function ToolsPage() {
                     <span className={t.title}>{tool.title}</span>
                     <span className={t.desc}>{tool.metaDescription}</span>
                   </span>
+                  <svg className={t.arrow} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path d="M3 11L11 3M11 3H4M11 3v7" />
+                  </svg>
                 </Link>
               </li>
             ))}

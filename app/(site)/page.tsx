@@ -10,6 +10,7 @@ import WhoWeAre from "@/components/sections/WhoWeAre";
 import Services from "@/components/sections/Services";
 import { Proof, Process, Industries, Engagements, Faq, CtaBand } from "@/components/sections/Lower";
 import Testimonials from "@/components/sections/Testimonials";
+import ToolsTeaser from "@/components/sections/ToolsTeaser";
 
 export default async function Home() {
   // Founders come from the same collection /about renders, so the Person
@@ -35,6 +36,7 @@ export default async function Home() {
       <Process />
       <Industries />
       <Engagements />
+      <ToolsTeaser />
       <Testimonials />
       <Faq />
       <CtaBand />

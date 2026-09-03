@@ -204,3 +204,134 @@
     transition: none;
   }
 }
+
+/* ============================================================
+   VISUAL PASS — 2026-09-01
+   The first version read as a form next to a paragraph. The
+   changes below are structural, not ornamental: the number the
+   page exists to produce is now the largest thing on it, the
+   proportion is shown as well as stated, and the inputs read as
+   a working surface. No glow, no cards, no always-on motion —
+   docs/DESIGN.md holds.
+   ============================================================ */
+
+/* The panel earns a lift because it is the one interactive surface on the
+   site. Everything else keeps the hairline grammar. */
+.panel {
+  box-shadow: 0 1px 2px rgba(10, 10, 10, 0.04), 0 12px 32px -18px rgba(10, 10, 10, 0.28);
+}
+
+/* A field lights its label when focused within — the micro-interaction that
+   tells you which row you are editing without a colour flood. */
+.field:focus-within .label {
+  color: var(--accent);
+}
+
+.input:hover:not(:focus) {
+  border-color: rgba(10, 10, 10, 0.28);
+}
+
+/* ---------- the headline number -------------------------------------- */
+
+/* Bigger than any heading on the page, because it is the answer. */
+.headline {
+  font-size: clamp(40px, 8vw, 68px);
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+/* The accent rule under the number: the only colour in the dark panel, and
+   the thing that makes the figure read as a result rather than as text. */
+.headlineRule {
+  display: block;
+  width: 52px;
+  height: 2px;
+  margin-top: 18px;
+  background: var(--accent-2);
+  transform-origin: left center;
+}
+
+.headlineLabel {
+  max-width: 26ch;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+/* ---------- proportion bar -------------------------------------------- */
+
+.proportion {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.proportionHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.proportionLabel {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.proportionValue {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  position: relative;
+  height: 6px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+
+/* scaleX, never width: composites on the GPU, never triggers layout. */
+.fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+  transition: transform 0.5s var(--ease-reveal);
+  will-change: transform;
+}
+
+.proportionCaption {
+  margin: 10px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ---------- breakdown rows -------------------------------------------- */
+
+/* The last row is the one people screenshot, so it is set apart. */
+.row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.rowStrong .rowLabel {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rowStrong .rowValue {
+  font-size: 19px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+  }
+}

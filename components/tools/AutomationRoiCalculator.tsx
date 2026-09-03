@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import NumberField from "./NumberField";
+import Proportion from "./Proportion";
+import { useCountUp } from "./useCountUp";
 import { formatCompact, formatCurrency, formatNumber, toNumber } from "./format";
 import c from "./calculator.module.css";
 
@@ -36,6 +38,13 @@ export default function AutomationRoiCalculator() {
   const annualCost = annualHours * rate;
   const workingDays = annualHours / HOURS_PER_DAY;
   const correctionShare = hours + fixing > 0 ? (fixing / (hours + fixing)) * 100 : 0;
+
+  // Tweened for display only; the maths above stays exact.
+  const shownCost = useCountUp(annualCost);
+  const shownWeekly = useCountUp(weeklyHours);
+  const shownAnnualHours = useCountUp(annualHours);
+  const shownDays = useCountUp(workingDays);
+  const shownMonthly = useCountUp(annualCost / 12);
 
   return (
     <div className={c.panel}>
@@ -85,29 +94,32 @@ export default function AutomationRoiCalculator() {
         <p className={c.resultsLegend}>What it costs today</p>
 
         <div aria-live="polite">
-          <p className={c.headline}>{formatCompact(annualCost)}</p>
+          <p className={c.headline}>{formatCompact(shownCost)}</p>
+          <span className={c.headlineRule} aria-hidden="true" />
           <p className={c.headlineLabel}>a year, in staff time on this one process</p>
+
+          <Proportion
+            value={correctionShare}
+            label="Of that time, spent fixing mistakes"
+            caption="The part nobody puts in a job description, and the part automation removes most reliably."
+          />
 
           <dl className={c.breakdown}>
             <div className={c.row}>
               <dt className={c.rowLabel}>Hours a week, whole team</dt>
-              <dd className={c.rowValue}>{formatNumber(weeklyHours)}</dd>
+              <dd className={c.rowValue}>{formatNumber(shownWeekly)}</dd>
             </div>
             <div className={c.row}>
               <dt className={c.rowLabel}>Hours a year</dt>
-              <dd className={c.rowValue}>{formatNumber(annualHours)}</dd>
+              <dd className={c.rowValue}>{formatNumber(shownAnnualHours)}</dd>
             </div>
             <div className={c.row}>
               <dt className={c.rowLabel}>Working days a year</dt>
-              <dd className={c.rowValue}>{formatNumber(workingDays)}</dd>
+              <dd className={c.rowValue}>{formatNumber(shownDays)}</dd>
             </div>
-            <div className={c.row}>
-              <dt className={c.rowLabel}>Of it, correcting mistakes</dt>
-              <dd className={c.rowValue}>{formatNumber(correctionShare)}%</dd>
-            </div>
-            <div className={c.row}>
+            <div className={`${c.row} ${c.rowStrong}`}>
               <dt className={c.rowLabel}>Cost a month</dt>
-              <dd className={c.rowValue}>{formatCurrency(annualCost / 12)}</dd>
+              <dd className={c.rowValue}>{formatCurrency(shownMonthly)}</dd>
             </div>
           </dl>
         </div>

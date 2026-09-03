@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import NumberField from "./NumberField";
+import Proportion from "./Proportion";
+import { useCountUp } from "./useCountUp";
 import { formatCompact, formatCurrency, formatNumber, toNumber } from "./format";
 import c from "./calculator.module.css";
 
@@ -13,7 +15,9 @@ import c from "./calculator.module.css";
  * site is entitled to know where it goes, and because it is checkable.
  *
  * The defaults produce a result on first paint rather than an empty state, so
- * the page demonstrates itself before anyone types.
+ * the page demonstrates itself before anyone types. Figures then tween to each
+ * new value rather than snapping, which is what makes the panel feel like an
+ * instrument instead of a form.
  */
 
 const WORKING_DAYS = 26;
@@ -33,7 +37,13 @@ export default function MissedCallCalculator() {
   const missedPerMonth = callsPerMonth * (missed / 100);
   const lostDeals = missedPerMonth * (convert / 100);
   const monthlyLoss = lostDeals * value;
-  const annualLoss = monthlyLoss * 12;
+
+  // Tweened for display. The maths above stays exact; only the rendering moves.
+  const shownMonthly = useCountUp(monthlyLoss);
+  const shownCalls = useCountUp(callsPerMonth);
+  const shownMissed = useCountUp(missedPerMonth);
+  const shownDeals = useCountUp(lostDeals);
+  const shownAnnual = useCountUp(monthlyLoss * 12);
 
   return (
     <div className={c.panel}>
@@ -86,25 +96,34 @@ export default function MissedCallCalculator() {
         {/* aria-live so a screen reader hears the result change as the
             visitor types, rather than having to hunt for it. */}
         <div aria-live="polite">
-          <p className={c.headline}>{formatCompact(monthlyLoss)}</p>
-          <p className={c.headlineLabel}>in revenue you never got the chance to win, per month</p>
+          <p className={c.headline}>{formatCompact(shownMonthly)}</p>
+          <span className={c.headlineRule} aria-hidden="true" />
+          <p className={c.headlineLabel}>
+            in revenue you never got the chance to win, every month
+          </p>
+
+          <Proportion
+            value={missed}
+            label="Of your phone line, unanswered"
+            caption="The share of callers who reach nobody. Most of them do not ring back."
+          />
 
           <dl className={c.breakdown}>
             <div className={c.row}>
               <dt className={c.rowLabel}>Calls a month</dt>
-              <dd className={c.rowValue}>{formatNumber(callsPerMonth)}</dd>
+              <dd className={c.rowValue}>{formatNumber(shownCalls)}</dd>
             </div>
             <div className={c.row}>
               <dt className={c.rowLabel}>Of those, unanswered</dt>
-              <dd className={c.rowValue}>{formatNumber(missedPerMonth)}</dd>
+              <dd className={c.rowValue}>{formatNumber(shownMissed)}</dd>
             </div>
             <div className={c.row}>
               <dt className={c.rowLabel}>Customers lost a month</dt>
-              <dd className={c.rowValue}>{formatNumber(lostDeals)}</dd>
+              <dd className={c.rowValue}>{formatNumber(shownDeals)}</dd>
             </div>
-            <div className={c.row}>
+            <div className={`${c.row} ${c.rowStrong}`}>
               <dt className={c.rowLabel}>Over a year</dt>
-              <dd className={c.rowValue}>{formatCurrency(annualLoss)}</dd>
+              <dd className={c.rowValue}>{formatCurrency(shownAnnual)}</dd>
             </div>
           </dl>
         </div>
