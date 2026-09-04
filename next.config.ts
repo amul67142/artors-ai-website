@@ -1,6 +1,33 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      /**
+       * The two URLs the SEO brief named that this site does not use.
+       *
+       * Decisions recorded in SEO-AUDIT.md §2.4 and §2.5:
+       *
+       *   /security-and-data — the page exists at /security and is written
+       *     rather than placeholdered. Shorter, already linked from the footer
+       *     and already in the sitemap; renaming it would cost the URL its
+       *     history for no gain.
+       *
+       *   /case-studies — case studies live at /work/[slug] by design
+       *     (docs/PLAN.md §2.1), so real ones drop into the same URL as the
+       *     worked sample without a redesign. Publishing both would put two
+       *     URLs in front of one subject and split the ranking between them.
+       *
+       * Redirected rather than left to 404 because the brief named them, so
+       * they may already appear in a proposal or a document somewhere. A 301
+       * costs nothing and passes any link equity to the page that exists.
+       */
+      { source: "/security-and-data", destination: "/security", permanent: true },
+      { source: "/case-studies", destination: "/work", permanent: true },
+      { source: "/case-studies/:slug", destination: "/work/:slug", permanent: true },
+    ];
+  },
+
   async headers() {
     return [
       {

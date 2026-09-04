@@ -99,9 +99,15 @@ verified from the host, not assumed), DPDP Act posture as Data Processor, record
 retention, access, exit terms. It deliberately claims **no certification**, because
 no DPDP certification scheme exists.
 
-**Unresolved — needs a decision.** Options: keep `/security` as written; rename to
-`/security-and-data` with a 301; or strip it back to placeholders. Nothing was
-changed either way.
+**RESOLVED 2026-09-01** — Vedansh delegated the call. Keeping `/security` as
+written. It is shorter, already linked from the footer, already in the sitemap,
+and already accumulating whatever history the URL has; renaming would cost that
+for no gain. Stripping real content back to `[Artors to supply]` placeholders
+would be a straight downgrade — the page answers the questions a healthcare
+buyer asks, and an empty one answers none of them.
+
+`/security-and-data` now 301s to `/security` (`next.config.ts`), because the
+brief named that URL and it may appear in a proposal somewhere.
 
 ### 2.5 Case studies already have a home
 
@@ -111,8 +117,14 @@ under `/work` so that *"real case studies drop into the same URL without a
 redesign"*. Building `/case-studies/*` as well would create two URLs for one thing —
 bad for exactly the SEO this brief is trying to improve.
 
-**Unresolved.** Recommend keeping `/work/[slug]` and dropping 2.6, or moving to
-`/case-studies/[slug]` with a redirect from `/work/[slug]`.
+**RESOLVED 2026-09-01** — Vedansh delegated the call. Keeping `/work/[slug]` and
+dropping brief item 2.6. Publishing both would put two URLs in front of one
+subject and split the ranking between them, which is the opposite of what this
+brief is for.
+
+`/case-studies` and `/case-studies/:slug` now 301 to `/work` and `/work/:slug`,
+so the obvious URL a visitor might type or another site might link reaches the
+page that exists.
 
 ### 2.6 Things the brief assumes exist that do not
 
