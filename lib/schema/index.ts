@@ -1,5 +1,6 @@
 import { SITE_URL, absoluteUrl } from "@/lib/seo/site";
 import { company, addressLine } from "@/lib/content/company";
+import { pillars } from "@/lib/content/services";
 import type { TeamMember } from "@/lib/content/db";
 
 /**
@@ -66,6 +67,33 @@ export function organizationSchema(founders: TeamMember[] = []): Json {
     description:
       "AI agency in Gurugram building automation, AI agents, voice and chat systems that move revenue, cost and hours for businesses across India.",
     areaServed: { "@type": "Country", name: "India" },
+    /**
+     * The subjects this organisation is about.
+     *
+     * This is the field that does the work the /llms.txt file gets credit
+     * for: knowsAbout is consumed today by the systems that build entity
+     * understanding, whereas llms.txt largely is not. Drawn from the seven
+     * pillars so it cannot drift from what the site actually sells.
+     */
+    knowsAbout: [
+      ...pillars.map((p) => p.title),
+      "Hindi and Hinglish voice AI",
+      "AI automation for Indian businesses",
+      "DPDP Act compliance for AI systems",
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "AI services",
+      itemListElement: pillars.map((p) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: p.title,
+          description: p.blurb,
+          url: absoluteUrl(p.href),
+        },
+      })),
+    },
     address,
     telephone: company.phone,
     email: company.email,
