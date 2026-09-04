@@ -12,6 +12,8 @@
     "admin:hash": "node scripts/admin-hash.mjs",
     "seed:glossary": "node --env-file-if-exists=.env.local scripts/seed-glossary.mjs",
     "seed:insights": "node --env-file-if-exists=.env.local scripts/seed-insights.mjs",
+    "seed:consulting": "node --env-file-if-exists=.env.local scripts/seed-consulting.mjs",
+    "seed:all": "npm run seed:glossary && npm run seed:insights && npm run seed:consulting",
     "mail:test": "node --env-file-if-exists=.env.local scripts/test-mail.mjs"
   },
   "dependencies": {
