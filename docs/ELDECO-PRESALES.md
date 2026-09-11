@@ -310,3 +310,77 @@ display. This engagement retires all three:
   the site.
 
 Ask for all three **when the numbers look good**, not at the end of the engagement.
+
+---
+
+## 11. What Ringg AI actually does — verified against their docs, 2026-09-11
+
+Read from `docs.ringg.ai`. Three findings change the build.
+
+### It does NOT connect to Sheets or Cal.com
+
+`external-integrations/` in their documentation contains exactly one file —
+TrueFoundry. Everything else under integrations is telephony: Twilio, Plivo,
+Exotel, SIP, Ameyo, Ozonetel.
+
+So **n8n stays the spine.** Ringg places calls and reports what happened; every
+route into a sheet, a calendar or WhatsApp is n8n's job. Worth checking their
+dashboard directly in case something ships undocumented, but do not plan on it.
+
+### It DOES do the post-call classification — use that, not an LLM node
+
+Advanced Settings → **Custom Analysis**. Define fields by name and type with a
+prompt describing what to extract, then **Test Analysis** before launch. Their own
+example is `interested` (Boolean), `preferred_course` (String).
+
+This replaces the classifier node in n8n. Fewer moving parts, no second LLM bill,
+and it is tested in the same place the agent is tuned. Define exactly the rubric
+fields from §6 — and keep the instruction that an unstated value must come back
+empty rather than guessed.
+
+### It CANNOT book a slot mid-call
+
+No tools or function-calling appear anywhere in the assistant configuration docs,
+and `tool_call_logs` arrives empty in their own webhook example. The agent cannot
+reach Cal.com while talking.
+
+So booking happens **after** the call: n8n sends the Cal.com link by WhatsApp to
+anyone classified qualified or interested. Slightly worse than booking live, and it
+is the honest constraint — do not promise Eldeco a mid-call booking.
+
+### The call
+
+```
+POST https://prod-api.ringg.ai/ca/api/v0/calling/outbound/individual
+X-API-KEY: <key>          ← not a Bearer token
+Content-Type: application/json
+
+{ "name", "mobile_number" (E.164), "agent_id",
+  "from_number_id" OR "from_number" (never both),
+  "custom_args_values": { ... } }
+```
+
+`custom_args_values` is the important one: variables go in, are referenced in the
+prompt as `@{{variable_name}}`, and **come back in the webhook**. That is how
+`lead_id` survives the round trip and how the result finds its row.
+
+### The webhook
+
+Subscribe to **`all_processing_completed`**, not `call_completed` — it bundles the
+transcript, recording, platform analysis and custom analysis into one payload
+instead of four events to correlate.
+
+Outcome fields: `status` (`completed`, `failed`, `error`, `cancelled`, `forwarded`,
+`retry`) and `sub_status` (`ACCEPTED`, `busy line`, `no answer`,
+`not_able_to_call`). **Branch on `sub_status`** — `status: completed` covers a
+no-answer too.
+
+**`recording_url` is valid for 24 hours.** If Eldeco ever wants to review a call
+from last week, n8n must copy the file to Drive when the webhook lands. Discover
+that now, not during a dispute.
+
+### Retries
+
+Only voicemail-detection retry is documented, plus an undocumented `retries` key
+inside `call_config`. Test what that actually does; until it is proven, the
+scheduled retry sweep in the n8n plan stays.
