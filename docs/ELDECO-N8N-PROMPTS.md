@@ -15,7 +15,7 @@ natural seam is:
 | | Workflow | Trigger |
 |---|---|---|
 | **A** | Intake → first contact → place the call | Meta / Google lead |
-| **B** | Call result → classify → route | Ringg webhook |
+| **B** | Call result → route → book | Ringg webhook |
 | **C** | Retry sweep for unanswered calls | Schedule, every 30 min |
 
 They share state through the **`Leads`** sheet. That sheet is the memory between
@@ -59,10 +59,13 @@ STEPS
 
 7. A Wait node for 90 seconds.
 
-8. An HTTP Request node (POST) that starts an outbound AI voice call. Use a
-   placeholder URL https://api.ringg.ai/v1/calls with a JSON body containing
-   phone, name, project, campaign, source and lead_id. Add a bearer token
-   credential placeholder.
+8. An HTTP Request node, POST to
+   https://prod-api.ringg.ai/ca/api/v0/calling/outbound/individual
+   with headers "X-API-KEY" (credential placeholder) and
+   "Content-Type: application/json", and this JSON body:
+     name, mobile_number (the E.164 phone), agent_id (placeholder),
+     from_number_id (placeholder), and custom_args_values containing
+     lead_id, callee_name, project, campaign and source.
 
 9. A Google Sheets update node setting status to "calling", attempts to 1 and
    last_attempt_at to now, matching on lead_id.
@@ -80,32 +83,34 @@ Build a workflow that processes the result of an AI voice call for a real
 estate developer.
 
 TRIGGER
-A Webhook node named "call-result" that receives: lead_id, call_status
-("answered", "no-answer", "busy" or "failed"), duration_seconds,
-recording_url and transcript.
+A Webhook node named "call-result" receiving Ringg AI's
+"all_processing_completed" event. The payload includes: status, sub_status,
+call_duration, recording_url, transcript (an array of {bot} / {user} objects),
+custom_args_values (which contains our lead_id), and a custom analysis object
+with the fields our agent was configured to extract.
 
 STEPS
-1. A Switch node on call_status with three outputs: answered, no-answer or
-   busy, and failed.
+1. A Switch node on sub_status — NOT on status, because an unanswered call
+   still arrives with status "completed". Three outputs:
+   - "ACCEPTED" → answered branch
+   - "no answer" or "busy line" → no-answer branch
+   - anything else → failed branch
 
 ANSWERED BRANCH
-2. A Basic LLM Chain node that classifies the transcript and returns ONLY
-   valid JSON with exactly these keys, where every key may be null if the call
-   did not cover it:
-   intent (one of: qualified, interested, not_interested, wrong_number,
-   callback_later), budget, config, location, timeline (one of: immediate,
-   3_months, 6_months_plus), purpose (one of: end_use, investment),
-   loan_needed (yes or no), summary (two sentences).
-   Tell the model explicitly that inventing a value is worse than returning
-   null.
+2. A Code node that reads lead_id out of custom_args_values, flattens the
+   transcript array into a single string, and pulls the custom analysis fields
+   (intent, budget, config, location, timeline, purpose, loan_needed, summary)
+   into top-level values, defaulting any missing field to empty.
 
-3. A Code node that parses that JSON safely and falls back to all-null with
-   intent "interested" if parsing fails.
+3. An HTTP Request node that downloads recording_url and a Google Drive upload
+   node that saves it to a folder, returning a permanent link. Ringg's
+   recording URLs expire after 24 hours, so this must happen now or the
+   recording is lost.
 
 4. A Google Sheets append node writing to a sheet called "Outcomes":
    lead_id, called_at, call_status, duration_s, intent, budget, config,
    location, timeline, purpose, loan_needed, summary, recording_url, and the
-   first 5000 characters of the transcript only.
+   permanent Drive link, and the first 5000 characters of the transcript only.
 
 5. A Google Sheets update node setting the matching "Leads" row status to the
    classified intent.
@@ -175,10 +180,14 @@ for each of these — none of it is the builder being bad, it is the builder not
 having access to the things only you have:
 
 - **Credentials.** Every Google, Meta and WhatsApp node needs connecting by hand.
-- **The Ringg call.** n8n has no Ringg node, so it will produce a generic HTTP
-  Request. **Get the real endpoint, auth header and body shape from Ringg's docs**
-  and fill it in. Ask Ringg what their call-ended webhook posts, too — Workflow B's
-  field names must match it exactly.
+- **The Ringg call.** n8n has no Ringg node, so it produces a generic HTTP Request.
+  The endpoint and header in Prompt 1 are verified against their docs, but
+  `agent_id` and `from_number_id` come from your own Ringg workspace — fill those
+  in by hand.
+- **Custom Analysis must exist first.** Workflow B reads fields that Ringg only
+  returns if the agent has them configured under Advanced Settings → Custom
+  Analysis. Set those up and run their **Test Analysis** before wiring B, or the
+  columns arrive empty and it looks like an n8n bug.
 - **Sheet column mapping.** It will guess column names. Create both sheets with the
   exact headers from `ELDECO-PRESALES.md` §3b first, then point the nodes at them.
 - **The WhatsApp template names.** Templates must exist and be Meta-approved before
