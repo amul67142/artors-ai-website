@@ -1,0 +1,2 @@
+lead_id,called_at,call_status,duration_s,intent,budget,config,location,timeline,purpose,loan_needed,summary,recording_url,drive_link,transcript_excerpt
+EXAMPLE-0001,2026-09-11T10:34:00+05:30,ACCEPTED,96,qualified,1.2-1.5 Cr,3BHK,Sector 80 Gurugram,3_months,end_use,yes,Wants a 3BHK under 1.5 Cr for his family. Asked about possession and school distance. Free to visit this Saturday.,,,

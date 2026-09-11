@@ -1,0 +1,2 @@
+lead_id,created_at,name,phone,email,source,campaign,project,status,attempts,last_attempt_at,assigned_to
+EXAMPLE-0001,2026-09-11T10:32:00+05:30,Rahul Sharma,+919812345678,rahul@example.com,facebook,Sept-3BHK-Gurugram,Eldeco Live By The Greens,new,0,,
